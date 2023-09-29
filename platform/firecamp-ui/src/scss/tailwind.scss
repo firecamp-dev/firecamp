@@ -1071,6 +1071,9 @@
 .bg-activityBar-background-active{
   background-color: var(--activityBar-background-active);
 }
+.bg-activityBar-border{
+  background-color: var(--activityBar-border);
+}
 .bg-activityBar-foreground-inactive{
   background-color: var(--activityBar-foreground-inactive);
 }
@@ -1127,6 +1130,9 @@
 }
 .bg-secondaryColor{
   background-color: var(--app-secondary);
+}
+.bg-secondaryColor-hover{
+  background-color: var(--app-secondary-hover);
 }
 .bg-statusBar-background{
   background-color: var(--statusBar-background);
@@ -1940,6 +1946,9 @@
 .hover\:\!bg-focusColor:hover{
   background-color: #ffffff1a !important;
 }
+.hover\:bg-activityBar-border:hover{
+  background-color: var(--activityBar-border);
+}
 .hover\:bg-focus1:hover{
   background-color: var(--focus-level-1);
 }
@@ -1954,6 +1963,9 @@
 }
 .hover\:bg-primaryColor:hover{
   background-color: var(--app-primary);
+}
+.hover\:bg-primaryColor-hover:hover{
+  background-color: var(--app-primary-hover);
 }
 .hover\:bg-secondaryColor-hover:hover{
   background-color: var(--app-secondary-hover);
@@ -2022,6 +2034,9 @@
   --tw-shadow-colored: 0 0 #0000 !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
+.active\:transform-none:active{
+  transform: none;
+}
 .disabled\:bg-input-background:disabled{
   background-color: var(--input-background);
 }
@@ -2063,11 +2078,26 @@
 .data-\[position\=\'top\'\]\:animate-slideUpAndFade[data-position='top']{
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+.data-\[disabled\=true\]\:border-primaryColor[data-disabled=true]{
+  border-color: var(--app-primary);
+}
+.data-\[disabled\=true\]\:border-tab-border[data-disabled=true]{
+  border-color: var(--tab-border);
+}
+.data-\[disabled\=true\]\:bg-error[data-disabled=true]{
+  background-color: var(--error);
+}
 .data-\[disabled\=true\]\:bg-input-background[data-disabled=true]{
   background-color: var(--input-background);
 }
+.data-\[disabled\=true\]\:bg-primaryColor[data-disabled=true]{
+  background-color: var(--app-primary);
+}
 .data-\[disabled\=true\]\:bg-secondaryColor[data-disabled=true]{
   background-color: var(--app-secondary);
+}
+.data-\[disabled\=true\]\:bg-transparent[data-disabled=true]{
+  background-color: #ffffff00;
 }
 .data-\[disabled\=true\]\:\!text-secondaryColor-text[data-disabled=true]{
   --tw-text-opacity: 1 !important;
@@ -2075,6 +2105,16 @@
 }
 .data-\[disabled\=true\]\:text-inherit[data-disabled=true]{
   color: inherit;
+}
+.data-\[disabled\=true\]\:text-primaryColor[data-disabled=true]{
+  color: var(--app-primary);
+}
+.data-\[disabled\=true\]\:text-secondaryColor-text[data-disabled=true]{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.data-\[disabled\=true\]\:text-tab-foreground[data-disabled=true]{
+  color: var(--tab-foreground);
 }
 .data-\[invalid\=true\]\:text-inherit[data-invalid=true]{
   color: inherit;

@@ -79,6 +79,7 @@ module.exports = {
       'heading-color': 'var(--heading-color)',
       primaryColor: 'var(--app-primary)',
       'primaryColor-focus': 'var(--app-primary-focus)',
+      'primaryColor-hover': 'var(--app-primary-hover)',
       'primaryColor-text': '#ffffff',
       secondaryColor: 'var(--app-secondary)',
       'secondaryColor-text': '#ffffff',

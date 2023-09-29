@@ -3,107 +3,6 @@ import cx from 'classnames';
 import { Button as MantineButton, createStyles } from '@mantine/core';
 import { IButton } from './Button.interfaces';
 
-// custom styles for variants
-const useStyles = createStyles(
-  (theme, { variant, color, primary, secondary, transparent, animate }: IButton) => ({
-    root: {
-      display: 'flex',
-      fontWeight: 'normal',
-      
-      ...(!animate ? { ':active': { transform: 'none' } }: {}),
-      ...(transparent
-        ? {
-            ':hover': {
-              backgroundColor: 'transparent',
-            },
-          }
-        : {}),
-      ...(variant === 'outline'
-        ? {
-            color: primary
-              ? theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'light' ? 6 : 8
-                ]
-              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-            borderColor: primary
-              ? theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'light' ? 6 : 8
-                ]
-              : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][4],
-            ':hover': {
-              ...(primary ? { color: theme.white } : {}),
-              backgroundColor: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 7 : 9
-                  ]
-                : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][
-                    theme.colorScheme === 'light' ? 3 : 5
-                  ],
-            },
-          }
-        : {}),
-      // same color for both light/dark color variant
-      ...(secondary
-        ? {
-            color: theme.white,
-            backgroundColor: theme.colors.dark[4],
-            ':hover': {
-              backgroundColor: theme.colors.dark[5],
-            },
-          }
-        : {}),
-      '&:disabled, &[data-disabled]': {
-        ...(transparent || ['subtle'].includes(variant)
-          ? {
-              color: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-              backgroundColor: 'transparent',
-            }
-          : {}),
-        ...(variant === 'filled'
-          ? {
-              color: theme.white,
-              backgroundColor: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8],
-            }
-          : {}),
-        ...(variant === 'outline'
-          ? {
-              color: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-              borderColor: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[
-                    theme.colorScheme === 'light' ? 'gray' : color
-                  ][4],
-            }
-          : {}),
-        ...(secondary
-          ? {
-              color: theme.white,
-              backgroundColor: theme.colors.dark[4],
-            }
-          : {}),
-      },
-    },
-    leftIcon: {
-      paddingLeft: 'calc(0.875rem  / 1.5)',
-      paddingRight: 'calc(0.875rem  / 1.5)',
-    },
-  })
-);
-
 enum EVariant {
   primary = 'filled',
   ghost = 'subtle',
@@ -120,7 +19,7 @@ const Button: FC<IButton> = ({
   children,
   classNames = {},
   size,
-  variant,
+  variant = EVariant.primary,
 
   primary = false,
   ghost = false,
@@ -155,14 +54,6 @@ const Button: FC<IButton> = ({
 
   // default size if not passed is sm
   const customColor = danger ? 'red' : primary ? 'primaryColor' : 'dark';
-  const { classes } = useStyles({
-    variant: customVariant ?? 'filled',
-    color: customColor,
-    primary,
-    secondary,
-    transparent,
-    animate
-  });
 
   return (
     <MantineButton
@@ -173,12 +64,62 @@ const Button: FC<IButton> = ({
         ...classNames,
         root: cx(
           classNames.root,
-          classes.root,
+          'flex font-normal',
+          { 'active:transform-none': !animate },
+          { 'hover:bg-transparent': transparent },
+
+          // same color for both light/dark color variant
+          {
+            'text-secondaryColor-text bg-secondaryColor hover:bg-secondaryColor-hover':
+              secondary,
+          },
+
+          {
+            'text-primaryColor border-primaryColor hover:bg-primaryColor-hover hover:text-secondaryColor-text':
+              customVariant === 'outline' && primary,
+          },
+          {
+            'text-tab-foreground border-tab-border hover:bg-activityBar-border':
+              customVariant === 'outline' && customColor === 'dark',
+          },
+          // custom disabled classes when button is disabled
+          {
+            'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-primaryColor':
+              props.disabled && customVariant === EVariant.primary && primary,
+          },
+          {
+            'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-secondaryColor':
+              props.disabled && secondary,
+          },
+          {
+            'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-error':
+              props.disabled && danger,
+          },
+          {
+            'data-[disabled=true]:text-primaryColor data-[disabled=true]:bg-transparent':
+              props.disabled &&
+              (transparent || customVariant === EVariant.ghost) &&
+              primary,
+          },
+          {
+            'data-[disabled=true]:text-tab-foreground data-[disabled=true]:bg-transparent':
+              props.disabled &&
+              (transparent || customVariant === EVariant.ghost) &&
+              !primary,
+          },
+          {
+            'data-[disabled=true]:text-primaryColor data-[disabled=true]:border-primaryColor data-[disabled=true]:bg-transparent':
+              props.disabled && customVariant === EVariant.outline && primary,
+          },
+          {
+            'data-[disabled=true]:text-tab-foreground data-[disabled=true]:border-tab-border data-[disabled=true]:bg-transparent':
+              props.disabled && customVariant === EVariant.outline && !primary,
+          },
           {
             'justify-center': props.fullWidth && !props.leftIcon,
           },
           {
-            [classes.leftIcon]: !text,
+            'px-2.5': !text,
           }
         ),
         leftIcon: cx(classNames.leftIcon, {
