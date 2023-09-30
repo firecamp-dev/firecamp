@@ -1,0 +1,84 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/file",
+    "definitions": {
+        "file": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "description": "File data"
+                },
+                "__meta": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "dataType": {
+                            "$ref": "#/definitions/fileDataType",
+                            "description": "Type of data file request contains"
+                        },
+                        "type": {
+                            "type": "string",
+                            "const": "file",
+                            "description": "file type"
+                        },
+                        "version": {
+                            "type": "string",
+                            "const": "1.0.0",
+                            "description": "request version"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "request name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "request description"
+                        }
+                    },
+                    "required": [
+                        "dataType",
+                        "name",
+                        "type"
+                    ],
+                    "description": "metadata about request"
+                },
+                "__ref": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        },
+                        "folderId": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "__meta",
+                "__ref",
+                "data"
+            ],
+            "additionalProperties": false,
+            "description": "file request payload"
+        },
+        "fileDataType": {
+            "type": "string",
+            "enum": [
+                "md",
+                "json",
+                "xml",
+                "yaml",
+                "js"
+            ],
+            "description": "Type of data file request contains"
+        }
+    }
+}

@@ -1,0 +1,256 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/graphql",
+    "definitions": {
+        "graphql": {
+            "type": "object",
+            "properties": {
+                "method": {
+                    "$ref": "#/definitions/method",
+                    "description": "graphql request method doc: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods"
+                },
+                "config": {
+                    "$ref": "#/definitions/restConfig",
+                    "description": "request config"
+                },
+                "__meta": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "const": "graphql",
+                            "description": "request type"
+                        },
+                        "version": {
+                            "type": "string",
+                            "const": "2.0.0",
+                            "description": "request version"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "request name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "request description"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "type",
+                        "version"
+                    ],
+                    "description": "metadata about request"
+                },
+                "url": {
+                    "$ref": "#/definitions/url",
+                    "description": "request url"
+                },
+                "headers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/header"
+                    },
+                    "description": "request headers"
+                },
+                "__ref": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        },
+                        "folderId": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "__meta",
+                "__ref",
+                "config",
+                "method",
+                "url"
+            ],
+            "additionalProperties": false,
+            "description": "GraphQL request for export collection"
+        },
+        "method": {
+            "type": "string",
+            "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "HEAD",
+                "OPTIONS",
+                "PURGE",
+                "LINK",
+                "UNLINK"
+            ],
+            "description": "http request method"
+        },
+        "restConfig": {
+            "type": "object",
+            "properties": {
+                "followLocation": {
+                    "type": "boolean",
+                    "description": "follow HTTP 3xx redirects. Defaults to 0, disabled\n\nDefaults to true\n\nReference: https://curl.se/libcurl/c/CURLOPT_FOLLOWLOCATION.html"
+                },
+                "httpVersion": {
+                    "$ref": "#/definitions/httpVersion",
+                    "description": "HTTP protocol version to use. Defaults to V2_0_Tls\n\nReference: https://curl.se/libcurl/c/CURLOPT_HTTP_VERSION.html"
+                },
+                "maxRedirects": {
+                    "type": "number",
+                    "description": "maximum number of redirects allowed. Defaults to -1, unlimited\n\nDefaults to -1\n\nReference: https://curl.se/libcurl/c/CURLOPT_MAXREDIRS.html"
+                },
+                "origin": {
+                    "type": "string",
+                    "description": "set in header. Defaults to null"
+                },
+                "rejectUnauthorized": {
+                    "type": "boolean",
+                    "description": "If not false a server automatically reject clients with invalid certificates\n\nDefaults to false"
+                },
+                "requestTimeout": {
+                    "type": "number",
+                    "description": "maximum time the transfer is allowed to complete Default timeout is 0 (zero) which means it never times out during transfer.\n\ndefault: 0\n\nReference: https://curl.se/libcurl/c/CURLOPT_TIMEOUT_MS.html"
+                },
+                "userAgent": {
+                    "type": "string",
+                    "description": "HTTP user-agent header. Defaults to 'Firecamp_${app_version}'\n\nReference: https://curl.se/libcurl/c/CURLOPT_USERAGENT.html"
+                }
+            },
+            "additionalProperties": false,
+            "description": "Allow to configure http request Supported in desktop app only"
+        },
+        "httpVersion": {
+            "type": "string",
+            "enum": [
+                "None",
+                "V1_0",
+                "V1_1",
+                "V2_0",
+                "V2Tls",
+                "V2PriorKnowledge",
+                "v3"
+            ],
+            "description": "reference: https://curl.se/libcurl/c/CURLOPT_HTTP_VERSION.html"
+        },
+        "url": {
+            "type": "object",
+            "properties": {
+                "raw": {
+                    "type": "string",
+                    "description": "represents the raw string of the request URL"
+                },
+                "queryParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/queryParam"
+                    },
+                    "description": "firecamp url specific query param doc: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web#query"
+                },
+                "pathParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pathParam"
+                    },
+                    "description": "Path parameters are variable parts of a URL path. They are typically used to point to a specific resource within a collection, such as a user identified by ID. A URL can have several path parameters, each denoted by preceding ':'"
+                }
+            },
+            "required": [
+                "raw"
+            ],
+            "additionalProperties": false
+        },
+        "queryParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "keyValueTableRowType": {
+            "type": "string",
+            "enum": [
+                "text",
+                "file"
+            ]
+        },
+        "pathParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "header": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        }
+    }
+}
