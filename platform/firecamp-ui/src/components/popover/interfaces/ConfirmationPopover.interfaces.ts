@@ -46,7 +46,7 @@ export interface IConfirmationPopover {
   onConfirm?: () => void;
 
   /**
-   * To toggle the the confirmation display as open/close & need to pass detach as false
+   * To toggle the confirmation display as open/close & need to pass detach as false
    */
   isOpen?: boolean;
 

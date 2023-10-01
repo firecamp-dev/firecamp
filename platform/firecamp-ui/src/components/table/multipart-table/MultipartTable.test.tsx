@@ -49,7 +49,7 @@ describe('Table : ', () => {
     expect(updatedMountedRow).toHaveLength(initialMountedRow.length + 1);
   });
 
-  test('Table should render components based on column id provied', async () => {
+  test('Table should render components based on column id provided', async () => {
     // ColumnId - value : MultipartInput component
     // validate the icon & checking its icon click event
     // validate the icon input fields available based on type update

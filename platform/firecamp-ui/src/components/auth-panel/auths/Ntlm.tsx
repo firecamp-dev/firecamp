@@ -33,7 +33,7 @@ const Ntlm: FC<INtlm> = ({ auth = {}, onChange = () => {} }) => {
       {inputList.map((input, i) => {
         let errorMsg = '';
         if (dirtyInputs[input.id] && !auth[Ntlm][input.id]?.length) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div

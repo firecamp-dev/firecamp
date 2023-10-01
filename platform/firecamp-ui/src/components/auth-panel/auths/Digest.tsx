@@ -58,7 +58,7 @@ const Digest: FC<IDigest> = ({
           dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IAuthDigest]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div
@@ -123,7 +123,7 @@ const Digest: FC<IDigest> = ({
           onSelect={(algorithm) => {
             _onSelectAlgorithm(algorithm?.name);
           }}
-          selected={auth['algorithm'] || 'MD5'} //defalut "MD5"
+          selected={auth['algorithm'] || 'MD5'} //default "MD5"
           classNames={{
             trigger: 'mb-[10px]',
             dropdown: 'border-focusBorder !py-0 -mt-[10px]',

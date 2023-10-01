@@ -89,7 +89,7 @@ const CMGQueryEditor: FC<ICMGQueryEditor> = ({
         gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']
       }}
       onChange={(editor, data, value) => {
-        // console.log("editor chnage", data, value);
+        // console.log("editor change", data, value);
         // onChangeQuery(value)
       }}
       onKeyUp={(editor: any, e: any) => {

@@ -42,7 +42,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
   }, []);
 
   useEffect(() => {
-    // console.log("I am rednding too often....");
+    // console.log("I am rendering too often....");
   });
 
   let _onMount = (edt: any, monaco: any) => {
@@ -85,7 +85,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
         et.setSelection(range);
         et.focus();
       } else {
-        //todo:  this is experimental, if no Editor ref found then blur it naturaly with Browser DOM API
+        //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
         document.activeElement.blur();
         document.activeElement.blur();
         document.activeElement.blur();
@@ -149,7 +149,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
             et.setSelection(range);
             et.focus();
           } else {
-            //todo:  this is experimental, if no Editor ref found then blur it naturaly with Browser DOM API
+            //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
             document.activeElement.blur();
             document.activeElement.blur();
             document.activeElement.blur();
@@ -275,7 +275,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
             value:
               /**
                * 1. Check if number or not, if number then convert to string and show
-               * 2. Convert multiline string in to single line
+               * 2. Convert multiline string into single line
                */
               (
                 '' + (type === 'number' ? value.toString() || '' : value || '')

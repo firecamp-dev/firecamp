@@ -9,7 +9,7 @@ import { IRootContainer } from "./interfaces/RootContainer.interfaces"
  * Container
  * @param id: <type: String>// copy button id
  * @param className: <type: String>,
- * @param children: <type: String>// If user needs to pass childern
+ * @param children: <type: String>// If user needs to pass children
  * @param style: <type: String>
  * @returns {*}
  * @constructor

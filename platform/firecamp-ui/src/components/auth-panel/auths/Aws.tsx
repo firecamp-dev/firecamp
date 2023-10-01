@@ -39,7 +39,7 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
           dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IAuthAwsV4]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div

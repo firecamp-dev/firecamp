@@ -65,7 +65,7 @@ export default (variables, scopes = { workspace: [], project: [] }) => ({
       let v = {
         sample: previewVar,
         scope: 'Mock Variable',
-        descriton: 'This value can be changes on runtime',
+        description: 'This value can be changes on runtime',
       };
       // let sv = JSON.stringify(v, 2, 2);
       // previewSliceOne = { value: '```js \n' + sv + '\n ```', supportThemeIcons: true };

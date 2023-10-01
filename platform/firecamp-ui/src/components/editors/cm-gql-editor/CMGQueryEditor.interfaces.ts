@@ -1,5 +1,5 @@
 //@ts-ignore  // TODO: install graphql as devDep type package
-import { GraphQLSchema } from 'graghql';
+import { GraphQLSchema } from 'graphql';
 export interface ICMGQueryEditor {
   /**
    * Editor query string

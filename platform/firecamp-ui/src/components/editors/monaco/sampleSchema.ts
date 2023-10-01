@@ -39,7 +39,7 @@ export default {
               },
               {
                 name: 'limit',
-                description: 'limit the nuber of rows returned',
+                description: 'limit the number of rows returned',
                 type: {
                   kind: 'SCALAR',
                   name: 'Int',
@@ -130,7 +130,7 @@ export default {
               },
               {
                 name: 'limit',
-                description: 'limit the nuber of rows returned',
+                description: 'limit the number of rows returned',
                 type: {
                   kind: 'SCALAR',
                   name: 'Int',
@@ -9261,7 +9261,7 @@ export default {
               },
               {
                 name: 'limit',
-                description: 'limit the nuber of rows returned',
+                description: 'limit the number of rows returned',
                 type: {
                   kind: 'SCALAR',
                   name: 'Int',
@@ -9352,7 +9352,7 @@ export default {
               },
               {
                 name: 'limit',
-                description: 'limit the nuber of rows returned',
+                description: 'limit the number of rows returned',
                 type: {
                   kind: 'SCALAR',
                   name: 'Int',

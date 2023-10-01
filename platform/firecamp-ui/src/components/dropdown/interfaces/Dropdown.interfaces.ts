@@ -62,7 +62,7 @@ export interface IOptions {
    */
   hasDivider?: boolean;
   /**
-   * Boolean value to show options in upppercase
+   * Boolean value to show options in uppercase
    */
   applyUpperCase?: boolean;
   /**
@@ -170,7 +170,7 @@ export interface IItem {
  */
 export interface IHeaderMeta {
   /**
-   * Boolean value to show header in upppercase
+   * Boolean value to show header in uppercase
    */
   applyUpperCase?: boolean;
   /**
