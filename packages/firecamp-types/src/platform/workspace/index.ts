@@ -10,7 +10,7 @@ export interface IWorkspace {
     description: string
     __meta: {
         /**
-         * @deprecated: active environment manged in user preference
+         * @deprecated: active environment managed in user preference
          */
         activeEnv?: string
         cOrders: TId[]

@@ -23,7 +23,7 @@
 	min-width: 60px;
 	padding-left: 4px;
 	background: var(--input-background);
-	color: var(--inputForground)
+	color: var(--inputForeground)
 }
 
 .graphiql-explorer-field-view {
@@ -54,7 +54,7 @@
 
 .graphiql-operation-title-bar>span>input:first-child {
 	background: var(--input-background);
-	color: var(--inputForground) !important;
+	color: var(--inputForeground) !important;
 	pointer-events: none
 }
 

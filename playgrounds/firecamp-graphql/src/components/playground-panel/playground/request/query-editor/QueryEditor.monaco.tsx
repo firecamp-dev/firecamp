@@ -98,7 +98,7 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
     });
   };
 
-  const _onCallGQLReuqest = () => {
+  const _onCallGQLRequest = () => {
     let queryObject = _onCursorGetCurrentOperation(editorValue);
     // ctx_onSendRequest(queryObject.value, queryObject.__meta.variables);
   };

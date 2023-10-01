@@ -93,7 +93,7 @@ const Collection = () => {
       )}
 
       {/* even if the collection is empty, the tree must be initialized with tdp.
-        however it'll not show anything but when new item'll get added/created then tree will pop up the entry  */}
+        however it'll not show anything but when new items get added/created then tree will pop up the entry  */}
       <UncontrolledTreeEnvironment
         canRename={false}
         canReorderItems={true}
