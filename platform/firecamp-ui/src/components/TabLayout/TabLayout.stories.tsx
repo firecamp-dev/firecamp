@@ -23,7 +23,7 @@ const TabLayout = (args: any) => {
                     <Row className="h-full">
                         <Column flex={1}>Request Body</Column>
                         <Resizable left={true} maxWidth="90%" minWidth={200} width="50%">
-                            <Column flex={1} className="border-l border-app-border">Responce Body</Column>
+                            <Column flex={1} className="border-l border-app-border">Response Body</Column>
                         </Resizable>
                     </Row>
                 </Column>

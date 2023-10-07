@@ -42,11 +42,11 @@ const dragAndDrop = async (elemDrag: HTMLElement, elemDrop: HTMLElement) => {
 };
 
 /* Drop & Move event */
-const dropAndMove = async (resizerElement: HTMLElement, moveOffest: Array<{clientX: number, clientY: number}>) => {
+const dropAndMove = async (resizerElement: HTMLElement, moveOffset: Array<{clientX: number, clientY: number}>) => {
 
-    await fireEvent.mouseDown(resizerElement, moveOffest[0]);
-    await fireEvent.mouseMove(resizerElement, moveOffest[1]);
-    await fireEvent.mouseUp(resizerElement, moveOffest[1])
+    await fireEvent.mouseDown(resizerElement, moveOffset[0]);
+    await fireEvent.mouseMove(resizerElement, moveOffset[1]);
+    await fireEvent.mouseUp(resizerElement, moveOffset[1])
 
 }
 

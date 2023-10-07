@@ -46,7 +46,7 @@ export default SwitchWorkspacePanel;
 
 const WorkspaceCard: FC<any> = () => {
   return (
-    <div className="workpsace-card relative flex cursor-pointer flex-col border border-app-border ml-2 mr-2 first:ml-0 last:mr-0">
+    <div className="workspace-card relative flex cursor-pointer flex-col border border-app-border ml-2 mr-2 first:ml-0 last:mr-0">
       <div className="border-b border-app-border flex flex-row p-2 pb-4">
         <div>
           <span className="block text-base text-app-foreground font-semibold whitespace-pre leading-5">
@@ -56,7 +56,7 @@ const WorkspaceCard: FC<any> = () => {
             Workspace
           </span>
         </div>
-        <div className="ml-auto workpsace-card-action">
+        <div className="ml-auto workspace-card-action">
           <Button text="Switch" primary xs compact transparent />
         </div>
       </div>
