@@ -64,9 +64,17 @@
 .collection_leaf-node-type {
   font-size: 12px;
   font-weight: 700;
-  width: 2.5rem /* 40px */;
+  width: 3.4rem /* 54px */;
   flex: none;
   height: 1rem /* 16px */;
+  text-align: right;
+  margin-right: 0.5rem;
+}
+
+.request-icon{
+  width: 3.4rem /* 54px */;
+  margin-right: 0.5rem;
+  padding-left: 1.9rem; /* width(3.4) - icon-size(1.5) */
 }
 .rct-tree-item-title-container {
   align-items: center;

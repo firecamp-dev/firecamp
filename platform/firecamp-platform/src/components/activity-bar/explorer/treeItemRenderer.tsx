@@ -44,11 +44,11 @@ export default {
             <div className={cx(text, 'collection_leaf-node-type', 'm-r-4')} {...context.arrowProps}>{text}</div>
           );
         case ERequestTypes.GraphQL:
-          return <FcIconGraphQL className="text-graphql" size={24}  {...context.arrowProps} />;
+          return <FcIconGraphQL className={cx("request-icon","text-graphql")} size={24}  {...context.arrowProps} />;
         case ERequestTypes.WebSocket:
-          return <FcIconWebSocket className="" size={24} {...context.arrowProps} />;
+          return <FcIconWebSocket className="request-icon" size={24} {...context.arrowProps} />;
         case ERequestTypes.SocketIO:
-          return <FcIconSocketIoSquare className="" size={24} {...context.arrowProps} />;
+          return <FcIconSocketIoSquare className="request-icon" size={24} {...context.arrowProps} />;
         default:
           return <></>;
       }
