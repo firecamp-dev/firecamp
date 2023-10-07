@@ -1,7 +1,7 @@
 import {
   Container,
+  Checkbox,
   CheckboxGroup,
-  CheckboxInGrid,
   SingleLineEditor,
 } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
@@ -155,14 +155,15 @@ const ConfigTab = ({ id = '' }) => {
 
       case EInputTypes.Boolean:
         return (
-          <CheckboxInGrid
-            key={`${name}-${index}`}
-            checked={connection[name] || false}
-            label={label}
-            className="fc-input-wrapper"
-            onToggleCheck={(_) => _onChange(name, !connection[name])}
-            disabled={name === 'pingInterval' && connection['ping'] !== true}
-          />
+          <div key={`${name}-${index}`}>
+            <label className="checkbox-in-grid">{label}</label>
+            <Checkbox
+              checked={connection[name] || false}
+              classNames={{ root: 'fc-input-wrapper' }}
+              onToggleCheck={(_) => _onChange(name, !connection[name])}
+              disabled={name === 'pingInterval' && connection['ping'] !== true}
+            />
+          </div>
         );
         break;
 

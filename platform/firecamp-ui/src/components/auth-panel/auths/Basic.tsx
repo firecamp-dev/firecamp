@@ -38,7 +38,7 @@ const Basic: FC<IBasic> = ({ auth, onChange = () => {} }) => {
           dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IAuthBasic]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div

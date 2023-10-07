@@ -1,0 +1,349 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/socketIO",
+    "definitions": {
+        "ISocketIOListener": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "name"
+            ],
+            "additionalProperties": false
+        },
+        "socketIO": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/socketIOConfig"
+                },
+                "listeners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ISocketIOListener"
+                    },
+                    "description": "listener event list"
+                },
+                "__meta": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "const": "socketio",
+                            "description": "request type"
+                        },
+                        "version": {
+                            "type": "string",
+                            "const": "2.0.0",
+                            "description": "request version"
+                        },
+                        "fOrders": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                            },
+                            "description": "request dir orders"
+                        },
+                        "iOrders": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                            },
+                            "description": "request dir orders"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "request name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "request description"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "type",
+                        "version"
+                    ],
+                    "description": "metadata about request"
+                },
+                "url": {
+                    "$ref": "#/definitions/url",
+                    "description": "request url"
+                },
+                "connection": {
+                    "$ref": "#/definitions/socketIoConnection"
+                },
+                "__ref": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        },
+                        "folderId": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "__meta",
+                "__ref",
+                "connection",
+                "url"
+            ],
+            "additionalProperties": false,
+            "description": "SocketIO request for export collection"
+        },
+        "socketIOConfig": {
+            "type": "object",
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/socketIOClientVersion",
+                    "description": "socket.io client version. Defaults to v3"
+                },
+                "rejectUnauthorized": {
+                    "type": "boolean",
+                    "description": "If not false a server automatically reject clients with invalid certificates Defaults to false"
+                },
+                "timeout": {
+                    "type": "number",
+                    "description": "delay between each reconnect attempt. Defaults to 3000"
+                },
+                "reconnection": {
+                    "type": "boolean",
+                    "description": "reconnect on socket connection break. Defaults to false"
+                },
+                "reconnectionAttempts": {
+                    "type": "number",
+                    "description": "number of reconnection attempts before giving up. Defaults to 3"
+                },
+                "reconnectionDelay": {
+                    "type": "number",
+                    "description": "how long to initially wait before attempting a new reconnection.  Defaults to 1000"
+                },
+                "reconnectionDelayMax": {
+                    "type": "number",
+                    "description": "maximum amount of time to wait between re-connection.  Defaults to 5000"
+                },
+                "onConnectListeners": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "events start listening on connection open"
+                }
+            },
+            "additionalProperties": false,
+            "description": "#reference https://socket.io/docs/v4/client-options/"
+        },
+        "socketIOClientVersion": {
+            "type": "string",
+            "enum": [
+                "v2",
+                "v3",
+                "v4"
+            ]
+        },
+        "url": {
+            "type": "object",
+            "properties": {
+                "raw": {
+                    "type": "string",
+                    "description": "represents the raw string of the request URL"
+                },
+                "queryParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/queryParam"
+                    },
+                    "description": "firecamp url specific query param doc: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web#query"
+                },
+                "pathParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pathParam"
+                    },
+                    "description": "Path parameters are variable parts of a URL path. They are typically used to point to a specific resource within a collection, such as a user identified by ID. A URL can have several path parameters, each denoted by preceding ':'"
+                }
+            },
+            "required": [
+                "raw"
+            ],
+            "additionalProperties": false
+        },
+        "queryParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "keyValueTableRowType": {
+            "type": "string",
+            "enum": [
+                "text",
+                "file"
+            ]
+        },
+        "pathParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "socketIoConnection": {
+            "type": "object",
+            "properties": {
+                "isDefault": {
+                    "type": "boolean",
+                    "description": "whether connection is default or not note: key exist only in default connection"
+                },
+                "forceNew": {
+                    "type": "boolean",
+                    "description": "whether to reuse an existing connection. Defaults to false"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "socket.io connection name"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "communication channel that allows you to split the logic of your application over a single shared connection. #reference https://socket.io/docs/v2/namespaces/"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "name of the path that is captured on the server side. Defaults to '/socket.io'"
+                },
+                "ping": {
+                    "type": "boolean",
+                    "description": "whether to start sending ping event on connection open or not Defaults to false"
+                },
+                "pingInterval": {
+                    "type": "number",
+                    "description": "interval between each ping fire"
+                },
+                "transports": {
+                    "type": "object",
+                    "properties": {
+                        "websocket": {
+                            "type": "boolean",
+                            "description": "defaults to true"
+                        },
+                        "polling": {
+                            "type": "boolean",
+                            "description": "defaults to true"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "description": "a list of transports to try (in order). Engine always attempts to connect directly with the first one, provided the feature detection test for it passes."
+                },
+                "auth": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/header"
+                    },
+                    "description": "connection wise auth list. support in client version >= 3"
+                },
+                "headers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/header"
+                    }
+                },
+                "queryParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/queryParam"
+                    }
+                }
+            },
+            "required": [
+                "auth",
+                "headers",
+                "name",
+                "queryParams"
+            ],
+            "additionalProperties": false
+        },
+        "header": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        }
+    }
+}

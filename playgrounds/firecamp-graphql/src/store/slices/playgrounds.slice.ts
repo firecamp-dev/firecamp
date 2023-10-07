@@ -307,7 +307,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
     });
   },
 
-  /** undo changes and reset the the previously saved plg's state */
+  /** undo changes and reset the previously saved plg's state */
   undoPlaygroundChanges: (playgroundId: string) => {
     if (!playgroundId) return;
     set((s) => {

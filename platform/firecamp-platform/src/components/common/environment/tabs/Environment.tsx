@@ -27,7 +27,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
   const initEnv = _cloneDeep({ ...tab.entity, variables: [] });
   const originalEnvs = useRef({
     /** runtimeEnv.variables will have the initialValue and currentValue (merge of remote & local)
-     * @note runtimeEnv.variables=[] thus we don;t need to manage initialValue andd currentValue at initialisation time
+     * @note runtimeEnv.variables=[] thus we don;t need to manage initialValue and currentValue at initialisation time
      */
     runtimeEnv: _cloneDeep(initEnv),
     remoteEnv: _cloneDeep(initEnv),

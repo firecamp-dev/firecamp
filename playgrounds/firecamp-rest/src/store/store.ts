@@ -1,5 +1,5 @@
 import _cloneDeep from 'lodash/cloneDeep';
-import create from 'zustand';
+import { create } from 'zustand';
 import createContext from 'zustand/context';
 import { TId, IRest } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';

@@ -43,7 +43,7 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
         // console.log('isDirty', isDirty, "errorMsg", errorMsg)
         let errorMsg = '';
         if (dirtyInputs[input.id] && !auth?.[input.id]?.length) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div

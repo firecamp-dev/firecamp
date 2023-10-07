@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { EPlatformModalTypes } from '../types';
 
 export interface IModalStore {

@@ -1,7 +1,7 @@
 import { Rest } from '@firecamp/cloud-apis';
 import { TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import create from 'zustand';
+import { create } from 'zustand';
 
 export interface IUserStore {
   isGuest: boolean;

@@ -86,7 +86,7 @@ const Template = (args) => {
           }]
         }
         onSelect={item => {
-          setSelected(item.name || 'oopss...')
+          setSelected(item.name || 'oops...')
         }} />
     </Dropdown>
   )

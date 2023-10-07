@@ -106,7 +106,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
           dirtyInputs[input.id] &&
           !grantTypes[activeGrantType][input.id]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div
@@ -212,7 +212,7 @@ export default OAuth2;
 interface IOAuth2Comp {
   auth: IUiOAuth2;
 
-  /** update auth value for auth tyoe OAuth2 */
+  /** update auth value for auth type OAuth2 */
   onChangeOAuth2Value: (key: string, updates: any) => void;
 
   /** OAuth2 previous/ last fetched token */

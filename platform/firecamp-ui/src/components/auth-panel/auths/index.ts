@@ -1,4 +1,4 @@
-export { default as Atlassion } from './Atlassion';
+export { default as Atlassian } from './Atlassian';
 export { default as Aws } from './Aws';
 export { default as Basic } from './Basic';
 export { default as Bearer } from './Bearer';
