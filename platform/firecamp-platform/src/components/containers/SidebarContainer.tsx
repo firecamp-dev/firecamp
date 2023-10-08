@@ -38,8 +38,8 @@ const compositeBarItems = [
         tabIndex={-1}
       />
     ),
-    // text: `Collections (${scPrefix} ⇧ C)`,
     item: EActivityBarItems.Explorer,
+    toolTip: `Collections (${scPrefix} ⇧ C)`,
   },
   {
     id: EActivityBarItems.Environment,
@@ -52,8 +52,8 @@ const compositeBarItems = [
         tabIndex={-1}
       />
     ),
-    // text: `Environment (${scPrefix} ⇧ E)`,
     item: EActivityBarItems.Environment,
+    toolTip: `Environment (${scPrefix} ⇧ E)`,
   },
   {
     id: EActivityBarItems.History,
@@ -66,8 +66,8 @@ const compositeBarItems = [
         tabIndex={-1}
       />
     ),
-    // text: `History (${scPrefix} ⇧ H)`,
     item: EActivityBarItems.History,
+    toolTip: `History (${scPrefix} ⇧ H)`,
   },
 ];
 
@@ -106,8 +106,8 @@ const actionBarItems = [
         tabIndex={-1}
       />
     ),
-    text: `User (${scPrefix} ⇧ U)`,
     item: EActivityBarItems.User,
+    toolTip: `User (${scPrefix} ⇧ U)`,
   },
   {
     id: EActivityBarItems.Settings,
@@ -118,8 +118,8 @@ const actionBarItems = [
         tabIndex={-1}
       />
     ),
-    text: `Settings (${scPrefix} ⇧ /)`,
     item: EActivityBarItems.Settings,
+    toolTip: `Settings (${scPrefix} ⇧ /)`,
   },
 ];
 
