@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { MantineColor, Tooltip as MantineToolTip } from '@mantine/core';
+import { MantineColor, Tooltip as MantineTooltip } from '@mantine/core';
 import { ArrowPosition, FloatingPosition } from '@mantine/core/lib/Floating';
 
-interface IToolTip {
+interface ITooltip {
   arrowOffset?: number;
   arrowPosition?: ArrowPosition;
   arrowRadius?: number;
@@ -21,16 +21,16 @@ interface IToolTip {
   multiline?: boolean;
   offset?: number;
   openDelay?: number;
-  postition?: FloatingPosition;
+  position?: FloatingPosition;
   withArrow?: boolean;
 }
 
-const ToolTip: FC<IToolTip> = ({ label, children, ...props }) => {
+const Tooltip: FC<ITooltip> = ({ label, children, ...props }) => {
   return (
-    <MantineToolTip label={label} {...props}>
+    <MantineTooltip label={label} {...props}>
       {children}
-    </MantineToolTip>
+    </MantineTooltip>
   );
 };
 
-export default ToolTip;
+export default Tooltip;

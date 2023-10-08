@@ -1,7 +1,7 @@
 import { FC, forwardRef } from 'react';
 import cx from 'classnames';
 import { UserCircle2 } from 'lucide-react';
-import ToolTip from '../tooltip/ToolTip';
+import Tooltip from '../tooltip/Tooltip';
 
 const ActionItem: FC<IActionItem> = ({
   id = '',
@@ -48,12 +48,12 @@ const ActionItem: FC<IActionItem> = ({
   );
 
   return tooltip ? (
-    <ToolTip
+    <Tooltip
       arrowOffset={5}
       arrowSize={6}
       arrowPosition="side"
       label={tooltip}
-      postition="top"
+      position="right"
       withArrow={true}
     >
       <Item
@@ -64,7 +64,7 @@ const ActionItem: FC<IActionItem> = ({
         style={style}
         icon={icon}
       />
-    </ToolTip>
+    </Tooltip>
   ) : (
     <Item
       active={active}
