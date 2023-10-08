@@ -5,6 +5,7 @@ import {
   Pencil,
   Settings,
   Trash2,
+  CopyPlus
 } from 'lucide-react';
 import { DropdownMenu } from '@firecamp/ui';
 import { Regex } from '../../../../constants';
@@ -23,6 +24,7 @@ const CollectionMenu = ({
   requestId,
   startRenaming,
   menuType,
+  methodType
 }) => {
   const {
     openCollectionTab,
@@ -31,6 +33,7 @@ const CollectionMenu = ({
     deleteCollection,
     deleteFolder,
     deleteRequest,
+    startDuplicate
   } = useExplorerStore.getState();
 
   const renameMenu = {
@@ -38,6 +41,14 @@ const CollectionMenu = ({
     name: 'Rename',
     onClick: (e) => {
       startRenaming();
+    },
+  }; 
+
+  const duplicateMenu = {
+    prefix: () => <CopyPlus size={14} />,
+    name: 'Duplicate',
+    onClick: () => {
+      startDuplicate(requestId)
     },
   };
 
@@ -141,8 +152,11 @@ const CollectionMenu = ({
     // addRequestMenu,
     // settingMenu,
     deleteMenu,
-  ];
-  const requestMenu = [renameMenu, deleteMenu];
+  ];  
+  let requestMenu = [renameMenu, deleteMenu];  
+  if (methodType === "rest") {
+    requestMenu.push(duplicateMenu);
+  }
   return (
     <div>
       <DropdownMenu
