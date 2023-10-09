@@ -39,7 +39,7 @@ const compositeBarItems = [
       />
     ),
     item: EActivityBarItems.Explorer,
-    toolTip: `Collections (${scPrefix} ⇧ C)`,
+    tooltip: `Collections (${scPrefix} ⇧ C)`,
   },
   {
     id: EActivityBarItems.Environment,
