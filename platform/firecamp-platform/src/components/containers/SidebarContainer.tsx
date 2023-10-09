@@ -53,7 +53,7 @@ const compositeBarItems = [
       />
     ),
     item: EActivityBarItems.Environment,
-    toolTip: `Environment (${scPrefix} ⇧ E)`,
+    tooltip: `Environment (${scPrefix} ⇧ E)`,
   },
   {
     id: EActivityBarItems.History,
@@ -67,7 +67,7 @@ const compositeBarItems = [
       />
     ),
     item: EActivityBarItems.History,
-    toolTip: `History (${scPrefix} ⇧ H)`,
+    tooltip: `History (${scPrefix} ⇧ H)`,
   },
 ];
 
@@ -107,7 +107,7 @@ const actionBarItems = [
       />
     ),
     item: EActivityBarItems.User,
-    toolTip: `User (${scPrefix} ⇧ U)`,
+    tooltip: `User (${scPrefix} ⇧ U)`,
   },
   {
     id: EActivityBarItems.Settings,
@@ -119,7 +119,7 @@ const actionBarItems = [
       />
     ),
     item: EActivityBarItems.Settings,
-    toolTip: `Settings (${scPrefix} ⇧ /)`,
+    tooltip: `Settings (${scPrefix} ⇧ /)`,
   },
 ];
 

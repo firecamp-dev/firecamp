@@ -12,7 +12,7 @@ const ActionItems: FC<IActionItems> = ({
         <ActionItem
           id={item.id}
           icon={item.icon}
-          tooltip={item.toolTip}
+          tooltip={item.tooltip}
           key={i}
           active={activeItem === item.id}
           onClick={() => {
