@@ -1,6 +1,12 @@
 import * as rawBody from 'raw-body';
-import { BadRequestException, Body, Controller, Get, Headers, Param, Post, Put, Query, Req, Response, HttpStatus, HttpCode, Patch, Delete } from '@nestjs/common';
-
+import { BadRequestException, Body, Controller, Get, Headers, Param, Post, Put, Query, Req, Response, HttpStatus, HttpCode, Patch, Delete, Head, Ip } from '@nestjs/common';
+import * as crypto from 'crypto'
+import { response } from 'express';
+import * as Hawk from 'hawk'
+import { Credentials } from 'hawk/lib/server';
+const username = 'firecamp'
+const password = 'password'
+const nonce = crypto.randomBytes(16).toString('base64')
 @Controller('')
 export class RestController {
 
@@ -135,23 +141,99 @@ export class RestController {
 
     // Basic Auth
     @Get('basic-auth')
-    basicAuth() {
-        return 'yet to implement'
-        // return { authenticated: true }
+    basicAuth(@Query() queryParams, @Headers() headers) {
+        if (!('authorization' in headers )){
+            return {authenticated:false}
+        }
+        const split = headers.authorization.split(" ")
+        const type = split[0]
+        if (type != 'Basic'){
+            return {authenticated:false}
+        }
+        const decoded = Buffer.from(split[1], 'base64').toString()
+        const decodedSplit = decoded.split(':')
+        if (decodedSplit.length != 2){
+            return {authenticated:false}
+        }
+        const username = decodedSplit[0]
+        const password = decodedSplit[1]
+        console.log(username, password)
+        
+        return { authenticated: true }
     }
 
     // Digest Auth
     @Get('digest-auth')
-    digestAuth() {
-        return 'yet to implement'
-        // return { authenticated: true }
+    digestAuth(@Req() req,@Headers() headers, @Response() res) {
+        const realm = 'Users'
+
+        if (!('authorization' in headers)){
+            res.set({'www-authenticate':`Digest realm="${realm}", nonce="${nonce}"`}).status(401);
+            return res.json('Unauthorized')
+        }
+
+        const split = headers.authorization.replace(',','').split(" ")
+        const type = split[0]
+        if (type != 'Digest'){
+            return res.json('Unauthorized')
+        }
+        const {authorization} = headers
+        
+        const authArgs = authorization.slice(7).split(', ')
+        const argsMap = {}
+        console.log(authArgs)   
+        authArgs.forEach(arg => {
+            const split = arg.replaceAll('"','').replace('=', '-:-').split('-:-')
+            argsMap[split[0]] = split[1]
+        })
+        console.log(argsMap)
+        
+        if (!(argsMap['username'] && argsMap['nonce'] && argsMap['realm'] && argsMap['response'])){
+            return res.json({"authorized": false})
+        }
+        const HA1 = crypto.createHash('md5').update(`${argsMap['username']}:${argsMap['realm']}:${password}`).digest('hex')
+        const HA2 = crypto.createHash('md5').update(`GET:/digest-auth`).digest('hex')
+        const responseCheck = crypto.createHash('md5').update(`${HA1}:${argsMap['nonce']}:${HA2}`).digest('hex')
+
+        return res.json({"authorized":responseCheck===argsMap['response']})
     }
 
     // Hawk Auth
     @Get('hawk-auth')
-    hawkAuth() {
-        return 'yet to implement'
-        // return { authenticated: true }
+    async hawkAuth(@Req() req, @Response() res) {
+        const credentialsFunc = function (id) {
+
+            if (id !=='dh37fgj492je'){
+                return undefined
+            }
+            
+            const credentials:Credentials = {
+                key: 'werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn',
+                algorithm: 'sha256',
+                user: 'Steve'
+            };
+        
+            return credentials;
+        };
+
+        let status, message
+
+        try {
+            const { credentials, artifacts } = await Hawk.server.authenticate(req, credentialsFunc)
+            message = {'message':"Hawk Authentication Successfull"}
+            console.log()
+            status = 200;
+            const header = Hawk.server.header(credentials, artifacts);
+            
+            res.set({'Server-Authorization':header})
+        } catch (error) {
+            message = error.output.payload;
+            status = 401;
+            const header = error.output.headers
+            res.set(header)
+        }
+
+        return res.status(status).json(message)
     }
 
     // OAuth 1.0
@@ -165,20 +247,40 @@ export class RestController {
 
     // set cookie
     @Get('cookies/set')
-    cookieSet() {
-        return 'yet to implement'
+    cookieSet(@Query() queryParams, @Response() res) {
+        
+        const payload = {cookies:{}}
+
+        Object.entries(queryParams).forEach((param) => {
+            const [key, value] = param
+            payload.cookies[key] = value
+            res.cookie(key, value)
+        
+        })
+        console.log(res.cookies)
+        return res.json(payload)
     }
 
     // get cookie
     @Get('cookies')
-    cookieGet() {
+    cookieGet(@Req() req) {
+        console.log(req.cookies)
         return 'yet to implement'
     }
 
     // delete cookie
     @Get('cookies/delete')
-    cookieDelete() {
-        return 'yet to implement'
+    cookieDelete(@Req() req, @Query() queryParameters, @Response() res) {
+        
+        const cookies = {...req.cookies}
+        console.log(cookies)
+        
+        Object.keys(queryParameters).forEach(key => {
+            res.clearCookie(key)
+            delete cookies[key]
+        });
+        
+        return res.json(cookies)
     }
 
     /** Utilities */
@@ -239,8 +341,8 @@ export class RestController {
 
     //IP address in JSON format
     @Get('ip')
-    ip() {
-        return 'yet to implement'
+    ip(@Ip() ip) {
+        return {'ip': ip}
     }
 
     /** Utilities / Date and Time */
