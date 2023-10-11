@@ -665,6 +665,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.0.1
         version: 5.0.1(eslint@7.32.0)(prettier@3.0.3)
+      husky:
+        specifier: ^8.0.1
+        version: 8.0.3
       prettier:
         specifier: ^3.0.3
         version: 3.0.3
