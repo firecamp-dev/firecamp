@@ -1,12 +1,17 @@
 import * as rawBody from 'raw-body';
-import { BadRequestException, Body, Controller, Get, Headers, Param, Post, Put, Query, Req, Response, HttpStatus, HttpCode, Patch, Delete, Head, Ip } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, Param, Post, Put, Query, Req, Response, HttpStatus, HttpCode, Patch, Delete, Head, Ip, Header, StreamableFile } from '@nestjs/common';
 import * as crypto from 'crypto'
 import { response } from 'express';
 import * as Hawk from 'hawk'
 import { Credentials } from 'hawk/lib/server';
+import { createReadStream } from 'fs';
+import { join } from 'path';
+import {createDeflate, createGzip} from 'zlib';
+
 const username = 'firecamp'
 const password = 'password'
 const nonce = crypto.randomBytes(16).toString('base64')
+
 @Controller('')
 export class RestController {
 
@@ -323,20 +328,62 @@ export class RestController {
 
     // Get UTF8 Encoded Response
     @Get('encoding/utf8')
+    @Header('content-type','text/html; charset=utf-8' )
     encoding() {
-        return 'yet to implement'
+        const file = createReadStream(join(process.cwd(), 'src/test.html'));
+        return new StreamableFile(file)
     }
 
     // GZip Compressed Response
     @Get('gzip')
-    gzip() {
-        return 'yet to implement'
+    gzip(@Req() req, @Response() res, @Headers() headers) {
+                
+        const responseData = {gzip: true, headers, method:req.method}
+
+        const compressionAlgorithm = 'gzip';
+
+        const acceptedEncodings = headers['accept-encoding'];
+
+        if (acceptedEncodings && acceptedEncodings.includes(compressionAlgorithm)) {
+            const jsonResponse = JSON.stringify(responseData);
+           
+            res.setHeader('Content-Encoding', compressionAlgorithm);
+            res.setHeader('Content-Type', 'application/json');
+            
+            const compressionStream = createGzip();
+           
+            compressionStream.pipe(res)
+            compressionStream.write(jsonResponse)
+            compressionStream.end()
+        } else {
+            res.json({...responseData, gzip:false});
+        }
     }
 
     // Deflate Compressed Response
     @Get('deflate')
-    deflate() {
-        return 'yet to implement'
+    deflate(@Req() req, @Response() res, @Headers() headers) {
+        
+        const responseData = {deflate: true, headers, method:req.method}
+
+        const compressionAlgorithm = 'deflate';
+
+        const acceptedEncodings = headers['accept-encoding'];
+
+        if (acceptedEncodings && acceptedEncodings.includes(compressionAlgorithm)) {
+            const jsonResponse = JSON.stringify(responseData);
+           
+            res.setHeader('Content-Encoding', compressionAlgorithm);
+            res.setHeader('Content-Type', 'application/json');
+            
+            const compressionStream = createDeflate();
+           
+            compressionStream.pipe(res)
+            compressionStream.write(jsonResponse)
+            compressionStream.end()
+        } else {
+            res.json({...responseData, deflate:false});
+        }
     }
 
     //IP address in JSON format
