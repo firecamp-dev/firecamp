@@ -7,7 +7,6 @@ import { Credentials } from 'hawk/lib/server';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import {createDeflate, createGzip} from 'zlib';
-import * as OAuth from 'oauth-1.0a'
 
 const username = 'firecamp'
 const password = 'password'
@@ -15,8 +14,6 @@ const nonce = crypto.randomBytes(16).toString('base64')
 
 const consumerKey = 'RKCGzna7bv9YD57c';
 const consumerSecret = 'D+EdQ-gs$-%@2Nu7';
-
-// Create an instance of the OAuth class
 
 function buildSignatureBase(httpMethod, baseUrl, oauthParameters) {
     // Sort the OAuth parameters alphabetically by name
@@ -285,37 +282,24 @@ export class RestController {
             return oauthParams;
           }
           
-        // const oauthParams = {};
         const authorizationHeader = headers.authorization
 
-        
         const oauthParams = parseOAuthHeader(authorizationHeader.slice(6))
+        
         console.log(oauthParams)
+        
         const consumerKey = oauthParams['oauth_consumer_key'];
         const timestamp = oauthParams['oauth_timestamp'];
         const nonce = oauthParams['oauth_nonce'];
         const signature = oauthParams['oauth_signature'];
         const baseString = `${req.method}&${encodeURIComponent(`${req.protocol}://${req.get('Host')}${req.originalUrl}`)}&${encodeURIComponent(`oauth_consumer_key=${consumerKey}&oauth_nonce=${nonce}&oauth_timestamp=${timestamp}`)}`;
+        
         console.log(baseString)
         const signatureBase = buildSignatureBase('GET', 'http://localhost:3000/oauth1', oauthParams);
         console.log(signatureBase)
         
         console.log(`${req.protocol}://${req.get('Host')}${req.originalUrl}`)
-        // console.log(req.accessUrl)
-        // const oauth = new OAuth(
-        //     req.url,
-        //     req.accessUrl,
-        //     consumerKey,
-        //     consumerSecret,
-        //     '1.0',
-        //     null,
-        //     'HMAC-SHA1'
-        //   );
-          
-        //   oauth.signUrl
-        //   oauth.
-        
-        // Calculate the expected signature using the consumer secret
+    
         const expectedSignature = crypto.createHmac('sha1', consumerSecret)
           .update(baseString)
           .digest('base64');
