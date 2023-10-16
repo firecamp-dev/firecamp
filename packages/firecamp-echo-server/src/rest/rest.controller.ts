@@ -7,6 +7,7 @@ import { Credentials } from 'hawk/lib/server';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import {createDeflate, createGzip} from 'zlib';
+import { Readable } from 'stream';
 
 const username = 'firecamp'
 const password = 'password'
@@ -380,10 +381,31 @@ export class RestController {
     // Streamed Response
     @Get('stream/:chunk')
     stream(
+        @Req() req,
         @Param('chunk') chunk,
-        @Response() res
+        @Headers() headers,
     ) {
-        return 'yet to implement'
+        console.log(headers)
+        const n = parseInt(chunk)
+
+        if (isNaN(n)){
+            return 
+        }
+
+        let responseJson = ""
+        for(let i =0; i< n; i++){
+            const args = {n: chunk}
+            const url = `${req.protocol}://${req.get('Host')}${req.originalUrl}`
+            const responseData = {args,headers, url}
+            responseJson += JSON.stringify(responseData, null, 2)
+        }
+
+        const responseBuffer = Buffer.from(responseJson)
+        const stream = new Readable()
+        stream.push(responseBuffer)
+        stream.push(null)
+        
+        return new StreamableFile(stream)
     }
 
     // Delayed Response
