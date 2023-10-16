@@ -7,10 +7,36 @@ import { Credentials } from 'hawk/lib/server';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import {createDeflate, createGzip} from 'zlib';
+import * as OAuth from 'oauth-1.0a'
 
 const username = 'firecamp'
 const password = 'password'
 const nonce = crypto.randomBytes(16).toString('base64')
+
+const consumerKey = 'RKCGzna7bv9YD57c';
+const consumerSecret = 'D+EdQ-gs$-%@2Nu7';
+
+// Create an instance of the OAuth class
+
+function buildSignatureBase(httpMethod, baseUrl, oauthParameters) {
+    // Sort the OAuth parameters alphabetically by name
+    const sortedParameters = Object.keys(oauthParameters)
+      .sort()
+      .filter(key => key !== 'oauth_signature')
+      .map(key => key + '=' + encodeURIComponent(oauthParameters[key]));
+  
+    // Create the parameter string by joining the sorted parameters with "&"
+    const parameterString = sortedParameters.join('&');
+  
+    // Encode the HTTP method and base URL
+    const encodedHttpMethod = encodeURIComponent(httpMethod);
+    const encodedBaseUrl = encodeURIComponent(baseUrl);
+  
+    // Construct the signature base string
+    const signatureBase = `${encodedHttpMethod}&${encodedBaseUrl}&${encodeURIComponent(parameterString)}`;
+  
+    return signatureBase;
+  }
 
 @Controller('')
 export class RestController {
@@ -243,9 +269,73 @@ export class RestController {
 
     // OAuth 1.0
     @Get('oauth1')
-    OAuth1() {
-        return 'yet to implement'
-        // return { authenticated: true }
+    OAuth1(@Req() req, @Headers() headers, @Response() res) {
+        
+        const parseOAuthHeader = (authorizationHeader) =>{
+            const oauthParams = {};
+
+            // Regular expression to match OAuth parameters in the Authorization header
+            const oauthRegex = /(\w+)="([^"]+)"/g;
+          
+            let match;
+            while ((match = oauthRegex.exec(authorizationHeader)) !== null) {
+              oauthParams[match[1]] = match[2];
+            }
+          
+            return oauthParams;
+          }
+          
+        // const oauthParams = {};
+        const authorizationHeader = headers.authorization
+
+        
+        const oauthParams = parseOAuthHeader(authorizationHeader.slice(6))
+        console.log(oauthParams)
+        const consumerKey = oauthParams['oauth_consumer_key'];
+        const timestamp = oauthParams['oauth_timestamp'];
+        const nonce = oauthParams['oauth_nonce'];
+        const signature = oauthParams['oauth_signature'];
+        const baseString = `${req.method}&${encodeURIComponent(`${req.protocol}://${req.get('Host')}${req.originalUrl}`)}&${encodeURIComponent(`oauth_consumer_key=${consumerKey}&oauth_nonce=${nonce}&oauth_timestamp=${timestamp}`)}`;
+        console.log(baseString)
+        const signatureBase = buildSignatureBase('GET', 'http://localhost:3000/oauth1', oauthParams);
+        console.log(signatureBase)
+        
+        console.log(`${req.protocol}://${req.get('Host')}${req.originalUrl}`)
+        // console.log(req.accessUrl)
+        // const oauth = new OAuth(
+        //     req.url,
+        //     req.accessUrl,
+        //     consumerKey,
+        //     consumerSecret,
+        //     '1.0',
+        //     null,
+        //     'HMAC-SHA1'
+        //   );
+          
+        //   oauth.signUrl
+        //   oauth.
+        
+        // Calculate the expected signature using the consumer secret
+        const expectedSignature = crypto.createHmac('sha1', consumerSecret)
+          .update(baseString)
+          .digest('base64');
+          const expectedSignature2 = crypto.createHmac('sha1', 'D%2BEdQ-gs%24-%25%402Nu7&')
+          .update(signatureBase)
+          .digest('base64');
+        console.log(encodeURIComponent('D+EdQ-gs$-%@2Nu7'+'&'))
+      
+        console.log(expectedSignature)
+        console.log(encodeURIComponent(expectedSignature2))
+        console.log(expectedSignature2)
+        console.log(decodeURIComponent(signature))
+        // // Compare the expected signature with the signature in the request
+        // if (signature === expectedSignature) {
+        //   return res.json({ message: 'Signature verified successfully' });
+        // } else {
+        //   return res.status(401).json({ error: 'Signature verification failed' });
+        // }
+        // // return 'yet to implement'
+        return res.json({ authenticated: true })
     }
 
     /** Cookies Manipulation*/
