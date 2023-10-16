@@ -343,9 +343,10 @@ export class RestController {
 
     // get cookie
     @Get('cookies')
-    cookieGet(@Req() req) {
+    cookieGet(@Req() req, @Response() res) {
         console.log(req.cookies)
-        return 'yet to implement'
+        const responseData = {cookies: req.cookies}
+        return res.json(responseData)
     }
 
     // delete cookie
@@ -404,7 +405,7 @@ export class RestController {
         const stream = new Readable()
         stream.push(responseBuffer)
         stream.push(null)
-        
+
         return new StreamableFile(stream)
     }
 
