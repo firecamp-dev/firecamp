@@ -88,4 +88,5 @@
 ^\Qpackages/firecamp-collection-runner/readme.md\E$
 ^\Qplatform/firecamp-platform/__tests__/index.spec.ts\E$
 ^\Qpnpm-lock.yaml\E$
+^\Qpackages/firecamp-echo-server/src/assets/unicodedemo.html\E$
 ignore$
