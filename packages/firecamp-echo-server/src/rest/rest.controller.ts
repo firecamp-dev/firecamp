@@ -9,9 +9,10 @@ import { join } from 'path';
 import {createDeflate, createGzip} from 'zlib';
 import { Readable } from 'stream';
 
-const username = 'firecamp'
-const password = 'password'
-const nonce = crypto.randomBytes(16).toString('base64')
+const echo_username = 'firecamp'
+const echo_password = 'password'
+const hawk_id = 'dh37fgj492je'
+// const nonce = crypto.randomBytes(16).toString('base64')
 
 const consumerKey = 'RKCGzna7bv9YD57c';
 const consumerSecret = 'D+EdQ-gs$-%@2Nu7';
@@ -159,8 +160,8 @@ export class RestController {
         // @Headers() headers,
         @Response() res
     ) {
-        // console.log(queryParams)
-        Object.keys(queryParams).map((k, i)=> {
+        
+        Object.keys(queryParams).map((k)=> {
             res.header(k, queryParams[k]);
         })
         return res.json(queryParams);
@@ -170,23 +171,30 @@ export class RestController {
 
     // Basic Auth
     @Get('basic-auth')
-    basicAuth(@Query() queryParams, @Headers() headers) {
+    basicAuth(@Query() queryParams, @Headers() headers, @Response() res) {
+        
         if (!('authorization' in headers )){
-            return {authenticated:false}
+            return res.status(401).send('Unauthorized')
         }
+
         const split = headers.authorization.split(" ")
+        
         const type = split[0]
         if (type != 'Basic'){
-            return {authenticated:false}
+            return res.status(401).send('Unauthorized')
+
         }
         const decoded = Buffer.from(split[1], 'base64').toString()
         const decodedSplit = decoded.split(':')
         if (decodedSplit.length != 2){
-            return {authenticated:false}
+            return res.status(401).send('Unauthorized')
         }
         const username = decodedSplit[0]
         const password = decodedSplit[1]
-        console.log(username, password)
+
+        if (username !== echo_username || password !== echo_password){
+            return res.status(401).send('Unauthorized')
+        }
         
         return { authenticated: true }
     }
@@ -197,34 +205,38 @@ export class RestController {
         const realm = 'Users'
 
         if (!('authorization' in headers)){
+            const nonce = crypto.randomBytes(16).toString('base64');
             res.set({'www-authenticate':`Digest realm="${realm}", nonce="${nonce}"`}).status(401);
-            return res.json('Unauthorized')
+            return res.status(401).send('Unauthorized')
         }
 
-        const split = headers.authorization.replace(',','').split(" ")
+        const split = headers.authorization.split(" ")
         const type = split[0]
-        if (type != 'Digest'){
-            return res.json('Unauthorized')
+        if (type !== 'Digest'){
+            return res.status(401).send('Unauthorized')
         }
-        const {authorization} = headers
+       
         
-        const authArgs = authorization.slice(7).split(', ')
+        const authArgs = headers.authorization.slice(7).split(', ')
         const argsMap = {}
-        console.log(authArgs)   
+        
         authArgs.forEach(arg => {
             const split = arg.replaceAll('"','').replace('=', '-:-').split('-:-')
             argsMap[split[0]] = split[1]
         })
-        console.log(argsMap)
         
         if (!(argsMap['username'] && argsMap['nonce'] && argsMap['realm'] && argsMap['response'])){
             return res.json({"authorized": false})
         }
-        const HA1 = crypto.createHash('md5').update(`${argsMap['username']}:${argsMap['realm']}:${password}`).digest('hex')
+        const HA1 = crypto.createHash('md5').update(`${argsMap['username']}:${argsMap['realm']}:${echo_password}`).digest('hex')
         const HA2 = crypto.createHash('md5').update(`GET:/digest-auth`).digest('hex')
         const responseCheck = crypto.createHash('md5').update(`${HA1}:${argsMap['nonce']}:${HA2}`).digest('hex')
+        
+        if (responseCheck !== argsMap['response']){
+            return res.status(401).send('Unauthorized')
+        }
 
-        return res.json({"authorized":responseCheck===argsMap['response']})
+        return res.json({"authorized":true})
     }
 
     // Hawk Auth
@@ -250,7 +262,7 @@ export class RestController {
         try {
             const { credentials, artifacts } = await Hawk.server.authenticate(req, credentialsFunc)
             message = {'message':"Hawk Authentication Successfull"}
-            console.log()
+            
             status = 200;
             const header = Hawk.server.header(credentials, artifacts);
             
@@ -281,46 +293,48 @@ export class RestController {
             }
           
             return oauthParams;
-          }
+        }
+
+        if (!('authorization' in headers )){
+            return res.status(401).send('Unauthorized')
+        }
           
         const authorizationHeader = headers.authorization
 
+        if (authorizationHeader.split(' ')[0] !== 'OAuth'){
+            return res.status(401).send('Unauthorized')
+        }
+
         const oauthParams = parseOAuthHeader(authorizationHeader.slice(6))
-        
-        console.log(oauthParams)
         
         const consumerKey = oauthParams['oauth_consumer_key'];
         const timestamp = oauthParams['oauth_timestamp'];
         const nonce = oauthParams['oauth_nonce'];
-        const signature = oauthParams['oauth_signature'];
-        const baseString = `${req.method}&${encodeURIComponent(`${req.protocol}://${req.get('Host')}${req.originalUrl}`)}&${encodeURIComponent(`oauth_consumer_key=${consumerKey}&oauth_nonce=${nonce}&oauth_timestamp=${timestamp}`)}`;
+        const signature = decodeURIComponent(oauthParams['oauth_signature']);
+        const signatureMethod = oauthParams['oauth_signature_method'];
         
-        console.log(baseString)
-        const signatureBase = buildSignatureBase('GET', 'http://localhost:3000/oauth1', oauthParams);
-        console.log(signatureBase)
         
-        console.log(`${req.protocol}://${req.get('Host')}${req.originalUrl}`)
+        const base_uri = `${req.protocol}://${req.get('Host')}${req.originalUrl}`
+        const signatureBase = buildSignatureBase('GET', base_uri, oauthParams);
     
-        const expectedSignature = crypto.createHmac('sha1', consumerSecret)
-          .update(baseString)
-          .digest('base64');
-          const expectedSignature2 = crypto.createHmac('sha1', 'D%2BEdQ-gs%24-%25%402Nu7&')
-          .update(signatureBase)
-          .digest('base64');
-        console.log(encodeURIComponent('D+EdQ-gs$-%@2Nu7'+'&'))
-      
-        console.log(expectedSignature)
-        console.log(encodeURIComponent(expectedSignature2))
-        console.log(expectedSignature2)
-        console.log(decodeURIComponent(signature))
-        // // Compare the expected signature with the signature in the request
-        // if (signature === expectedSignature) {
-        //   return res.json({ message: 'Signature verified successfully' });
-        // } else {
-        //   return res.status(401).json({ error: 'Signature verification failed' });
-        // }
-        // // return 'yet to implement'
-        return res.json({ authenticated: true })
+        const signingKey = 'D%2BEdQ-gs%24-%25%402Nu7&'
+
+        const expectedSignature = crypto.createHmac('sha1', signingKey)
+        .update(signatureBase)
+        .digest('base64');
+        
+        if (signature !== expectedSignature) {
+          const status = 'fail'
+          const message = "HMAC-SHA1 verification failed"
+          const normalized_param_string = consumerKey+'&'+nonce+'&'+signatureMethod+'&'+timestamp
+          const baseString = signatureBase
+          return res.status(401).json({status, message, base_uri, normalized_param_string, base_string:baseString, signing_key:signingKey});
+        }
+        const status = 'pass'
+        const message = 'OAuth-1.0a signature verification was successful'
+
+
+        return res.json({status, message })
     }
 
     /** Cookies Manipulation*/
@@ -337,14 +351,13 @@ export class RestController {
             res.cookie(key, value)
         
         })
-        console.log(res.cookies)
         return res.json(payload)
     }
 
     // get cookie
     @Get('cookies')
     cookieGet(@Req() req, @Response() res) {
-        console.log(req.cookies)
+        
         const responseData = {cookies: req.cookies}
         return res.json(responseData)
     }
@@ -354,7 +367,6 @@ export class RestController {
     cookieDelete(@Req() req, @Query() queryParameters, @Response() res) {
         
         const cookies = {...req.cookies}
-        console.log(cookies)
         
         Object.keys(queryParameters).forEach(key => {
             res.clearCookie(key)
@@ -386,7 +398,7 @@ export class RestController {
         @Param('chunk') chunk,
         @Headers() headers,
     ) {
-        console.log(headers)
+        
         const n = parseInt(chunk)
 
         if (isNaN(n)){
@@ -427,7 +439,7 @@ export class RestController {
     @Get('encoding/utf8')
     @Header('content-type','text/html; charset=utf-8' )
     encoding() {
-        const file = createReadStream(join(process.cwd(), 'src/test.html'));
+        const file = createReadStream(join(process.cwd(), 'src/assets/unicodedemo.html'));
         return new StreamableFile(file)
     }
 
