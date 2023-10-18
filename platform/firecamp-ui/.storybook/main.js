@@ -1,4 +1,10 @@
 const path = require('path');
+
+/**
+ * TODO: storybook migration to v7 package version upgrade issues
+ * @ref https://github.com/storybookjs/storybook/issues/23385
+ */
+// const config = {
 module.exports = {
   stories: [
     '../src/stories/**/*.stories.mdx',
@@ -6,16 +12,20 @@ module.exports = {
     '../src/stories/**/*.stories.@(js|jsx|ts|tsx)',
     '../src/components/**/*.stories.@(js|jsx|ts|tsx)',
   ],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-jest',
   ],
+
   framework: '@storybook/react',
+
   core: {
     builder: '@storybook/builder-webpack5',
   },
+
   webpackFinal: (config) => {
     // add SCSS support for CSS Modules
     config.module.rules.push({
@@ -76,6 +86,7 @@ module.exports = {
 
     return config;
   },
+
   /**
    * TODO: remove after storybook migration to v7
    * @ref: https://github.com/storybookjs/storybook/issues/21642#issuecomment-1474350363
@@ -84,4 +95,9 @@ module.exports = {
   typescript: {
     reactDocgen: false,
   },
+
+  docs: {
+    autodocs: true,
+  },
 };
+// export default config;
