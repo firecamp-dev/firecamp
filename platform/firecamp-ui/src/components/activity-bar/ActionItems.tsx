@@ -4,52 +4,48 @@ import ActionItem from './ActionItem';
 const ActionItems: FC<IActionItems> = ({
   items = [],
   activeItem = '',
-  onClickItem = () => { }
+  onClickItem = () => {},
 }) => {
   return (
     <Fragment>
-      {items.map((item: any, i: number) =>
-      (
+      {items.map((item: any, i: number) => (
         <ActionItem
           id={item.id}
           icon={item.icon}
-          tooltip={item.text}
+          tooltip={item.tooltip}
           key={i}
           active={activeItem === item.id}
           onClick={() => {
-            onClickItem(item)
+            onClickItem(item);
           }}
         />
-      )
-      )}
+      ))}
     </Fragment>
   );
 };
 
-export default ActionItems
-
+export default ActionItems;
 
 ActionItems.defaultProps = {
   id: '',
   className: '',
-  items: []
+  items: [],
 };
 
 export interface IActionItems {
+  activeItem?: string;
 
-  activeItem?: string,
-
-  onClickItem: (action: any) => void,
+  onClickItem: (action: any) => void;
   /**
    * Is this the principal call to action on the page?
    */
-  id?: string,
+  id?: string;
   /**
    * Add class name to show custom styling
    */
-  className?: string,
+  className?: string;
   /**
    * to show list of action items
    */
-  items?: any[]
+  items?: any[];
 }
