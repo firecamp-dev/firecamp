@@ -1,4 +1,4 @@
-import { } from 'zustand';
+import { create } from 'zustand';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Rest } from '@firecamp/cloud-apis';
 import {
