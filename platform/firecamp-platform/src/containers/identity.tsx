@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 import CloudApiGlobal, { Rest } from '@firecamp/cloud-apis';
@@ -68,4 +68,5 @@ if (process.env.NODE_ENV == 'production') {
   });
 }
 
-ReactDOM.render(<IdentityPage />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<IdentityPage />);
