@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
@@ -23,4 +23,5 @@ if (process.env.NODE_ENV == 'production') {
   });
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
