@@ -19,7 +19,7 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
       setAddNewQueryMessage(``);
     } else {
       setAddNewQueryMessage(
-        `You have not saved quries to collection! Are you sure you want to reset?`
+        `You have not saved queries to collection! Are you sure you want to reset?`
       );
     }
   };

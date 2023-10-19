@@ -152,7 +152,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       // if request is saved then simply update the url with old value, ignore paste curl
       if (request.__ref?.collectionId) {
         state.context.app.notify.alert(
-          'You can not paste the CURL snippet onto the saved request, please open a new empty request tab instead.'
+          'You cannot paste the CURL snippet onto the saved request, please open a new empty request tab instead.'
         );
         // console.log(url, 787798789);
         state.changeUrl({ ...url, raw: url.raw.replace(snippet, '') });

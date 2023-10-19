@@ -55,7 +55,7 @@ export default {
       // [/[;,.]/, "delimiter"],
       // // strings
       // [/"([^"\\]|\\.)*$/, "string.invalid"],
-      // // non-teminated string
+      // // non-terminated string
       // [/"/, { token: "string.quote", bracket: "@open", next: "@string" }],
       // // characters
       // [/'[^\\']'/, "string"],

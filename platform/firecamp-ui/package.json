@@ -59,8 +59,8 @@
     "@testing-library/react": "12.1.2",
     "@types/codemirror": "^5.60.5",
     "@types/markdown-it": "^12.2.3",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "@types/react-table": "^7.7.10",
     "autoprefixer": "^10.4.14",
     "babel-jest": "^29.1.2",
@@ -117,6 +117,10 @@
     "react-tiny-popover": "^7.0.1",
     "react-window": "^1.8.5",
     "vscode": "^1.1.37"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "babel": {
     "presets": [

@@ -1,11 +1,11 @@
-.workpsace-card .workpsace-card-action{
+.workspace-card .workspace-card-action{
     visibility: hidden;
 }
-.workpsace-card * {
+.workspace-card * {
     z-index: 1;
     position: relative;
 }
-.workpsace-card:hover:before{
+.workspace-card:hover:before{
     content: ' ';
     position: absolute;
     left: 0px;
@@ -16,6 +16,6 @@
     opacity: 0.2;
     z-index: 0;
 }
-.workpsace-card:hover .workpsace-card-action{
+.workspace-card:hover .workspace-card-action{
     visibility: visible;
 }

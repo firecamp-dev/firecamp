@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { EEditorLanguage } from '@firecamp/types';
 import { SingleLineEditor } from '@firecamp/ui';
 
-const Atlassion = () => {
+const Atlassian = () => {
   const initialState = {
     issuer: '',
     subject: '',
@@ -131,4 +131,4 @@ const Atlassion = () => {
   );
 };
 
-export default Atlassion;
+export default Atlassian;

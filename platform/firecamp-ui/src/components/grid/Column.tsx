@@ -1,4 +1,4 @@
-//@ts-nocheckh
+//@ts-nocheck
 import { FC } from 'react';
 import cx from 'classnames';
 import { IColumn } from './interfaces/Column.interfaces';

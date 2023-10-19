@@ -165,7 +165,7 @@ const FirecampEditor: FC<IFirecampEditor> = ({
 
   let _controlFns = {
     copy: () => {
-      // cusotm copy code here
+      // custom copy code here
       try {
         if (editorRef.current) {
           let text = editorRef.current.getValue();

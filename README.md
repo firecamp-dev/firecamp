@@ -7,11 +7,11 @@
 </p>
 
 <h3 align="center"><b>Firecamp</b></h3>
-<p align="center"><b>dx-first open-source api devtool</b></p>
+<p align="center"><b>dx-first open-source API devtool</b></p>
 
 <p align="center">
    <a href="https://discord.gg/8hRaqhK"><img alt="Discord online members" src="https://badgen.net/discord/members/8hRaqhK?color=5865F2&label=Discord&style=for-the-badge" /></a>
-   <a href="https://github.com/firecamp-dev/firecamp/stargazers"><img src="https://img.shields.io/github/stars/firecamp-dev/firecamp" alt="Github Stars"></a>
+   <a href="https://github.com/firecamp-dev/firecamp/stargazers"><img src="https://img.shields.io/github/stars/firecamp-dev/firecamp" alt="GitHub Stars"></a>
    <a href="https://github.com/firecamp-dev/firecamp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License"></a>
    <a href="https://github.com/firecamp-dev/firecamp/pulse"><img src="https://img.shields.io/github/commit-activity/y/firecamp-dev/firecamp" alt="Commits-per-month"></a>
 </p>
@@ -36,8 +36,8 @@ Firecamp is a dx-first API development platform that helps developers design, de
 
 - 🌈  best-in-class developer experience inspired by vscode dx. <br/>
 - 📡 multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs. <br/>
-- 👐 collaborate on api collections across the workspace and team <br/>
-- ⛺ build apis faster without switching between tools and apps. documentation, cli, ci/cd under one roof <br/>
+- 👐 collaborate on API collections across the workspace and team <br/>
+- ⛺ build APIs faster without switching between tools and apps. documentation, cli, ci/cd under one roof <br/>
   
 
 👉 live at https://firecamp.dev
@@ -57,26 +57,26 @@ Read the Firecamp doc for in-depth walk-throughs on functionality to understand 
 
 Firecamp offers you a broad range of features that will help you build APIs faster than ever.
 
-📂 [Collection](https://firecamp.io/docs/platform/collection) : 
-Manage Collection of APIs to collaborate within team <br/>
+📂 [Collection](https://firecamp.io/docs/platform/collection): 
+Manage Collection of APIs to collaborate within the team <br/>
 
-⛳ [API Playgrounds](https://firecamp.io/docs/rest/introduction) : 
+⛳ [API Playgrounds](https://firecamp.io/docs/rest/introduction): 
 Get instant playgrounds for your APIs. Rest, GraphQL, and more <br/>
 
-♻️ [Team Collaboration](https://firecamp.io/docs/collaboration/getting-started) : 
+♻️ [Team Collaboration](https://firecamp.io/docs/collaboration/getting-started): 
 Collaborate with your team at a centralized shared workspace <br/>
 
-🔐 [Authentication](https://firecamp.io/docs/platform/authentication) : 
+🔐 [Authentication](https://firecamp.io/docs/platform/authentication): 
 Test and Debug your auth endpoints with a range of supported auths <br/>
 
-📠 [Scripts](https://firecamp.io/docs/platform/scripts) : 
+📠 [Scripts](https://firecamp.io/docs/platform/scripts): 
 Interpret the API with pre-request and tests scripts <br/>
 
-🔩 [Dynamic Variables](https://firecamp.io/docs/platform/environment) : 
-Set values in variables to reuse in whole platform dynamically <br/>
+🔩 [Dynamic Variables](https://firecamp.io/docs/platform/environment): 
+Set values in variables to reuse in the whole platform dynamically <br/>
 
-📡 [Firecamp Web](https://firecamp.dev) : 
-Get quick access to web platform <br/>
+📡 [Firecamp Web](https://firecamp.dev): 
+Get quick access to the web platform <br/>
 
 
 ## 🏕️ API Playgrounds
@@ -97,23 +97,23 @@ There is a dedicated GUI playground for each API protocol you would be using for
 ## 🛣️  Roadmap
 
 
-💻  Desktop Apps : Get the Desktop app for your preferred OS/platform <br/>
+💻  Desktop Apps: Get the Desktop app for your preferred OS/platform <br/>
 
-🛰️ Self-hosted : Host Firecamp on your own server
+🛰️ Self-hosted: Host Firecamp on your own server
 
-🔁 CLI & CI/CD : Run API Collection Tests in the terminal or set in CI/CD pipeline <br/>
+🔁 CLI & CI/CD: Run API Collection Tests in the terminal or set in CI/CD pipeline <br/>
 
-➿  API Test Runner :  Run the API Collection visually within the platform </br>
+➿  API Test Runner:  Run the API Collection visually within the platform </br>
 
-📄  API Documentation :  Publish beautiful API documentation for your team and community </br>
+📄  API Documentation:  Publish beautiful API documentation for your team and community </br>
 
-⚛️ Artificial Intelligence : Cutting-edge AI-powered capabilities </br>
+⚛️ Artificial Intelligence: Cutting-edge AI-powered capabilities </br>
 
-⚓ SSL : Use custom SSL certificates to test out the SSL-secured API endpoints </br>
+⚓ SSL: Use custom SSL certificates to test out the SSL-secured API endpoints </br>
 
-📝  Proxy : Setup proxy while running requests from Firecamp </br>
+📝  Proxy: Setup proxy while running requests from Firecamp </br>
 
-ℹ️ History : Seamless history tracking
+ℹ️ History: Seamless history tracking
 
 ## 📡 Get Involved 
 
@@ -133,7 +133,7 @@ If you encounter any bugs, or issues, or have suggestions, please open an issue 
 ## 💭 Philosophy
 The decentralization of tools, processes, and people creates friction in API development workflow and frustration across the team. Developers are constantly switching between tools, searching for information, and wasting time due to inefficient tools.
 We believe that the existing solution lacks both world-class experience and the simplicity needed to build APIs faster. This leads to a decrease in developer productivity, slow release times, and poor team collaboration.
-We are bringing the VS code philosophy to Firecamp to solve this critical problem. Our mission is to build the most extensible, minimal and best developer experience API platform where developers feel most productive while building APIs.
+We are bringing the VS code philosophy to Firecamp to solve this critical problem. Our mission is to build the most extensible, minimal, and best developer experience API platform where developers feel most productive while building APIs.
 
 ## 🏄  What's cool about this?
 

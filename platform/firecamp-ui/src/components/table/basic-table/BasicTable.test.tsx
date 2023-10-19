@@ -145,7 +145,7 @@ describe('Table : ', () => {
 
       //table column resize logic : column width is updating along with resizer div's offsetLeft value
       const resizerElement = columnResizer[moveElementWidthIndex];
-      const intialColumnWidth = parseInt(
+      const initialColumnWidth = parseInt(
         resizerElement.parentElement.style.minWidth
       );
       const columnMouseMoveOffset = [
@@ -159,7 +159,7 @@ describe('Table : ', () => {
         resizerElement.parentElement.style.minWidth
       );
 
-      expect(updatedColumnWidth).toBeGreaterThan(intialColumnWidth);
+      expect(updatedColumnWidth).toBeGreaterThan(initialColumnWidth);
     }
   });
 

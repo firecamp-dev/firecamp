@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.204",
-    "@types/react-dom": "18.2.7"
+    "@types/react-dom": "^18.2.0"
   },
   "dependencies": {
     "@firecamp/agent-manager": "workspace:*",

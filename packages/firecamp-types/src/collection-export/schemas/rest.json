@@ -1,0 +1,1011 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/rest",
+    "definitions": {
+        "IKeyValueTable": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ],
+            "additionalProperties": false
+        },
+        "IOAuth2Code": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "code"
+                },
+                "callback": {
+                    "type": "string"
+                },
+                "authUrl": {
+                    "type": "string"
+                },
+                "accessTokenUrl": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "clientSecret": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grantType",
+                "callback",
+                "authUrl",
+                "accessTokenUrl",
+                "clientId",
+                "clientSecret"
+            ],
+            "additionalProperties": false
+        },
+        "IOAuth2Implicit": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "implicit"
+                },
+                "callback": {
+                    "type": "string"
+                },
+                "authUrl": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grantType",
+                "callback",
+                "authUrl",
+                "clientId"
+            ],
+            "additionalProperties": false
+        },
+        "IOAuth2Password": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "password"
+                },
+                "accessTokenUrl": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "clientSecret": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grantType",
+                "accessTokenUrl",
+                "username",
+                "password",
+                "clientId",
+                "clientSecret"
+            ],
+            "additionalProperties": false
+        },
+        "IOAuth2ClientCredentials": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "clientCredentials"
+                },
+                "accessTokenUrl": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "clientSecret": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "grantType",
+                "accessTokenUrl",
+                "clientId",
+                "clientSecret"
+            ],
+            "additionalProperties": false
+        },
+        "rest": {
+            "type": "object",
+            "properties": {
+                "method": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/method"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "http request method doc: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods"
+                },
+                "config": {
+                    "$ref": "#/definitions/restConfig",
+                    "description": "Allow to configure http request Supported in desktop app only\n\nreference: https://node-libcurl-docs.netlify.app/interfaces/_lib_generated_curloption_.curloption.html"
+                },
+                "preScripts": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "prerequest",
+                                    "test"
+                                ]
+                            },
+                            "value": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "language": {
+                                "type": "string",
+                                "const": "text/javascript"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "type",
+                            "value",
+                            "language"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "description": "request pre scripts, will execute in sequence before request execution start"
+                },
+                "postScripts": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "prerequest",
+                                    "test"
+                                ]
+                            },
+                            "value": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "language": {
+                                "type": "string",
+                                "const": "text/javascript"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "type",
+                            "value",
+                            "language"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "description": "request post scripts, will execute in sequence after request execution completion"
+                },
+                "__meta": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "const": "rest",
+                            "description": "request type"
+                        },
+                        "version": {
+                            "type": "string",
+                            "const": "2.0.0",
+                            "description": "request version"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "request name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "request description"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "type",
+                        "version"
+                    ],
+                    "description": "metadata about request"
+                },
+                "url": {
+                    "$ref": "#/definitions/url",
+                    "description": "request url"
+                },
+                "headers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/header"
+                    }
+                },
+                "body": {
+                    "$ref": "#/definitions/restBody"
+                },
+                "auth": {
+                    "$ref": "#/definitions/auth",
+                    "description": "request auth payload"
+                },
+                "__ref": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        },
+                        "folderId": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "__meta",
+                "__ref",
+                "method",
+                "postScripts",
+                "preScripts",
+                "url"
+            ],
+            "additionalProperties": false,
+            "description": "Http request for export collection"
+        },
+        "method": {
+            "type": "string",
+            "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "HEAD",
+                "OPTIONS",
+                "PURGE",
+                "LINK",
+                "UNLINK"
+            ],
+            "description": "http request method"
+        },
+        "restConfig": {
+            "type": "object",
+            "properties": {
+                "followLocation": {
+                    "type": "boolean",
+                    "description": "follow HTTP 3xx redirects. Defaults to 0, disabled\n\nDefaults to true\n\nReference: https://curl.se/libcurl/c/CURLOPT_FOLLOWLOCATION.html"
+                },
+                "httpVersion": {
+                    "$ref": "#/definitions/httpVersion",
+                    "description": "HTTP protocol version to use. Defaults to V2_0_Tls\n\nReference: https://curl.se/libcurl/c/CURLOPT_HTTP_VERSION.html"
+                },
+                "maxRedirects": {
+                    "type": "number",
+                    "description": "maximum number of redirects allowed. Defaults to -1, unlimited\n\nDefaults to -1\n\nReference: https://curl.se/libcurl/c/CURLOPT_MAXREDIRS.html"
+                },
+                "origin": {
+                    "type": "string",
+                    "description": "set in header. Defaults to null"
+                },
+                "rejectUnauthorized": {
+                    "type": "boolean",
+                    "description": "If not false a server automatically reject clients with invalid certificates\n\nDefaults to false"
+                },
+                "requestTimeout": {
+                    "type": "number",
+                    "description": "maximum time the transfer is allowed to complete Default timeout is 0 (zero) which means it never times out during transfer.\n\ndefault: 0\n\nReference: https://curl.se/libcurl/c/CURLOPT_TIMEOUT_MS.html"
+                },
+                "userAgent": {
+                    "type": "string",
+                    "description": "HTTP user-agent header. Defaults to 'Firecamp_${app_version}'\n\nReference: https://curl.se/libcurl/c/CURLOPT_USERAGENT.html"
+                }
+            },
+            "additionalProperties": false,
+            "description": "Allow to configure http request Supported in desktop app only"
+        },
+        "httpVersion": {
+            "type": "string",
+            "enum": [
+                "None",
+                "V1_0",
+                "V1_1",
+                "V2_0",
+                "V2Tls",
+                "V2PriorKnowledge",
+                "v3"
+            ],
+            "description": "reference: https://curl.se/libcurl/c/CURLOPT_HTTP_VERSION.html"
+        },
+        "url": {
+            "type": "object",
+            "properties": {
+                "raw": {
+                    "type": "string",
+                    "description": "represents the raw string of the request URL"
+                },
+                "queryParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/queryParam"
+                    },
+                    "description": "firecamp url specific query param doc: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web#query"
+                },
+                "pathParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pathParam"
+                    },
+                    "description": "Path parameters are variable parts of a URL path. They are typically used to point to a specific resource within a collection, such as a user identified by ID. A URL can have several path parameters, each denoted by preceding ':'"
+                }
+            },
+            "required": [
+                "raw"
+            ],
+            "additionalProperties": false
+        },
+        "queryParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "keyValueTableRowType": {
+            "type": "string",
+            "enum": [
+                "text",
+                "file"
+            ]
+        },
+        "pathParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "header": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "restBody": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/formDataBody"
+                        },
+                        {
+                            "$ref": "#/definitions/urlEncodedBody"
+                        },
+                        {
+                            "$ref": "#/definitions/graphQLBody"
+                        },
+                        {
+                            "$ref": "#/definitions/jsonBody"
+                        },
+                        {
+                            "$ref": "#/definitions/xmlBody"
+                        },
+                        {
+                            "$ref": "#/definitions/textBody"
+                        },
+                        {
+                            "$ref": "#/definitions/binaryBody"
+                        }
+                    ]
+                },
+                "type": {
+                    "$ref": "#/definitions/restBodyTypes"
+                }
+            },
+            "required": [
+                "value",
+                "type"
+            ],
+            "additionalProperties": false,
+            "description": "rest request body"
+        },
+        "formDataBody": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/IKeyValueTable"
+            }
+        },
+        "urlEncodedBody": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/IKeyValueTable"
+            }
+        },
+        "graphQLBody": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string"
+                },
+                "variables": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "query"
+            ],
+            "additionalProperties": false
+        },
+        "jsonBody": {
+            "type": "string"
+        },
+        "xmlBody": {
+            "type": "string"
+        },
+        "textBody": {
+            "type": "string"
+        },
+        "binaryBody": {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "additionalProperties": false
+                },
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "byteLength": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "byteLength"
+                    ],
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "restBodyTypes": {
+            "type": "string",
+            "enum": [
+                "none",
+                "multipart/form-data",
+                "application/x-www-form-urlencoded",
+                "application/graphql",
+                "application/json",
+                "application/xml",
+                "text",
+                "binary"
+            ]
+        },
+        "auth": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/authAwsV4"
+                        },
+                        {
+                            "$ref": "#/definitions/authBasic"
+                        },
+                        {
+                            "$ref": "#/definitions/authBearer"
+                        },
+                        {
+                            "$ref": "#/definitions/authDigest"
+                        },
+                        {
+                            "$ref": "#/definitions/oauth1"
+                        },
+                        {
+                            "$ref": "#/definitions/oauth2"
+                        },
+                        {
+                            "type": "string",
+                            "const": ""
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "type": {
+                    "$ref": "#/definitions/authTypes"
+                },
+                "oauth2": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/oauth2Code"
+                        },
+                        {
+                            "$ref": "#/definitions/oauth2Password"
+                        },
+                        {
+                            "$ref": "#/definitions/oauth2Implicit"
+                        },
+                        {
+                            "$ref": "#/definitions/oauth2ClientCredentials"
+                        }
+                    ],
+                    "description": "doc: https://datatracker.ietf.org/doc/html/rfc6749"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "type",
+                "value"
+            ],
+            "description": "types of oauth2 config."
+        },
+        "authAwsV4": {
+            "type": "object",
+            "properties": {
+                "accessKey": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "secretKey": {
+                    "type": "string"
+                },
+                "service": {
+                    "type": "string"
+                },
+                "sessionToken": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "accessKey",
+                "secretKey"
+            ],
+            "additionalProperties": false
+        },
+        "authBasic": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "username",
+                "password"
+            ],
+            "additionalProperties": false
+        },
+        "authBearer": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "prefix": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "token"
+            ],
+            "additionalProperties": false
+        },
+        "authDigest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "realm": {
+                    "type": "string"
+                },
+                "nonce": {
+                    "type": "string"
+                },
+                "algorithm": {
+                    "type": "string"
+                },
+                "qop": {
+                    "type": "string"
+                },
+                "nonceCount": {
+                    "type": "string"
+                },
+                "clientNonce": {
+                    "type": "string"
+                },
+                "opaque": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "password",
+                "username"
+            ],
+            "additionalProperties": false
+        },
+        "oauth1": {
+            "type": "object",
+            "properties": {
+                "consumerKey": {
+                    "type": "string"
+                },
+                "consumerSecret": {
+                    "type": "string"
+                },
+                "tokenKey": {
+                    "type": "string"
+                },
+                "tokenSecret": {
+                    "type": "string"
+                },
+                "signatureMethod": {
+                    "$ref": "#/definitions/oauth1Signature"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "callbackUrl": {
+                    "type": "string"
+                },
+                "verifier": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                },
+                "nonce": {
+                    "type": "string"
+                },
+                "realm": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "consumerKey",
+                "consumerSecret",
+                "tokenKey",
+                "tokenSecret"
+            ],
+            "additionalProperties": false
+        },
+        "oauth1Signature": {
+            "type": "string",
+            "enum": [
+                "HMAC-SHA1",
+                "HMAC-SHA256",
+                "RSA-SHA1",
+                "PLAINTEXT"
+            ]
+        },
+        "oauth2": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/IOAuth2Code"
+                },
+                {
+                    "$ref": "#/definitions/IOAuth2Implicit"
+                },
+                {
+                    "$ref": "#/definitions/IOAuth2Password"
+                },
+                {
+                    "$ref": "#/definitions/IOAuth2ClientCredentials"
+                }
+            ]
+        },
+        "authTypes": {
+            "type": "string",
+            "enum": [
+                "none",
+                "inherit",
+                "awsv4",
+                "basic",
+                "bearer",
+                "digest",
+                "oauth1",
+                "oauth2",
+                "ntlm",
+                "hawk",
+                "atlassian",
+                "nertc"
+            ]
+        },
+        "oauth2Code": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "code"
+                },
+                "callback": {
+                    "type": "string"
+                },
+                "authUrl": {
+                    "type": "string"
+                },
+                "accessTokenUrl": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "clientSecret": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "grant_type": {
+                    "type": "string",
+                    "const": "code"
+                }
+            },
+            "required": [
+                "accessTokenUrl",
+                "authUrl",
+                "callback",
+                "clientId",
+                "clientSecret",
+                "grantType",
+                "grant_type"
+            ],
+            "additionalProperties": false
+        },
+        "oauth2Password": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "password"
+                },
+                "accessTokenUrl": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "clientSecret": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "grant_type": {
+                    "type": "string",
+                    "const": "password"
+                }
+            },
+            "required": [
+                "accessTokenUrl",
+                "clientId",
+                "clientSecret",
+                "grantType",
+                "grant_type",
+                "password",
+                "username"
+            ],
+            "additionalProperties": false
+        },
+        "oauth2Implicit": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "implicit"
+                },
+                "callback": {
+                    "type": "string"
+                },
+                "authUrl": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "grant_type": {
+                    "type": "string",
+                    "const": "implicit"
+                }
+            },
+            "required": [
+                "authUrl",
+                "callback",
+                "clientId",
+                "grantType",
+                "grant_type"
+            ],
+            "additionalProperties": false
+        },
+        "oauth2ClientCredentials": {
+            "type": "object",
+            "properties": {
+                "grantType": {
+                    "type": "string",
+                    "const": "clientCredentials"
+                },
+                "accessTokenUrl": {
+                    "type": "string"
+                },
+                "clientId": {
+                    "type": "string"
+                },
+                "clientSecret": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "grant_type": {
+                    "type": "string",
+                    "const": "clientCredentials"
+                }
+            },
+            "required": [
+                "accessTokenUrl",
+                "clientId",
+                "clientSecret",
+                "grantType",
+                "grant_type"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

@@ -75,7 +75,7 @@ If you encounter any bugs, issues, or have suggestions, please open an issue on 
 
 
 ## Roadmap 
-  Here is the Firecamp development roadmap. Very soon It'll be listed on Github projects for better project management.
+  Here is the Firecamp development roadmap. Very soon It'll be listed on GitHub projects for better project management.
 - **AI: Cutting-edge AI-powered capabilities**
 - **Firecamp CLI:** developer-friendly CLI tool
 - **Test Runner:** An advanced API test runner

@@ -1,0 +1,308 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/websocket",
+    "definitions": {
+        "websocket": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/wsConfig",
+                    "description": "websocket request config reference: https://github.com/websockets/ws/blob/HEAD/doc/ws.md#new-websocketaddress-protocols-options"
+                },
+                "__meta": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "const": "websocket",
+                            "description": "request type"
+                        },
+                        "version": {
+                            "type": "string",
+                            "const": "2.0.0",
+                            "description": "request version"
+                        },
+                        "fOrders": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                            },
+                            "description": "request dir orders"
+                        },
+                        "leafOrders": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                            },
+                            "description": "request item orders",
+                            "deprecated": "use iOrders instead."
+                        },
+                        "iOrders": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                            },
+                            "description": "alias of leafOrders"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "request name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "request description"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "type",
+                        "version"
+                    ],
+                    "description": "metadata about request"
+                },
+                "url": {
+                    "$ref": "#/definitions/url",
+                    "description": "request url"
+                },
+                "connection": {
+                    "$ref": "#/definitions/wsConnection",
+                    "description": "websocket connection"
+                },
+                "__ref": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        },
+                        "folderId": {
+                            "type": "string",
+                            "description": "represents the unique identity of the item\n\nhere using following lib: https://www.npmjs.com/package/nanoid"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "__meta",
+                "__ref",
+                "connection",
+                "url"
+            ],
+            "additionalProperties": false,
+            "description": "WebSocket request for export collection"
+        },
+        "wsConfig": {
+            "type": "object",
+            "properties": {
+                "protocols": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "description": "The list of subprotocols."
+                },
+                "reconnect": {
+                    "type": "boolean",
+                    "description": "reconnect on socket connection break. Defaults to false"
+                },
+                "reconnectAttempts": {
+                    "type": "number",
+                    "description": "how many time reconnect attempts perform. Defaults to 3"
+                },
+                "reconnectTimeout": {
+                    "type": "number",
+                    "description": "delay between each reconnect attempt. Defaults to 3000"
+                },
+                "rejectUnauthorized": {
+                    "type": "boolean",
+                    "description": "If not false a server automatically reject clients with invalid certificates Defaults to false"
+                },
+                "followRedirects": {
+                    "type": "boolean",
+                    "description": "Whether or not to follow redirects. Defaults to false."
+                },
+                "handshakeTimeout": {
+                    "type": "number",
+                    "description": "Timeout in milliseconds for the handshake request. This is reset after every redirection."
+                },
+                "maxRedirects": {
+                    "type": "number",
+                    "description": "The maximum number of redirects allowed. Defaults to 10."
+                },
+                "protocolVersion": {
+                    "type": "number",
+                    "description": "Value of the Sec-WebSocket-Version header. Defaults to 13"
+                },
+                "origin": {
+                    "type": "string",
+                    "description": "Value of the Origin or Sec-WebSocket-Origin header depending on the protocolVersion."
+                },
+                "maxPayload": {
+                    "type": "number",
+                    "description": "The maximum allowed message size in bytes."
+                }
+            },
+            "additionalProperties": false,
+            "description": "websocket request config"
+        },
+        "url": {
+            "type": "object",
+            "properties": {
+                "raw": {
+                    "type": "string",
+                    "description": "represents the raw string of the request URL"
+                },
+                "queryParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/queryParam"
+                    },
+                    "description": "firecamp url specific query param doc: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web#query"
+                },
+                "pathParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pathParam"
+                    },
+                    "description": "Path parameters are variable parts of a URL path. They are typically used to point to a specific resource within a collection, such as a user identified by ID. A URL can have several path parameters, each denoted by preceding ':'"
+                }
+            },
+            "required": [
+                "raw"
+            ],
+            "additionalProperties": false
+        },
+        "queryParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "keyValueTableRowType": {
+            "type": "string",
+            "enum": [
+                "text",
+                "file"
+            ]
+        },
+        "pathParam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "wsConnection": {
+            "type": "object",
+            "properties": {
+                "isDefault": {
+                    "type": "boolean",
+                    "description": "whether connection is default or not note: key exist only in default connection"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "websocket connection name"
+                },
+                "ping": {
+                    "type": "boolean",
+                    "description": "whether to start sending ping event on connection open or not Defaults to false"
+                },
+                "pingInterval": {
+                    "type": "number",
+                    "description": "interval between each ping fire"
+                },
+                "headers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/header"
+                    }
+                },
+                "queryParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/queryParam"
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "name"
+            ],
+            "description": "websocket connection"
+        },
+        "header": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "$ref": "#/definitions/keyValueTableRowType"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        }
+    }
+}
