@@ -1,10 +1,8 @@
 {
   "name": "@firecamp/eslint",
   "version": "1.0.0",
-  "scripts": {
-    "lint": "eslint . --ext .js,.ts --fix",
-    "format": "prettier --write ."
-  },
+ 
+  "main":"index.json",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
