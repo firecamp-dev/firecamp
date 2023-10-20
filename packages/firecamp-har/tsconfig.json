@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "target": "ESNext",
+        "lib": [
+            "esnext"
+        ],
+        "declaration": true,
+        "declarationDir": "dist",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+    }
+}
