@@ -1,6 +1,6 @@
 {
   "name": "firecamp",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "private": true,
   "description": "DX-first API devtool",
   "main": "packages/firecamp-desktop-app/dist/services/Main",
