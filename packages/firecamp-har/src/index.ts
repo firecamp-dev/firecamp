@@ -1,10 +1,11 @@
+import { Har } from 'har-format';
 import { Collection } from '@firecamp/types';
 
 const firecampToHar = (collection: Partial<Collection>): any => {
   return {};
 };
 
-const harToFirecamp = (): Partial<Collection> => {
+const harToFirecamp = (har: Har): Partial<Collection> => {
   return { requests: [] };
 };
 
