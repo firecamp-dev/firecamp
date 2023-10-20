@@ -30,7 +30,7 @@
   </a>
 </p>
 
-# 🔥 Firecamp
+# Firecamp
 
 Firecamp is a dx-first API development platform that helps developers design, develop, test, and document their APIs effortlessly. With a user-friendly interface and a range of powerful features, it streamlines the API development workflow and enhances collaboration among team members.
 
@@ -115,9 +115,6 @@ There is a dedicated GUI playground for each API protocol you would be using for
 
 ℹ️ History: Seamless history tracking
 
-## 📡 Get Involved 
-
-Here is the [guide for contributions](https://github.com/firecamp-dev/firecamp/blob/main/CONTRIBUTING.md) to help you begin your journey in contributing.
 
 ## 🏆 Community and Support
 
@@ -141,7 +138,19 @@ Firecamp is a Multi-protocol API platform, which offers end-to-end testing and d
 We support major API specifications and protocols, which allows for seamless API testing, API documentation, and smoother collaboration between backend, frontend, and mobile teams.
 
 
-## 💎 Contributors
+## ✍️ Contribution
+
+Here is the [guide for contributions](https://github.com/firecamp-dev/firecamp/blob/main/CONTRIBUTING.md) to help you begin your journey in contributing and our [list of open issues](https://github.com/firecamp-dev/firecamp/issues) for more information.
+
+We appreciate all your contributions to Firecamp 🤗
+
+Here are a few ways:
+
+- Star this repo.
+- Create issues every time you feel something is missing or goes wrong.
+- Upvote issues with 👍 reaction so we know what the demand for a particular issue is to prioritize it within the roadmap.
+
+## 💎 All Thanks To Our Contributors
 
 <a href="https://github.com/firecamp-dev/firecamp/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=firecamp-dev/firecamp" />
