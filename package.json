@@ -18,7 +18,12 @@
     "test": "jest",
     "prettify": "prettier --write \"platform/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
     "precommit": "lint-staged",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "test:e2e": "npm run test:e2e:dev --silent",
+    "test:e2e:dev": "playwright test --ui",
+    "pretest:e2e:run": "npm run build",
+    "test:e2e:run": "cross-env CI=true playwright test",
+    "test:e2e:install": "npx playwright install chromium --with-deps"
   },
   "lint-staged": {
     "**/*.ts": [
@@ -49,6 +54,8 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/register": "^7.0.0",
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.8.7",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^9.1.0",
     "babel-plugin-add-module-exports": "^1.0.4",
