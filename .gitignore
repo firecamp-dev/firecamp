@@ -153,3 +153,6 @@ dist
 !.env.example
 
 oclif.manifest.json
+/test-results/
+/playwright-report/
+/playwright/.cache/
