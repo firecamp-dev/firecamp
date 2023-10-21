@@ -7,7 +7,7 @@ const firecampToHar = (collection: Partial<Collection>): any => {
 };
 
 const harToFirecamp = (har: Har): Partial<Collection> => {
-  const Exctractquerparams=(queryparams:Har.queryString[])=>{
+  const exctractQuerParams=(queryparams:Har.queryString[])=>{
     if(queryparams.length===0){
       return []
     }
@@ -23,7 +23,7 @@ const harToFirecamp = (har: Har): Partial<Collection> => {
     })
       return convertesqueryparams;
   }
-  const Extractheader=(header:Har.headers[])=>{
+  const extractHeader=(header:Har.headers[])=>{
      if(header.length===0){
       return []
     }
@@ -39,11 +39,11 @@ const harToFirecamp = (har: Har): Partial<Collection> => {
       {
         "url": {
           "raw": {har.entries.request.url},
-          "queryParams":Exctractquerparams(har.entries.request.queryString),
+          "queryParams":exctractQuerParams(har.entries.request.queryString),
           "pathParams": []
         },
         "method": {har.entries.request.methods},
-        "headers": Extractheader(har.entries.request.headers),
+        "headers": extractHeader(har.entries.request.headers),
         "body": {
           "type": "none",
           "value": ""
