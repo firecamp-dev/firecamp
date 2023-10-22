@@ -247,6 +247,7 @@ socketio
 someplugin
 someuser
 SSLn
+Streamable
 subrip
 szh
 szhsin
@@ -279,6 +280,7 @@ TTr
 Twotone
 typcn
 typesjs
+unicodedemo
 unpressurized
 urlbar
 usagestop

@@ -12,7 +12,6 @@ import { Readable } from 'stream';
 const echo_username = 'firecamp'
 const echo_password = 'password'
 const hawk_id = 'dh37fgj492je'
-// const nonce = crypto.randomBytes(16).toString('base64')
 
 const consumerKey = 'RKCGzna7bv9YD57c';
 const consumerSecret = 'D+EdQ-gs$-%@2Nu7';
@@ -244,8 +243,8 @@ export class RestController {
     async hawkAuth(@Req() req, @Response() res) {
         const credentialsFunc = function (id) {
 
-            if (id !=='dh37fgj492je'){
-                return undefined
+            if (id !==hawk_id){
+                return undefined;
             }
             
             const credentials:Credentials = {
@@ -257,11 +256,11 @@ export class RestController {
             return credentials;
         };
 
-        let status, message
+        let status, message;
 
         try {
-            const { credentials, artifacts } = await Hawk.server.authenticate(req, credentialsFunc)
-            message = {'message':"Hawk Authentication Successfull"}
+            const { credentials, artifacts } = await Hawk.server.authenticate(req, credentialsFunc);
+            message = {'message':"Hawk Authentication Successful"};
             
             status = 200;
             const header = Hawk.server.header(credentials, artifacts);
@@ -270,11 +269,11 @@ export class RestController {
         } catch (error) {
             message = error.output.payload;
             status = 401;
-            const header = error.output.headers
-            res.set(header)
+            const header = error.output.headers;
+            res.set(header);
         }
 
-        return res.status(status).json(message)
+        return res.status(status).json(message);
     }
 
     // OAuth 1.0
@@ -296,13 +295,13 @@ export class RestController {
         }
 
         if (!('authorization' in headers )){
-            return res.status(401).send('Unauthorized')
+            return res.status(401).send('Unauthorized');
         }
           
-        const authorizationHeader = headers.authorization
+        const authorizationHeader = headers.authorization;
 
         if (authorizationHeader.split(' ')[0] !== 'OAuth'){
-            return res.status(401).send('Unauthorized')
+            return res.status(401).send('Unauthorized');
         }
 
         const oauthParams = parseOAuthHeader(authorizationHeader.slice(6))
@@ -314,12 +313,12 @@ export class RestController {
         const signatureMethod = oauthParams['oauth_signature_method'];
         
         
-        const base_uri = `${req.protocol}://${req.get('Host')}${req.originalUrl}`
+        const base_uri = `${req.protocol}://${req.get('Host')}${req.originalUrl}`;
         const signatureBase = buildSignatureBase('GET', base_uri, oauthParams);
     
-        const signingKey = 'D%2BEdQ-gs%24-%25%402Nu7&'
+        const signingKey = 'D%2BEdQ-gs%24-%25%402Nu7&';
 
-        const expectedSignature = crypto.createHmac('sha1', signingKey)
+        const expectedSignature = crypto.createHmac('sha1', signingKey);
         .update(signatureBase)
         .digest('base64');
         
