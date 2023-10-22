@@ -45,7 +45,6 @@
     "node": ">=10"
   },
   "devDependencies": {
-    "@firecamp/eslint": "workspace:^",
     "@types/chrome": "^0.0.204",
     "@types/react-dom": "^17.0.13"
   },
