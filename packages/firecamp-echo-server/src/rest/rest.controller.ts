@@ -28,10 +28,13 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import { createDeflate, createGzip } from 'zlib';
 import { Readable } from 'stream';
-import {echo_username, echo_password, hawk_id, hawk_key, oath_signing_key} from '../assets/credentials'
-
-// const consumerKey = 'RKCGzna7bv9YD57c';
-;
+import {
+  echo_username,
+  echo_password,
+  hawk_id,
+  hawk_key,
+  oath_signing_key,
+} from '../assets/credentials';
 
 function buildSignatureBase(httpMethod, baseUrl, oauthParameters) {
   // Sort the OAuth parameters alphabetically by name
@@ -341,7 +344,6 @@ export class RestController {
     const base_uri = `${req.protocol}://${req.get('Host')}${req.originalUrl}`;
     const signatureBase = buildSignatureBase('GET', base_uri, oauthParams);
 
-
     const expectedSignature = crypto
       .createHmac('sha1', oath_signing_key)
       .update(signatureBase)
@@ -353,16 +355,14 @@ export class RestController {
       const normalized_param_string =
         consumerKey + '&' + nonce + '&' + signatureMethod + '&' + timestamp;
       const baseString = signatureBase;
-      return res
-        .status(401)
-        .json({
-          status,
-          message,
-          base_uri,
-          normalized_param_string,
-          base_string: baseString,
-          signing_key: oath_signing_key,
-        });
+      return res.status(401).json({
+        status,
+        message,
+        base_uri,
+        normalized_param_string,
+        base_string: baseString,
+        signing_key: oath_signing_key,
+      });
     }
     const status = 'pass';
     const message = 'OAuth-1.0a signature verification was successful';
