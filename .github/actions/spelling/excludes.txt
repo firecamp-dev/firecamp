@@ -90,3 +90,5 @@
 ^\Qpnpm-lock.yaml\E$
 ^\Qpackages/firecamp-echo-server/src/assets/unicodedemo.html\E$
 ignore$
+^\Qpackages/firecamp-echo-server/src/assets/credentials.js\E$
+ignore$

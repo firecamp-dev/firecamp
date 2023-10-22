@@ -28,13 +28,10 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import { createDeflate, createGzip } from 'zlib';
 import { Readable } from 'stream';
+import {echo_username, echo_password, hawk_id, hawk_key, oath_signing_key} from '../assets/credentials'
 
-const echo_username = 'firecamp';
-const echo_password = 'password';
-const hawk_id = 'dh37fgj492je';
-
-const consumerKey = 'RKCGzna7bv9YD57c';
-const consumerSecret = 'D+EdQ-gs$-%@2Nu7';
+// const consumerKey = 'RKCGzna7bv9YD57c';
+;
 
 function buildSignatureBase(httpMethod, baseUrl, oauthParameters) {
   // Sort the OAuth parameters alphabetically by name
@@ -276,7 +273,7 @@ export class RestController {
       }
 
       const credentials: Credentials = {
-        key: 'werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn',
+        key: hawk_key,
         algorithm: 'sha256',
         user: 'Steve',
       };
@@ -313,7 +310,6 @@ export class RestController {
     const parseOAuthHeader = (authorizationHeader) => {
       const oauthParams = {};
 
-      // Regular expression to match OAuth parameters in the Authorization header
       const oauthRegex = /(\w+)="([^"]+)"/g;
 
       let match;
@@ -345,10 +341,9 @@ export class RestController {
     const base_uri = `${req.protocol}://${req.get('Host')}${req.originalUrl}`;
     const signatureBase = buildSignatureBase('GET', base_uri, oauthParams);
 
-    const signingKey = 'D%2BEdQ-gs%24-%25%402Nu7&';
 
     const expectedSignature = crypto
-      .createHmac('sha1', signingKey)
+      .createHmac('sha1', oath_signing_key)
       .update(signatureBase)
       .digest('base64');
 
@@ -366,7 +361,7 @@ export class RestController {
           base_uri,
           normalized_param_string,
           base_string: baseString,
-          signing_key: signingKey,
+          signing_key: oath_signing_key,
         });
     }
     const status = 'pass';
