@@ -35,29 +35,7 @@ import {
   hawk_key,
   oath_signing_key,
 } from 'src/assets/credentials';
-import { parseAuthHeader } from 'src/utilities/restControllerUtilities';
-
-function buildSignatureBase(httpMethod, baseUrl, oauthParameters) {
-  // Sort the OAuth parameters alphabetically by name
-  const sortedParameters = Object.keys(oauthParameters)
-    .sort()
-    .filter((key) => key !== 'oauth_signature')
-    .map((key) => key + '=' + encodeURIComponent(oauthParameters[key]));
-
-  // Create the parameter string by joining the sorted parameters with "&"
-  const parameterString = sortedParameters.join('&');
-
-  // Encode the HTTP method and base URL
-  const encodedHttpMethod = encodeURIComponent(httpMethod);
-  const encodedBaseUrl = encodeURIComponent(baseUrl);
-
-  // Construct the signature base string
-  const signatureBase = `${encodedHttpMethod}&${encodedBaseUrl}&${encodeURIComponent(
-    parameterString
-  )}`;
-
-  return signatureBase;
-}
+import { buildOauthSignatureBase, parseAuthHeader } from 'src/utilities/restControllerUtilities';
 
 @Controller('')
 export class RestController {
@@ -329,7 +307,7 @@ export class RestController {
     const signatureMethod = oauthParams['oauth_signature_method'];
 
     const base_uri = `${req.protocol}://${req.get('Host')}${req.originalUrl}`;
-    const signatureBase = buildSignatureBase('GET', base_uri, oauthParams);
+    const signatureBase = buildOauthSignatureBase('GET', base_uri, oauthParams);
 
     const expectedSignature = crypto
       .createHmac('sha1', oath_signing_key)
