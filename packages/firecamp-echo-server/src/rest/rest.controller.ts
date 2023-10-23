@@ -35,7 +35,7 @@ import {
   hawk_key,
   oath_signing_key,
 } from 'src/assets/credentials';
-import { parseAuthHeader } from 'src/utlities/restControllerUtilities';
+import { parseAuthHeader } from 'src/utilities/restControllerUtilities';
 
 function buildSignatureBase(httpMethod, baseUrl, oauthParameters) {
   // Sort the OAuth parameters alphabetically by name
