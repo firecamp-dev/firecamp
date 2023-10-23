@@ -4,15 +4,20 @@ import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Container,
   Editor,
-  BasicTable,
   Button,
   StatusBar,
   MultipartTable,
   EditorControlBar,
   DropdownMenu,
+  BulkEditTable,
 } from '@firecamp/ui';
-import { ERestBodyTypes, TFormDataBody, TUrlEncodedBody } from '@firecamp/types';
-import { _array } from '@firecamp/utils';
+import {
+  EEditorLanguage,
+  ERestBodyTypes,
+  TFormDataBody,
+  TUrlEncodedBody,
+} from '@firecamp/types';
+
 import GraphQLBody from './body/GraphQLBody';
 import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
@@ -52,7 +57,9 @@ const BodyTab: FC<any> = () => {
    * purpose: add '*' for non-empty body types (body having non-empty values) to indicate empty and non-empty body.
    */
   const _prepareRestBodyTypesOptions = () => {
-    const isEmptyAPIBody = isRestBodyEmpty(body || { type: ERestBodyTypes.None, value: '' });
+    const isEmptyAPIBody = isRestBodyEmpty(
+      body || { type: ERestBodyTypes.None, value: '' }
+    );
     // console.log({ isEmptyAPIBody });
     let updatedBodyTypes = Object.values(bodyTypesDDValues);
 
@@ -75,18 +82,27 @@ const BodyTab: FC<any> = () => {
         return <NoBodyTab selectBodyType={_selectBodyType} />;
       case ERestBodyTypes.FormData:
         return (
-          <MultipartTable onChange={changeBodyValue} rows={body.value as TFormDataBody || []} />
-        );
-        break;
-      case ERestBodyTypes.UrlEncoded:
-        return (
-          <BasicTable
-            title=""
+          <MultipartTable
             onChange={changeBodyValue}
-            rows={body.value as TUrlEncodedBody || []}
+            rows={(body.value as TFormDataBody) || []}
           />
         );
-        break;
+      case ERestBodyTypes.UrlEncoded:
+        return (
+          <BulkEditTable
+            key={'body'}
+            rows={(body.value as TUrlEncodedBody) || []}
+            title="Body"
+            options={{
+              languages: {
+                key: EEditorLanguage.HeaderKey,
+                value: EEditorLanguage.HeaderValue,
+              },
+            }}
+            onChange={(data) => changeBodyValue(data)}
+            onMount={() => {}}
+          />
+        );
       case ERestBodyTypes.Json:
       case ERestBodyTypes.Xml:
       // case 'application/text':

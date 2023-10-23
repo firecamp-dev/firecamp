@@ -86,6 +86,7 @@
 ^\Q.github/workflows/spelling.yml\E$
 ^\Qpackages/firecamp-cli/test/data/restEchoServer.firecamp_collection.json\E$
 ^\Qpackages/firecamp-collection-runner/readme.md\E$
+^\Qpackages/firecamp-har/src/types.ts\E$
 ^\Qplatform/firecamp-platform/__tests__/index.spec.ts\E$
 ^\Qpnpm-lock.yaml\E$
 ^\Qpackages/firecamp-echo-server/src/assets/unicodedemo.html\E$
