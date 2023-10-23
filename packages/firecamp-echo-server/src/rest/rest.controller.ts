@@ -34,7 +34,8 @@ import {
   hawk_id,
   hawk_key,
   oath_signing_key,
-} from '../assets/credentials';
+} from 'src/assets/credentials';
+import { parseAuthHeader } from 'src/utlities/restControllerUtilities';
 
 function buildSignatureBase(httpMethod, baseUrl, oauthParameters) {
   // Sort the OAuth parameters alphabetically by name
@@ -210,7 +211,7 @@ export class RestController {
 
   // Digest Auth
   @Get('digest-auth')
-  digestAuth(@Req() req, @Headers() headers, @Response() res) {
+  digestAuth(@Headers() headers, @Response() res) {
     const realm = 'Users';
 
     if (!('authorization' in headers)) {
@@ -229,13 +230,7 @@ export class RestController {
       return res.status(401).send('Unauthorized');
     }
 
-    const authArgs = headers.authorization.slice(7).split(', ');
-    const argsMap = {};
-
-    authArgs.forEach((arg) => {
-      const split = arg.replaceAll('"', '').replace('=', '-:-').split('-:-');
-      argsMap[split[0]] = split[1];
-    });
+    const argsMap = parseAuthHeader(headers.authorization.slice(7))
 
     if (
       !(
@@ -245,8 +240,13 @@ export class RestController {
         argsMap['response']
       )
     ) {
-      return res.json({ authorized: false });
+        return res.status(401).send('Unauthorized');
     }
+
+    if (argsMap['username'] !== echo_username){
+        return res.status(401).send('Unauthorized');
+    }
+
     const HA1 = crypto
       .createHash('md5')
       .update(`${argsMap['username']}:${argsMap['realm']}:${echo_password}`)
@@ -310,19 +310,6 @@ export class RestController {
   // OAuth 1.0
   @Get('oauth1')
   OAuth1(@Req() req, @Headers() headers, @Response() res) {
-    const parseOAuthHeader = (authorizationHeader) => {
-      const oauthParams = {};
-
-      const oauthRegex = /(\w+)="([^"]+)"/g;
-
-      let match;
-      while ((match = oauthRegex.exec(authorizationHeader)) !== null) {
-        oauthParams[match[1]] = match[2];
-      }
-
-      return oauthParams;
-    };
-
     if (!('authorization' in headers)) {
       return res.status(401).send('Unauthorized');
     }
@@ -333,7 +320,7 @@ export class RestController {
       return res.status(401).send('Unauthorized');
     }
 
-    const oauthParams = parseOAuthHeader(authorizationHeader.slice(6));
+    const oauthParams = parseAuthHeader(authorizationHeader.slice(6));
 
     const consumerKey = oauthParams['oauth_consumer_key'];
     const timestamp = oauthParams['oauth_timestamp'];
