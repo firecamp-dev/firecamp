@@ -48,7 +48,7 @@
     "codemirror": "^5.63.0",
     "codemirror-graphql": "^1.0.2",
     "comment-json": "^4.1.1",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "debounce-promise": "^3.1.2",
     "fuzzysort": "^1.1.4",
     "graphql": "^15.6.0",
