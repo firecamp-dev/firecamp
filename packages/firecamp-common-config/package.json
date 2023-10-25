@@ -11,7 +11,7 @@
     "husky": "^8.0.1",
     "prettier": "^3.0.3"
   },
-  "files": ["eslint-ts.js","tsconfig.json"],
+  "files": ["eslint-ts.js","tsconfig.json","prettierrc.json"],
   "husky": {
     "hooks": {
       "pre-commit": "pnpm run lint"
