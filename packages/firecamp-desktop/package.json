@@ -2,16 +2,17 @@
   "name": "@firecamp/desktop",
   "version": "1.0.0",
   "description": "",
-  "main": "src/main.js",
+  "main": "build/main.js",
   "private": true,
   "scripts": {
-    "start": "electron .",
+    "start": "tsc && electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "AGPLv3",
   "devDependencies": {
+    "@types/node": "^20.8.9",
     "electron": "^27.0.2"
   }
 }
