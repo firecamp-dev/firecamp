@@ -1,0 +1,17 @@
+{
+  "name": "@firecamp/desktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "AGPLv3",
+  "devDependencies": {
+    "electron": "^27.0.2"
+  }
+}
