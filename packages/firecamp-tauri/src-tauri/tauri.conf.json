@@ -11,6 +11,13 @@
     "version": "0.0.0"
   },
   "tauri": {
+    "allowlist": {
+      "http": {
+        "scope": ["https://*", "http://*"],
+        "all": true,
+        "request": true
+      }
+    },
     "bundle": {
       "active": true,
       "targets": "all",
@@ -28,11 +35,9 @@
     },
     "windows": [
       {
-        "fullscreen": false,
+        "fullscreen": true,
         "resizable": true,
-        "title": "firecamp-desktop",
-        "width": 800,
-        "height": 600
+        "title": "Firecamp, API Campsite"
       }
     ]
   }
