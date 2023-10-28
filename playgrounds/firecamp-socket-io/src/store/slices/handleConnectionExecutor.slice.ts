@@ -89,7 +89,7 @@ const createHandleConnectionExecutor: TStoreSlice<
       // connect
       executor.connect();
 
-      // set executor in to playground
+      // set executor in playground
       state.setPlgExecutor(executor);
 
       // listen to on connect listener

@@ -1,9 +1,4 @@
-import {
-  Container,
-  Notes,
-  CheckboxInGrid,
-  SingleLineEditor,
-} from '@firecamp/ui';
+import { Checkbox, Container, Notes, SingleLineEditor } from '@firecamp/ui';
 import { EEditorLanguage, EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
@@ -93,14 +88,15 @@ const Config = ({ config = {}, onUpdate }) => {
       case EInputTypes.Boolean:
         // console.log(`config[name]`, config[name]);
         return (
-          <CheckboxInGrid
-            key={`${name}-${index}`}
-            checked={config[name] || false}
-            label={label}
-            className="fc-input-wrapper"
-            onToggleCheck={() => _onChange(name, !config[name])}
-            disabled={!isElectron}
-          />
+          <div key={`${name}-${index}`}>
+            <label className="checkbox-in-grid">{label}</label>
+            <Checkbox
+              onToggleCheck={() => _onChange(name, !config[name])}
+              checked={config[name] || false}
+              classNames={{ root: 'fc-input-wrapper' }}
+              disabled={!isElectron}
+            />
+          </div>
         );
         break;
       default:

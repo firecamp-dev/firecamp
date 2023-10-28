@@ -1,6 +1,6 @@
 import {
   Container,
-  CheckboxInGrid,
+  Checkbox,
   SingleLineEditor,
 } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
@@ -11,7 +11,7 @@ const { MaxRedirects, FollowLocation, RejectUnauthorized, RequestTimeout } =
   ERestConfigKeys;
 
 const ConfigTab = () => {
-  const [config, changeConfig] = useRequestConfigFacade()
+  const [config, changeConfig] = useRequestConfigFacade();
 
   const _handleChange = (e) => {
     e.preventDefault();
@@ -71,22 +71,29 @@ const ConfigTab = () => {
               />
             </div>
           </div>
-          <CheckboxInGrid
-            className="fc-input-wrapper"
-            checked={config[RejectUnauthorized]}
-            label="Reject Unauthorized"
-            onToggleCheck={() => _onToggleCheckBox(RejectUnauthorized)}
-          />
-          <CheckboxInGrid
-            className="fc-input-wrapper"
-            checked={
-              config[FollowLocation] === undefined
-                ? true
-                : config[FollowLocation]
-            }
-            label="Follow location"
-            onToggleCheck={() => _onToggleCheckBox(FollowLocation)}
-          />
+
+          <div>
+            <label className="checkbox-in-grid">Reject Unauthorized</label>
+            <Checkbox
+              onToggleCheck={() => _onToggleCheckBox(RejectUnauthorized)}
+              checked={config[RejectUnauthorized]}
+              classNames={{ root: 'fc-input-wrapper' }}
+            />
+          </div>
+
+          <div>
+            <label className="checkbox-in-grid">Follow location</label>
+            <Checkbox
+              onToggleCheck={() => _onToggleCheckBox(FollowLocation)}
+              checked={
+                config[FollowLocation] === undefined
+                  ? true
+                  : config[FollowLocation]
+              }
+              classNames={{ root: 'fc-input-wrapper' }}
+            />
+          </div>
+
           <div
             className={
               'relative items-center text-input-text text-sm w-full mb-5'

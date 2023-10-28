@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { nanoid } from 'nanoid';
 import _reject from 'lodash/reject';
@@ -426,7 +426,7 @@ export const useExplorerStore = create<IWorkspaceStore>(
       set((s) => {
         s.explorer.tdpInstance?.updateFolderItem(folder);
         const folders = s.explorer.folders.map((f) => {
-          if (f.__ref.id == folder.__ref.id) f = { ...f, name: folder.name }; //note: this condition is used considering only renaming usecase
+          if (f.__ref.id == folder.__ref.id) f = { ...f, name: folder.name }; //note: this condition is used considering only renaming use case
           return f;
         });
         return { explorer: { ...s.explorer, folders } };

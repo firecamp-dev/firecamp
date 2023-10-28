@@ -7,7 +7,7 @@
   "license": "",
   "keywords": [],
   "scripts": {
-    "build": "run-p 'build:*'",
+    "build": "run-p \"build:*\"",
     "build:main": "tsc -p tsconfig.json",
     "clean": "rimraf build/",
     "fix": "run-s fix:*",

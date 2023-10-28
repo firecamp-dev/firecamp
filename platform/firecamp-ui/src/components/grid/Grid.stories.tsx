@@ -77,8 +77,8 @@ MultipleRowColumns.args = { width: '100%', overflow: 'auto', height: 'auto', cla
 
 // export const TwoColumn = (args) => (
 //   <Row {...args}>
-//     <Column {...args} className={cx( {'border-b last:border-b-0 border-black' : args.showDevider == true })} >col</Column>
-//     <Column {...args} className={cx( {'border-b last:border-b-0 border-black' : args.showDevider == true })}>col</Column>
+//     <Column {...args} className={cx( {'border-b last:border-b-0 border-black' : args.showDivider == true })} >col</Column>
+//     <Column {...args} className={cx( {'border-b last:border-b-0 border-black' : args.showDivider == true })}>col</Column>
 //   </Row>
 // );  
 

@@ -25,7 +25,7 @@ const ScriptTab: FC<IProps> = ({
       <Container.Body className="flex flex-col">
         <TabHeader className="bg-statusBar-background-active">
           <div className="text-sm">
-            Pre-request script are written in Javascript and are run before the
+            Pre-request script are written in JavaScript and are run before the
             request is sent.
             {/* Learn more about
             <a

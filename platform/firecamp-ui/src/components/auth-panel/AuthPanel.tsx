@@ -23,7 +23,7 @@ import {
 } from '@firecamp/ui';
 
 import {
-  // Atlassion,
+  // Atlassian,
   Aws,
   Basic,
   Bearer,
@@ -121,7 +121,7 @@ GitHub </a>, <a href="https://twitter.com/firecampdev" target="_blank">Twitter</
         );
       /* case EAuthTypes.Atlassian:
         return (
-          <Atlassion
+          <Atlassian
             auth={value}
             onChange={onChangeAuth}
           />

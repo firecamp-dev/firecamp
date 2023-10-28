@@ -87,7 +87,7 @@ const InviteOrgMembers: FC<IProps> = ({
             classNames={{
               trigger: 'block',
               dropdown: '-mt-2 overflow-y-scroll invisible-scrollbar max-h-[200px]',
-              item: '!px-4',
+              item: '!px-4 whitespace-nowrap',
               itemRightSection: 'w-full'
             }}
             width={512}

@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
 import { ERequestTypes, TId } from '@firecamp/types';

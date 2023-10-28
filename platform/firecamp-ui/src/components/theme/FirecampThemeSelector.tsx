@@ -27,26 +27,19 @@ const ThemeOptions = [
 const FirecampThemeSelector = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [isOpen, toggleOpen] = useState(false);
+  const [activeTheme, updateActiveTheme] = useState<{
+    name: string;
+    value: EFirecampThemeVariant;
+  }>();
 
   useEffect(() => {
-    _setTheme(colorScheme);
+    const activeThemeOption = ThemeOptions.find(
+      (t) => t.value === (colorScheme as EFirecampThemeVariant)
+    );
+    updateActiveTheme(activeThemeOption);
   }, [colorScheme]);
 
-  const _setTheme = (t: any) => {
-    try {
-      // Set app body theme - for matching tailwind theme
-      document.body.className = `theme-${t.split('-')[0] || 'light'} primary-${
-        t.split('-')[1] || 'orange'
-      }`;
-    } catch (error) {
-      console.log({ error });
-    }
-    toggleColorScheme(t);
-  };
-
-  const activeTheme = ThemeOptions.find(
-    (t) => t.value === (colorScheme as EFirecampThemeVariant)
-  );
+  if (!activeTheme) return <></>;
   return (
     <DropdownMenu
       onOpenChange={(v) => toggleOpen(v)}
@@ -69,7 +62,7 @@ const FirecampThemeSelector = () => {
         />
       )}
       options={ThemeOptions}
-      onSelect={(t) => _setTheme(t.value)}
+      onSelect={(t) => toggleColorScheme(t.value)}
       width={220}
       classNames={{
         dropdown: 'mt-2',

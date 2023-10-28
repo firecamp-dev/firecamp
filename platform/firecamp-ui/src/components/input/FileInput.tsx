@@ -1,60 +1,115 @@
-//@ts-nocheck
-import { FC, useRef } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { FC } from 'react';
+import {
+  FileInputProps,
+  FileInput as MantineFileInput,
+  createStyles,
+} from '@mantine/core';
+import { IFileInput } from './interfaces/FileInput.interfaces';
 
-import { IFileInput } from "./interfaces/FileInput.interfaces";
+const useStyles = createStyles((theme, { secondary }: IFileInput) => ({
+  root: {},
+  input: {
+    background: 'transparent',
+    borderColor: 'transparent !important',
 
-/**
- * File input component to select file as input
- */
-const FileInput: FC<IFileInput> = ({
-  ButtonText = 'Select',
-  path = '',
-  name = '',
-  onSelectFile = () => { }
-}) => {
-  const inputEle = useRef(null);
+    // same color for both light/dark color variant
+    ...(secondary
+      ? {
+          color: `${theme.white} !important`,
+          backgroundColor: theme.colors.dark[4],
+          ':hover': {
+            backgroundColor: theme.colors.dark[5],
+          },
+        }
+      : {
+          color:
+            theme.colorScheme === 'dark'
+              ? theme.colors.gray[4]
+              : theme.colors.dark[5],
+        }),
+    '&:disabled, &[data-disabled]': {
+      ...(secondary
+        ? {
+            color: `${theme.white} !important`,
+            backgroundColor: theme.colors.dark[4],
+          }
+        : {}),
+    },
 
-  let _onSelectFile = e => {
-    onSelectFile(e);
-  };
+    ...(secondary
+      ? {
+          minHeight: '1.875rem',
+          paddingLeft: 'calc(1.875rem / 3)',
+          paddingRight: 'calc(1.875rem / 3)',
+        }
+      : {
+          border: 'none',
+          lineHeight: '21px',
+          whiteSpace: 'pre',
 
-  const _onClick = () => {
-    inputEle.current.click();
-  };
-  return (
-    <div className="w-fit w-max">
-      <input
-        name="select"
-        style={{ display: 'none' }}
-        ref={inputEle}
-        id="file"
-        accept="text"
-        type="file"
-        onChange={_onSelectFile}
-      />
-      {(!path || !path.length) && name && name.length ? (
-        <div className="text-base text-app-foreground-inactive">{name}</div> /*this path is not visible when upload file */
-      ) : (
-        ''
-      )}
-      {!path || !path.length ? (
-        <label
-          htmlFor="file_path"
-          className=" bg-focus3 p-2 rounded-sm mb-2 text-app-foreground px-2 py-1 w-fit cursor-pointer flex flex-row items-center"
-          onClick={_onClick}
-        >
+          minHeight: 'auto',
+          paddingLeft: '4px',
+          paddingRight: '16px',
+        }),
+  },
+  icon: {
+    ...(secondary
+      ? {
+          color: `${theme.white} !important`,
+          paddingLeft: 'calc(0.875rem  / 1.5)',
+          paddingRight: 'calc(0.875rem  / 1.5)',
+        }
+      : {}),
+  },
+  placeholder: {
+    color: `${
+      theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[5]
+    } !important`,
+    ...(secondary
+      ? {
+          color: `${theme.white} !important`,
+        }
+      : {}),
+  },
+}));
 
-          <span className='pr-1 text-base'>{ButtonText}</span>
-          <ArrowRight size={12} />
-        </label>
-      ) : (
-        <div onClick={_onClick} className="fc-input-file-name ">
-          {path}
-        </div>
-      )}
-    </div>
-  );
+const Value = ({ file }: { file: File }) => {
+  return <span>file: {file.name}</span>;
 };
 
+const ValueComponent: FileInputProps['valueComponent'] = ({ value }) => {
+  if (Array.isArray(value)) {
+    return (
+      <>
+        {value.map((file, index) => (
+          <Value file={file} key={index} />
+        ))}
+      </>
+    );
+  }
+
+  return <Value file={value} />;
+};
+
+const FileInput: FC<IFileInput> = ({
+  classNames = {},
+  secondary = false,
+  ...props
+}) => {
+  const { classes, cx } = useStyles({ secondary });
+  return (
+    <MantineFileInput
+      classNames={{
+        ...classNames,
+        root: cx(classes.root, classNames.root),
+        icon: cx(classes.icon, classNames.icon),
+        input: cx(classes.input, classNames.input),
+        placeholder: cx(classes.placeholder, classNames.placeholder),
+      }}
+      radius={'sm'}
+      {...props}
+      valueComponent={ValueComponent}
+    />
+  );
+};
 export default FileInput;

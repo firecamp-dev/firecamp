@@ -3,7 +3,6 @@ import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Button,
-  // CheckboxInGrid,
   DropdownMenu,
   SingleLineEditor,
 } from '@firecamp/ui';
@@ -62,7 +61,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
           dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IOAuth1]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div
@@ -122,7 +121,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
           onSelect={(method) => {
             _onSelectSignatureMethod(method?.name);
           }}
-          selected={auth['signatureMethod'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
+          selected={auth['signatureMethod'] || 'HMAC-SHA1'} //default "HMAC-SHA1"
           classNames={{
             trigger: 'mb-[10px]',
             dropdown: 'border-focusBorder !py-0 -mt-[10px]',

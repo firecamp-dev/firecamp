@@ -1,17 +1,60 @@
-//@ts-nocheck
-import FileInput from './FileInput';
+import { useState } from 'react';
+import { Upload } from 'lucide-react';
+import { FileInput, IFileInput } from '@firecamp/ui';
 
 export default {
-    title: "UI-Kit/Input",
-    component: FileInput,
-    argTypes: {
-        placeholder: "Firecamp",
-        value: "Firecamp value"
-    }
+  title: 'UI-Kit/Input',
+  component: FileInput,
 };
 
-const Template = (args) =><div className="bg-activityBar-background p-4 w-96"> <FileInput {...args} /></div>;
+const Template = (args: IFileInput) => {
+  return (
+    <FileInput
+      classNames={{ root: 'w-fit' }}
+      onChange={(file: File) => console.log(`selected-file`, file)}
+      {...args}
+    />
+  );
+};
 
 export const FileInputDemo = Template.bind({});
-FileInputDemo.args = {placeholder: 'Sample Button', value: ''};
+FileInputDemo.args = { placeholder: 'Select File' };
 
+export const FileSelectedDemo = Template.bind({});
+FileSelectedDemo.args = {
+  placeholder: 'Select File',
+  value: { name: 'filename' },
+};
+export const FileSelectedSecondary = Template.bind({});
+FileSelectedSecondary.args = {
+  placeholder: 'Select File',
+  secondary: true,
+  icon: <Upload size={16} />,
+  iconWidth: 40,
+  size: 'xs',
+};
+
+export const FileUploadExample = () => {
+  const [file, updateFile] = useState(null);
+  return (
+    <FileInput
+      classNames={{ root: 'w-fit' }}
+      onChange={(selectedFile: File) => {
+        updateFile(selectedFile);
+      }}
+      accept="text/*"
+      value={file}
+      placeholder={'Select File'}
+      {...(file
+        ? {
+            size: 'md',
+          }
+        : {
+            secondary: true,
+            icon: <Upload size={16} />,
+            iconWidth: 40,
+            size: 'xs',
+          })}
+    />
+  );
+};

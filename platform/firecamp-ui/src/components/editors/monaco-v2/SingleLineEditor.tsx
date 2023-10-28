@@ -308,7 +308,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     scrollbar: {
       horizontal: 'hidden',
       vertical: 'hidden',
-      // avoid can not scroll page when hover monaco
+      // avoid cannot scroll page when hover monaco
       alwaysConsumeMouseWheel: false,
     },
     // disable `Find`
@@ -354,7 +354,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   value = type === 'number' ? '' + value : value;
   /**
    * 1. Check if number or not, if number then convert to string and show
-   * 2. Convert multiline string in to single line
+   * 2. Convert multiline string into single line
    */
   //  value = value.replace(/[\n\r]/g, '');
 
@@ -370,13 +370,13 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   return (
     <>
       {placeholder && !value ? (
-        <div className="absolute top-0 left-0 text-input-placeholder text-lg leading-5	">
+        <div className="select-auto absolute top-0 left-0 text-input-placeholder text-lg leading-5	">
           {placeholder}
         </div>
       ) : (
         <></>
       )}
-      <div className={cx(className, { 'opacity-50': disabled })} style={style}>
+      <div className={cx('select-auto', className, { 'opacity-50': disabled })} style={style}>
         <MonacoEditor
           language={language}
           defaultValue={value}

@@ -211,17 +211,16 @@ const PlaygroundTab = () => {
       case EMessagePayloadTypes.file:
         let fileName = '';
         if (value && typeof value !== 'string') {
-          fileName = value.name || '';
+          fileName = (value as File).name || '';
         }
         return (
           <div className="fc-center-aligned">
             {/* <FileInput
-              ButtonText="Select file"
-              path={''}
-              name={fileName}
-              onSelectFile={(e) => {
+              placeholder="Select file"
+              value={{name: fileName}}
+              onChange={(file) => {
                 changePlaygroundMessage({
-                  value: e.target.files[0],
+                  value: file,
                 });
               }}
             /> */}

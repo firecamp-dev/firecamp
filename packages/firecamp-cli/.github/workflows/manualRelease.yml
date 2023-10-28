@@ -27,7 +27,7 @@ jobs:
         with:
           path: 'package.json'
           prop_path: 'version'
-      - name: Create Github Release
+      - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.SVC_CLI_BOT_GITHUB_TOKEN }}

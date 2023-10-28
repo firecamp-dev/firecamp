@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { EFirecampAgent, IOrganization } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import * as executor from '@firecamp/agent-manager';

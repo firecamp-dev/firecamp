@@ -1,41 +1,37 @@
 import { useEffect, useRef, useState } from 'react';
 import { Upload } from 'lucide-react';
 import { FileDrop } from 'react-file-drop';
-import { Container, Button } from '@firecamp/ui';
+import { Container, Button, FileInput } from '@firecamp/ui';
 
 const BinaryTab = ({ body, onChange }) => {
-  const inputEle = useRef(null);
-  const [fileName, setFileName] = useState('');
+
+  const [file, setFile] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
-    // console.log("file body--> component did mount");
+    // console.log("file body--> component did mount", file, body);
 
-    const _setFileName = async () => {
+    const _checkFileName = async () => {
       const text: string = body?.value?.name || '';
-      if (fileName !== text) {
-        setFileName(text);
+      if (file?.name !== text) {
+        setFile(body.value);
       }
     };
     setErrorMsg('');
     setButtonDisabled(false);
-    _setFileName();
+    _checkFileName();
   }, [body]);
-
-  const _onButtonClick = () => {
-    inputEle.current.click();
-  };
 
   const _onDropFile = async (files, event) => {
     console.log('files[0]', files[0]);
     if (!files || !files[0]) {
       setErrorMsg('File not found!');
-      setFileName('');
+      setFile(null);
       setButtonDisabled(true);
     } else {
       const file = files[0];
-      setFileName(file.name);
+      setFile(file);
 
       // console.log("r", text);
       // _import(raw_text);
@@ -45,16 +41,13 @@ const BinaryTab = ({ body, onChange }) => {
     }
   };
 
-  const _onSelectFile = async (e) => {
-    let target = e.target;
-    console.log(e, target.files[0]);
-    if (!target || !target.files[0]) {
+  const _onSelectFile = async (file) => {
+    if (!file) {
       setErrorMsg('File not found!');
-      setFileName('');
+      setFile(null);
       setButtonDisabled(true);
     } else {
-      const file = target.files[0];
-      setFileName(file.name);
+      setFile(file);
 
       // let text = await _readFile(file).then((r) => r);
 
@@ -68,30 +61,27 @@ const BinaryTab = ({ body, onChange }) => {
     <Container>
       <Container.Body className="flex items-center justify-center">
         <FileDrop onDrop={_onDropFile}>
-          {fileName && !errorMsg ? (
-            <div style={{ fontSize: '17px' }} onClick={_onButtonClick}>
-              {fileName}
-            </div>
-          ) : (
-            <Button
-              onClick={_onButtonClick}
-              leftIcon={<Upload size={16} />}
-              text="Drop File Here"
-              disabled={isButtonDisabled}
-              secondary
-              xs
-            />
-          )}
-
-          <input
-            style={{ display: 'none' }}
-            ref={inputEle}
-            id="file"
-            accept="text"
-            type="file"
+          <FileInput
+            placeholder={'Drop File Here'}
+            disabled={isButtonDisabled}
             onChange={_onSelectFile}
+            error={
+              errorMsg ? <div className="fc-error">{errorMsg}</div> : undefined
+            }
+            value={
+              file && !errorMsg ? file : undefined
+            }
+            {...((file && !errorMsg)
+              ? {
+                size: 'md',
+              } : {
+                  secondary: true,
+                  icon: <Upload size={16} />,
+                  iconWidth: 40,
+                  size: 'xs',
+                }
+              )}
           />
-          {errorMsg ? <div className="fc-error">{errorMsg}</div> : <></>}
         </FileDrop>
       </Container.Body>
     </Container>

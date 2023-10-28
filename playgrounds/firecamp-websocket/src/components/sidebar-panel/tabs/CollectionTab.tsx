@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { shallow } from 'zustand/shallow';
 import { FolderPlus, RotateCw } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
-import { Pane, ToolBar, Empty } from '@firecamp/ui';
+import { Pane, ToolBar, Empty, ScrollArea } from '@firecamp/ui';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { useStore, useStoreApi, IStore } from '../../../store';
 
@@ -67,7 +67,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
     context.window
       .confirm({
         message: 'Are you sure to delete the Folder?',
-        labels: { confirm: 'Yes, delete it.', },
+        labels: { confirm: 'Yes, delete it.' },
       })
       .then((yes) => {
         if (yes) deleteFolder(id);
@@ -78,7 +78,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
     context.window
       .confirm({
         message: 'Are you sure to delete the message?',
-        labels: { confirm: 'Yes, delete it.', },
+        labels: { confirm: 'Yes, delete it.' },
       })
       .then((yes) => {
         if (yes) deleteItem(msgId);
@@ -100,42 +100,44 @@ const Collection = ({ openCreateFolderPrompt }) => {
       )}
 
       {/* even if the collection is empty, the tree must be initialized with tdp.
-        however it'll not show anything but when new item'll get added/created then tree will pop up the entry 
+        however it'll not show anything but when new items get added/created then tree will pop up the entry 
       */}
-      <UncontrolledTreeEnvironment
-        canRename={true}
-        canReorderItems={true}
-        canDragAndDrop={true}
-        canDropOnFolder={true}
-        keyboardBindings={{
-          renameItem: ['enter', 'f2'],
-          abortRenameItem: ['esc'],
-        }}
-        dataProvider={tdpInstance}
-        onStartRenamingItem={(a) => {
-          console.log(a, 'onStartRenamingItem');
-        }}
-        // onSelectItems={onSelectItems}
-        getItemTitle={(item) => item.data?.name}
-        viewState={{}}
-        renderItemArrow={treeRenderer.renderItemArrow}
-        renderItem={(props) =>
-          treeRenderer.renderItem({
-            ...props,
-            openMessageInPlg: openMessageInPlayground,
-            createFolder: openCreateFolderPrompt,
-            deleteFolder: _deleteFolder,
-            deleteMsg,
-          })
-        }
-      >
-        <Tree
-          treeId="fc-ws-message-collection-tree"
-          rootItem="root"
-          treeLabel="WebSocket Message Collection"
-          ref={treeRef}
-        />
-      </UncontrolledTreeEnvironment>
+      <ScrollArea>
+        <UncontrolledTreeEnvironment
+          canRename={true}
+          canReorderItems={true}
+          canDragAndDrop={true}
+          canDropOnFolder={true}
+          keyboardBindings={{
+            renameItem: ['enter', 'f2'],
+            abortRenameItem: ['esc'],
+          }}
+          dataProvider={tdpInstance}
+          onStartRenamingItem={(a) => {
+            console.log(a, 'onStartRenamingItem');
+          }}
+          // onSelectItems={onSelectItems}
+          getItemTitle={(item) => item.data?.name}
+          viewState={{}}
+          renderItemArrow={treeRenderer.renderItemArrow}
+          renderItem={(props) =>
+            treeRenderer.renderItem({
+              ...props,
+              openMessageInPlg: openMessageInPlayground,
+              createFolder: openCreateFolderPrompt,
+              deleteFolder: _deleteFolder,
+              deleteMsg,
+            })
+          }
+        >
+          <Tree
+            treeId="fc-ws-message-collection-tree"
+            rootItem="root"
+            treeLabel="WebSocket Message Collection"
+            ref={treeRef}
+          />
+        </UncontrolledTreeEnvironment>
+      </ScrollArea>
     </>
   );
 };

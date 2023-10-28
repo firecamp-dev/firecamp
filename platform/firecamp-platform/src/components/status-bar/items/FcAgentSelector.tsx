@@ -7,7 +7,7 @@ import {
   Popover,
   Button,
   Checkbox,
-  // SwitchButton,
+  // Switch,
 } from '@firecamp/ui';
 import { IPlatformStore, usePlatformStore } from '../../../store/platform';
 
@@ -39,6 +39,7 @@ const FcAgentSelector: FC<any> = () => {
 
   return (
     <Popover
+      className="border border-app-border"
       content={
         <div className="p-6 w-96">
           <div className="text-base text-app-foreground mb-4">
@@ -51,7 +52,7 @@ const FcAgentSelector: FC<any> = () => {
                 <span className="block text-app-foreground-inactive font-normal leading-5 mt-1">Firecamp will automatically select the best agent for your request</span>
               </div>
               <div>
-              <SwitchButton checked={false} onChange={()=> {}}/>
+              <Switch checked={false} onToggleCheck={()=> {}}/>
               </div>
             </div> */}
           <hr />
@@ -62,6 +63,13 @@ const FcAgentSelector: FC<any> = () => {
             className={`mt-4 mb-2`}
             description={`Send rest requests via Firecamp's <a href="">secure cloud servers</a>.`}
             onSelect={() => _onSelectAgent(EFirecampAgent.Cloud)}
+          />
+
+          <AgentItem
+            name={agentNamesMap[EFirecampAgent.Web]}
+            isSelected={agent == EFirecampAgent.Web}
+            description={`Sending your requests through your browser comes with <a href="#">limitations</a>`}
+            onSelect={() => _onSelectAgent(EFirecampAgent.Web)}
           />
 
           <AgentItem
@@ -84,19 +92,12 @@ const FcAgentSelector: FC<any> = () => {
                 ) : <></>
             } */}
           </AgentItem>
-
-          <AgentItem
-            name={agentNamesMap[EFirecampAgent.Web]}
-            isSelected={agent == EFirecampAgent.Web}
-            description={`Sending your requests through your browser comes with <a href="#">limitations</a>`}
-            onSelect={() => _onSelectAgent(EFirecampAgent.Web)}
-          />
         </div>
       }
     >
       <Popover.Handler>
         <div
-          className="flex items-center"
+          className="flex items-center w-28	"
           onClick={() => checkExtAgentInstalled()}
         >
           <Info size={14} className="mr-1 text-primaryColor" />
@@ -120,10 +121,18 @@ const AgentItem: FC<IAgentItem> = ({
 }) => {
   return (
     <div
-      className={cx(className, 'text-base text-app-foreground flex items-start')}
+      className={cx(
+        className,
+        'text-base text-app-foreground flex items-start'
+      )}
     >
       <div className="pt-half" onClick={onSelect}>
-        <Checkbox checked={isSelected} id={name} disabled={disabled} classNames={{root: 'mr-2'}}/>
+        <Checkbox
+          checked={isSelected}
+          id={name}
+          disabled={disabled}
+          classNames={{ root: 'mr-2' }}
+        />
       </div>
       <div className="font-semibold ml-2">
         <label className="cursor-pointer" htmlFor={name}>

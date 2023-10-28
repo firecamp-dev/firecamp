@@ -139,10 +139,9 @@ const EmitterBody = ({
       //   return (
       //     <div className="fc-center-aligned">
       //       <FileInput
-      //         ButtonText="Select file"
-      //         path={''}
-      //         name={fileName}
-      //         onSelectFile={()=> {}}
+      //         placeholder="Select file"
+      //         value={{name: fileName}}
+      //         onChange={(file) => {}}
       //       />
       //     </div>
       //   );

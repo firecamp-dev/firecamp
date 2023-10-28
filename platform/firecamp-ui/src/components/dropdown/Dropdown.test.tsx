@@ -84,7 +84,7 @@ const DropDownDemo = (args: any) => {
                 hasDivider={true}
                 options={DropDownDemoArgs.options}
                 onSelect={item => {
-                    setSelected(item.name || 'oopss...')
+                    setSelected(item.name || 'oops...')
                 }} />
         </Dropdown>
     )

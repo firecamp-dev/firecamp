@@ -253,7 +253,7 @@ ${print(GraphQLParse(`query MyQuery{__typename }`))}`;
           // debugger;
           /**
            * if playground is being updated from external sources (like explorer) then It's default cursor position is always reset to last line
-           * due to that currentOperation (query) will reset to last query of the the playground. and Explorer's feed will changes suddenly at last query.
+           * due to that currentOperation (query) will reset to last query of the playground. and Explorer's feed will changes suddenly at last query.
            * to avoid it, if it founds cursor at last line then set current active query to get the same currentOperation from the GraphQLService
            **/
           // if (cursor.line == lastLineNo) {

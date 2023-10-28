@@ -3,7 +3,7 @@ import { FocusEventHandler, MouseEventHandler, ReactNode } from 'react';
 
 /** Table options */
 export interface ITableOptions {
-  /** disabled column's keys. One can not edit within the column included in to disabledColumns */
+  /** disabled column's keys. One cannot edit within the column included in disabledColumns */
   disabledColumns?: Array<string>;
 
   /** a boolean value whether allow to remove row or not */

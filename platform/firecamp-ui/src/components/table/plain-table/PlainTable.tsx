@@ -6,12 +6,12 @@ import { IPlainTable } from './PlainTable.interfaces';
 
 const _columns = [
   { id: 'key', key: 'key', name: 'Key', width: '150px' },
-  { id: 'value', key: 'value', name: 'Value', width: '150px' },
+  { id: 'value', key: 'value', name: 'Value', width: '200px' },
   {
     id: 'description',
     key: 'description',
     name: 'Description',
-    width: '100px',
+    width: '150px',
     resizeWithContainer: true,
   },
 ];

@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import createContext from 'zustand/context';
 import _cloneDeep from 'lodash/cloneDeep';
 import { ISocketIO, TId } from '@firecamp/types';
