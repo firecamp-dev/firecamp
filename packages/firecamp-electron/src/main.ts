@@ -1,10 +1,9 @@
+const electron = require('electron');
 const { app, BrowserWindow } = require('electron');
 
 const createWindow = () => {
-  const win = new BrowserWindow({
-    // width: 800,
-    // height: 600,
-  });
+  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+  const win = new BrowserWindow({ width, height });
 
   if (app.isPackaged) {
     // 'build/index.html'
