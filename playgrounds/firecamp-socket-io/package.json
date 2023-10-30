@@ -42,7 +42,7 @@
     "nanoid": "3.3.4",
     "prop-types": "^15.6.2",
     "react-ga": "^3.1.2",
-    "react-virtualized": "^9.21.5",
+    "react-virtualized": "^9.22.5",
     "socket.io-client-v2": "npm:socket.io-client@2.4.0",
     "socket.io-client-v3": "npm:socket.io-client@3.1.0",
     "socket.io-client-v4": "npm:socket.io-client@4.1.3",
