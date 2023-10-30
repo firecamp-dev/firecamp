@@ -1335,8 +1335,8 @@ importers:
   playgrounds/firecamp-rest:
     dependencies:
       '@firecamp/curl-to-firecamp':
-        specifier: ^1.0.1
-        version: 1.0.1(nanoid@3.3.4)
+        specifier: ^1.0.2
+        version: 1.0.2(nanoid@3.3.4)
       '@firecamp/rest-executor':
         specifier: workspace:*
         version: link:../firecamp-rest-executor
@@ -4644,13 +4644,13 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@firecamp/curl-to-firecamp@1.0.1(nanoid@3.3.4):
-    resolution: {integrity: sha512-NLiQvYp6280NwBITCm+XLDWhqyFEgBBFyPsz6VhY5xk66nzge3Qt10wC9QkM8JdWfUYmDobbRR++ul9lyoDqAw==}
+  /@firecamp/curl-to-firecamp@1.0.2(nanoid@3.3.4):
+    resolution: {integrity: sha512-rmKuORktz0+R25ZCE9WHVKCLhFQk02WTL6HhIRJ2eCFy24VaSclM3bTp25PTA+Q7147WXalw+RWY/eCZaAI+hA==}
     engines: {node: '>=14'}
     peerDependencies:
       nanoid: ^3.3.4
     dependencies:
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.2.2
       '@firecamp/url': 0.0.20
       '@firecamp/utils': 0.0.15
       nanoid: 3.3.4
@@ -4659,12 +4659,6 @@ packages:
 
   /@firecamp/types@0.1.14:
     resolution: {integrity: sha512-aZC5Luh9+nM/pmufDVUVqW7HArpVkupXOQ3P8nC+ONvutpEmCn2GxP//106pjX3EhCDiUqdDB7iG4htaUaJfsQ==}
-    engines: {node: '>=10'}
-    requiresBuild: true
-    dev: false
-
-  /@firecamp/types@0.1.21:
-    resolution: {integrity: sha512-dWnRsyrELcf3dwRdQHWofUhBHLibGh+Z6Jr9odMzUdY+PUn5fCQ4hNinP7sYAG2QvlqylKaKjn79n+r+ZtF6qg==}
     engines: {node: '>=10'}
     requiresBuild: true
     dev: false
