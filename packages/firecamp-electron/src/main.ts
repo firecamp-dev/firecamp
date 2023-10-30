@@ -1,8 +1,11 @@
-const electron = require('electron');
-const { app, BrowserWindow } = require('electron');
+import { app, BrowserWindow, ipcMain, screen } from 'electron';
+import RestExecutor from '@firecamp/rest-executor';
+
+// initialize the rest executor
+// const httpExecutor = new HttpExecutor();
 
 const createWindow = () => {
-  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const win = new BrowserWindow({ width, height });
 
   if (app.isPackaged) {
@@ -32,6 +35,10 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
   createWindow();
+
+  ipcMain.handle('http:send', async () => {
+    return RestExecutor;
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

@@ -533,15 +533,6 @@ importers:
         specifier: ^5.0.2
         version: 5.0.2
 
-  packages/firecamp-desktop:
-    devDependencies:
-      '@types/node':
-        specifier: ^20.8.9
-        version: 20.8.9
-      electron:
-        specifier: ^27.0.2
-        version: 27.0.2
-
   packages/firecamp-echo-server:
     dependencies:
       '@nestjs/common':
@@ -653,6 +644,19 @@ importers:
       typescript:
         specifier: 4.7.4
         version: 4.7.4
+
+  packages/firecamp-electron:
+    dependencies:
+      '@firecamp/rest-executor':
+        specifier: workspace:*
+        version: link:../../playgrounds/firecamp-rest-executor
+    devDependencies:
+      '@types/node':
+        specifier: ^20.8.9
+        version: 20.8.9
+      electron:
+        specifier: ^27.0.2
+        version: 27.0.2
 
   packages/firecamp-har:
     dependencies:

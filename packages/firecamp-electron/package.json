@@ -11,6 +11,9 @@
   "keywords": [],
   "author": "",
   "license": "AGPLv3",
+  "dependencies": {
+    "@firecamp/rest-executor": "workspace:*"
+  },
   "devDependencies": {
     "@types/node": "^20.8.9",
     "electron": "^27.0.2"
