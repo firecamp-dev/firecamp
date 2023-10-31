@@ -247,13 +247,12 @@ export default class RestExecutor implements IRestExecutor {
           // execute request
           const axiosResponse = await axios({
             /** @ts-ignore */
-            adapter: window?.__TAURI__ ? axiosTauriApiAdapter : null,
+            // adapter: window?.__TAURI__ ? axiosTauriApiAdapter : null,
             ...axiosRequest,
           });
           // normalize response according to Firecamp REST request's response
           const response = this._normalizeResponse(axiosResponse);
 
-          console.log(axiosResponse, response, 999888777);
           // prepare timeline of request execution
           response.timeline = this._timeline(axiosRequest, axiosResponse);
           return Promise.resolve({

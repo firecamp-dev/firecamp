@@ -906,9 +906,6 @@ importers:
       '@firecamp/rest':
         specifier: workspace:*
         version: link:../../playgrounds/firecamp-rest
-      '@firecamp/rest-executor':
-        specifier: workspace:*
-        version: link:../../playgrounds/firecamp-rest-executor
       '@firecamp/scripts':
         specifier: workspace:*
         version: link:../../packages/firecamp-scripts
@@ -1350,9 +1347,6 @@ importers:
       '@firecamp/curl-to-firecamp':
         specifier: ^1.0.2
         version: 1.0.2(nanoid@3.3.4)
-      '@firecamp/rest-executor':
-        specifier: workspace:*
-        version: link:../firecamp-rest-executor
       '@firecamp/scripts':
         specifier: workspace:*
         version: link:../../packages/firecamp-scripts

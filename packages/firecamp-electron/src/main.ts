@@ -1,19 +1,24 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import RestExecutor from '@firecamp/rest-executor';
+import * as path from 'node:path';
 
-// initialize the rest executor
-// const httpExecutor = new HttpExecutor();
 
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  const win = new BrowserWindow({ width, height });
+  const win = new BrowserWindow({
+    width,
+    height,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  });
 
   if (app.isPackaged) {
     // 'build/index.html'
     // win.loadURL(`file://${__dirname}/../../build/prod/index.html`);
   } else {
-    win.loadURL(`file://${__dirname}/../../../build/dev/index.html`);
-    // win.loadURL('http://localhost:3000');
+    // win.loadURL(`file://${__dirname}/../../../build/dev/index.html`);
+    win.loadURL('https://localhost:3000');
 
     win.webContents.openDevTools();
 
@@ -36,8 +41,19 @@ const createWindow = () => {
 app.whenReady().then(() => {
   createWindow();
 
-  ipcMain.handle('http:send', async () => {
-    return RestExecutor;
+  const reMap: Record<string, any> = {};
+  ipcMain.handle('http:send', async (event, request, variables) => {
+    reMap[request.__ref.id] = new RestExecutor();
+    const res = await reMap[request.__ref.id].send(request, variables);
+    // once the request is executed, free the cached executor
+    delete reMap[request.__ref.id];
+    return res;
+  });
+
+  ipcMain.handle('http:stop', async (event, requestId) => {
+    const restE = reMap[requestId];
+    if (restE) restE.cancel();
+    return;
   });
 
   app.on('activate', () => {
