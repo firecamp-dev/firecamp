@@ -67,20 +67,17 @@ const CollectionMenu = ({
 
             const existingFolders = useExplorerStore.getState().explorer.folders;
             const parentFolderId = folderId || collectionId;
-            // console.log(parentFolderId, "parentfolderid")
             const isDuplicateName = existingFolders.some(
-            (folder) =>
-            // console.log(`folder name ${folder.name} and folder parent id ${folder.__ref.collectionId}`),
-            
+            (folder) =>            
               folder.name === val && folder.__ref.collectionId === parentFolderId
-          );
+            );
 
-          if (isDuplicateName) {
-            return {
-              isValid: false,
-              message: 'A folder with the same name already exists in this location.',
-            };
-          }
+            if (isDuplicateName) {
+              return {
+                isValid: false,
+                message: 'A folder with the same name already exists in this location.',
+              };
+            }
             return {
               isValid,
               message:
