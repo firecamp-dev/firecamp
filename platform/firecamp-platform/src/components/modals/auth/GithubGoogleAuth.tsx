@@ -17,7 +17,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
   const _initApp = async (response, provider) => {
     try {
       // Close auth modal on Sign In success
-      onClose();
+      typeof onClose == 'function' && onClose();
       return Promise.resolve();
     } catch (error) {
       return Promise.reject({

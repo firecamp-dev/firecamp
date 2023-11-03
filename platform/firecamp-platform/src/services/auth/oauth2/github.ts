@@ -9,10 +9,11 @@ export const authorize = async (): Promise<string> => {
   try {
     // Execute following logic when using electron agent
     if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
-      return window.fc.auth.loginViaGithub({
-        clientId: GITHUB_CONFIG.CLIENT_ID,
-        scope: GITHUB_CONFIG.SCOPE.join(),
-      });
+      /** @ts-ignore */
+      return window.__electron__.auth.github(
+        GITHUB_CONFIG.CLIENT_ID,
+        GITHUB_CONFIG.SCOPE
+      );
     }
     // Execute following logic when using chrome extension
     else {
@@ -25,6 +26,8 @@ export const authorize = async (): Promise<string> => {
       console.log(url);
       // @ts-ignore
       window.location = url;
+
+      return Promise.resolve('');
     }
   } catch (error) {
     return Promise.reject(error);

@@ -6,4 +6,9 @@ contextBridge.exposeInMainWorld('__electron__', {
       ipcRenderer.invoke('http:send', request, variables),
     stop: (requestId: string) => ipcRenderer.invoke('http:stop', requestId),
   },
+  auth: {
+    github: (clientId: string, scope: string[]) => {
+      return ipcRenderer.invoke('auth:github', clientId, scope);
+    },
+  },
 });

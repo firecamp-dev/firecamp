@@ -51,21 +51,22 @@ export default async (
       }
       case EProvider.GITHUB:
         // Fetch auth code
-        githubAuth.authorize();
+        const code = await githubAuth.authorize();
 
-      // Send auth code to authenticate
-      // const response = await Rest.auth.viaGithub(code);
-      // console.log(response, "121212121")
+        // send auth code to authenticate
+        const response = await Rest.auth.viaGithub(code);
+        console.log(response, '121212121');
 
-      // if (validateAuthResponse(response?.data)) {
-      //   return Promise.resolve({
-      //     response: response.data,
-      //     provider: EProvider.GITHUB,
-      //   });
-      // } else
-      //   return Promise.reject({
-      //     message: 'Failed to login into your account',
-      //   });
+        if (response?.data) {
+          return Promise.resolve({
+            response: response.data,
+            provider: EProvider.GITHUB,
+          });
+        } else {F
+          return Promise.reject({
+            message: 'Failed to login into your account',
+          });
+        }
 
       default:
         console.log(provider);
