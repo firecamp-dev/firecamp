@@ -36,9 +36,7 @@ export const send = async (
     case EFirecampAgent.Desktop:
       //@ts-ignore
       return await window.__electron__.http.send(request, variables);
-    // return window.fc.restExecutor.send(request, variables);
     case EFirecampAgent.Extension:
-    // return extension.send(request, variables);
     case EFirecampAgent.Web:
       restExecutors[request.__ref.id] = new RestExecutor();
       //@ts-ignore
@@ -84,7 +82,6 @@ export const cancel = async (
     case EFirecampAgent.Desktop:
       /** @ts-ignore */
       return window.__electron__.http.stop(requestId);
-    // return window.fc.restExecutor.cancel(requestId);
     // case EFirecampAgent.Extension:
     //   return extension.cancel(requestId);
     case EFirecampAgent.Web:

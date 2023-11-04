@@ -4,6 +4,8 @@ import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 import CloudApiGlobal, { Rest } from '@firecamp/cloud-apis';
 import { ECloudApiHeaders } from '../types';
+import _auth from '../services/auth';
+import { EProvider } from '../services/auth/types';
 
 const IdentityPage = () => {
   const [error, setError] = useState('');
@@ -19,14 +21,14 @@ const IdentityPage = () => {
     if (errorDescription) setError(errorDescription);
     if (code) {
       CloudApiGlobal.setHost(process.env.FIRECAMP_API_HOST);
-      // Set  app version into cloud-api headers
+      // set  app version into cloud-api headers
       CloudApiGlobal.setGlobalHeaders({
         [ECloudApiHeaders.AppVersion]: process.env.APP_VERSION || '',
       });
-      Rest.auth
-        .viaGithub(code)
-        .then(({ data }) => {
-          localStorage.setItem('socketId', data.__meta.accessToken);
+
+      _auth
+        .signIn(EProvider.GITHUB, { username: '', password: '' }, code)
+        .then(async () => {
           localStorage.setItem(
             'authSuccessMessage',
             "You're signed in successfully."

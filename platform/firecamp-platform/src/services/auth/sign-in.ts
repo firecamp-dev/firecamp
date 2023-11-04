@@ -1,6 +1,8 @@
 import { Rest } from '@firecamp/cloud-apis';
+import { _misc } from '@firecamp/utils';
 import { EProvider, IAuthResponse } from './types';
 import { githubAuth, googleAuth } from './oauth2';
+import { EFirecampAgent } from '@firecamp/types';
 
 /** credentials require while sign-in using Firecamp domain */
 export interface ICredentials {
@@ -9,19 +11,18 @@ export interface ICredentials {
 }
 
 /**
- * sign-in user into their account via Firecamp, Google or GitHub domain
+ * sign-in user into their account via Firecamp, Google or GitHub
  */
 export default async (
   provider: EProvider,
-  credentials: ICredentials = { username: '', password: '' }
+  credentials: ICredentials = { username: '', password: '' },
+  code?: string // if github/google auth from web then oauth code will exist from oauth web redirect method
 ): Promise<{ response: IAuthResponse; provider: EProvider } | any> => {
-  console.log(provider, 111);
   try {
     const { username = '', password = '' } = credentials;
-
     switch (provider) {
       case EProvider.LOCAL: {
-        // Request to sign-in via Firecamp domain
+        // request to sign-in via email/password
         try {
           const response = await Rest.auth.signIn(username, password);
           // validate auth response
@@ -50,23 +51,32 @@ export default async (
         });
       }
       case EProvider.GITHUB:
-        // Fetch auth code
-        const code = await githubAuth.authorize();
+        // fetch auth code
+        const oAuthCode =
+          _misc.firecampAgent() == EFirecampAgent.Desktop
+            ? await githubAuth.authorize.electron()
+            : code;
 
         // send auth code to authenticate
-        const response = await Rest.auth.viaGithub(code);
-        console.log(response, '121212121');
 
-        if (response?.data) {
-          return Promise.resolve({
-            response: response.data,
-            provider: EProvider.GITHUB,
+        return Rest.auth
+          .viaGithub(oAuthCode)
+          .then(({ data }) => {
+            if (data) {
+              localStorage.setItem('socketId', data.__meta.accessToken);
+              return Promise.resolve({
+                response: data,
+                provider: EProvider.GITHUB,
+              });
+            } else {
+              return Promise.reject({
+                message: 'failed to login into your account',
+              });
+            }
+          })
+          .catch((e) => {
+            // setError(e.response?.data?.message || e.message);
           });
-        } else {F
-          return Promise.reject({
-            message: 'Failed to login into your account',
-          });
-        }
 
       default:
         console.log(provider);

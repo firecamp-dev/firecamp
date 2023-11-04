@@ -55,7 +55,7 @@ app.whenReady().then(() => {
     return;
   });
 
-  ipcMain.handle('auth:github', async (e, clientId, scopes = []) => {
+  ipcMain.handle('auth:github:code', async (e, clientId, scopes = []) => {
     const authWindow = new BrowserWindow({
       width: 800,
       height: 600,
