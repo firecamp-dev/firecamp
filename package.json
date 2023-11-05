@@ -17,7 +17,7 @@
     "lint": "eslint packages/firecamp-rest/src/**/*.{ts|tsx} packages/*.js packages-clients/*.js scripts webpack/*.js",
     "test": "jest",
     "prettify": "prettier --write \"platform/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
-    "pre-commit": "pnpm --filter=@firecamp/platform --filter=@firecamp/ui pre-commit",
+    "pre-commit": "pnpm --filter=@firecamp/platform --filter=@firecamp/ui pre-commit", 
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install"
   },

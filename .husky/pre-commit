@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-pnpm pre-commit
+#Remove Below Comment For Using Husky
+# pnpm pre-commit

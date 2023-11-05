@@ -34,7 +34,8 @@
     "chromatic": "npx chromatic --project-token=4db217014cde004",
     "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && pnpm copy-files",
     "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.scss\" \"src/**/*.css\" dist/",
-    "storybook:deploy": "pnpm chromatic --project-token=$(grep 'FIRECAMP_STORYBOOK_DEPLOY' ../../.env | cut -d '=' -f 2)"
+    "storybook:deploy": "pnpm chromatic --project-token=$(grep 'FIRECAMP_STORYBOOK_DEPLOY' ../../.env | cut -d '=' -f 2)",
+    "pre-commit":"pnpm run fix"
   },
   "bugs": {
     "url": "https://github.com/firecamp-dev/firecamp/issues"
