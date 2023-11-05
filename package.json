@@ -17,8 +17,14 @@
     "lint": "eslint packages/firecamp-rest/src/**/*.{ts|tsx} packages/*.js packages-clients/*.js scripts webpack/*.js",
     "test": "jest",
     "prettify": "prettier --write \"platform/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
-    "precommit": "lint-staged",
-    "preinstall": "npx only-allow pnpm"
+    "pre-commit": "pnpm --filter=@firecamp/platform --filter=@firecamp/ui pre-commit",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "**/*.ts": [
@@ -72,11 +78,11 @@
     "eslint-plugin-react": "^7.20.5",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.3",
     "ignore-loader": "^0.1.2",
     "jest-css-modules": "^2.1.0",
     "jest-css-modules-transform": "^4.4.2",
-    "lint-staged": "^13.1.2",
+    "lint-staged": "^15.0.2",
     "node-polyfill-webpack-plugin": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "postcss-loader": "^7.0.2",
