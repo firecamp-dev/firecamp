@@ -21,11 +21,6 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "**/*.ts": [
       "pnpm prettify",
