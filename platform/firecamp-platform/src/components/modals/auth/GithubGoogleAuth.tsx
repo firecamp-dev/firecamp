@@ -8,6 +8,7 @@ import { EProvider } from '../../../services/auth/types';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 import platformContext from '../../../services/platform-context';
+import AppService from '../../../services/app.service';
 
 const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
   const [disableSignInWithGoogleButton, setDisableSignInWithGoogleButton] =
@@ -37,9 +38,13 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
     return _auth
       .signIn(EProvider.GITHUB)
       .then(async ({ response, provider }) => {
-        // note: this'll be reachable only for desktop environment
-        await platformContext.app.initApp();
         platformContext.app.modals.close();
+        // note: this'll be reachable only for desktop environment
+        await platformContext.app.initApp().then(() => {
+          AppService.notify.success(`You're signed in successfully.`, {
+            labels: { alert: 'success' },
+          });
+        });
         await closeModal();
       })
       .catch((e) => {

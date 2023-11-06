@@ -2,7 +2,7 @@ import { EFirecampAgent } from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
 import { GITHUB_CONFIG } from './constants';
 
-const { CLIENT_ID, SCOPE, AUTH_URL } = GITHUB_CONFIG;
+const { CLIENT_ID, SCOPE, AUTH_URL, REDIRECT_URL } = GITHUB_CONFIG;
 
 export const authorize = {
   electron: (): Promise<string> => {
@@ -12,7 +12,7 @@ export const authorize = {
   web: (): void => {
     // web flow
     const scope = SCOPE.join(',');
-    const redirectUrl = `${location.origin}/identity.html?redirect=${location.href}`;
+    const redirectUrl = `${REDIRECT_URL}/?redirect=${location.href}`;
     const url = `${AUTH_URL}?client_id=${CLIENT_ID}&redirect_uri=${redirectUrl}&scope=${scope}`;
     // console.log(url);
     // @ts-ignore
