@@ -10,9 +10,7 @@ export interface ICredentials {
   password: string;
 }
 
-/**
- * sign-in user into their account via Firecamp, Google or GitHub
- */
+/**  sign-in user into their account via Firecamp, Google or GitHub */
 export default async (
   provider: EProvider,
   credentials: ICredentials = { username: '', password: '' },
@@ -81,15 +79,15 @@ export default async (
       default:
         console.log(provider);
         return Promise.reject({
-          message: 'Failed to login into your account',
+          message: 'failed to login into your account',
         });
     }
   } catch (e) {
     console.log(e, 'e....');
     return Promise.reject({
       message: e?.data?.message
-        ? `Failed to login into your account: ${e.data.message || '-'}`
-        : 'Failed to login into your account',
+        ? `failed to login into your account: ${e.data.message || '-'}`
+        : 'failed to login into your account',
     });
   }
 };

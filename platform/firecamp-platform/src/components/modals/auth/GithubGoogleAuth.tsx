@@ -7,6 +7,7 @@ import _auth from '../../../services/auth';
 import { EProvider } from '../../../services/auth/types';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
+import platformContext from '../../../services/platform-context';
 
 const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
   const [disableSignInWithGoogleButton, setDisableSignInWithGoogleButton] =
@@ -36,9 +37,9 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
     return _auth
       .signIn(EProvider.GITHUB)
       .then(async ({ response, provider }) => {
-        // note: tt'll never reach here as it'll redirect to the identity page after git auth
-        console.log(response, 'response....');
-        // window.location.reload();
+        // note: this'll be reachable only for desktop environment
+        await platformContext.app.initApp();
+        platformContext.app.modals.close();
         await closeModal();
       })
       .catch((e) => {
