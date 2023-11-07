@@ -145,7 +145,9 @@ export default class RestExecutor implements IRestExecutor {
 
     // TODO: Check sending file without serialize in desktop environment
     // parse body payload
+    console.log(body, 555);
     if (body?.value) {
+      console.log(body, 7777);
       axiosRequest.data = await parseBody(body);
     }
     return axiosRequest;
