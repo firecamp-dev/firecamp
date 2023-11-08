@@ -275,7 +275,7 @@ export default class RestExecutor implements IRestExecutor {
                 error: {
                   message: e.message,
                   code: e.code,
-                  e,
+                  e: isNode ? null : e, //@note: electron can not clone the error object to send over ipc
                 },
               },
               variables,
@@ -289,7 +289,7 @@ export default class RestExecutor implements IRestExecutor {
               error: {
                 message: e.message,
                 code: e.code,
-                e,
+                e: isNode ? null : e, //@note: electron can not clone the error object to send over ipc
               },
             },
             variables,

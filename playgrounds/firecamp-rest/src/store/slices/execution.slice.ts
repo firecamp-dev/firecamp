@@ -181,7 +181,7 @@ const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
         console.log({ response, variables, testResult });
         if (response?.error) {
           const error = response.error;
-          console.log(error.message, error.code, error.e.response, error.e);
+          console.log(error.message, error.code, error.e?.response, error.e);
         }
         if (response) {
           set((s) => ({ response, testResult, scriptErrors })); // TODO: check what to set/ response or testScriptResponse
