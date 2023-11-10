@@ -6,7 +6,10 @@
   "private": true,
   "scripts": {
     "start": "tsc && electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+    "build": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +20,20 @@
   "devDependencies": {
     "@types/node": "^20.8.9",
     "electron": "^27.0.2"
+  },
+  "build": {
+    "appId": "com.firecamp.desktop",
+    "files": [
+      "./build/**/*",
+      "dist/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "icons/app-icon.png"
+    }
   }
 }
