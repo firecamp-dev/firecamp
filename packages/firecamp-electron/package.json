@@ -1,6 +1,6 @@
 {
   "name": "@firecamp/desktop",
-  "version": "1.0.0",
+  "version": "3.3.0-beta",
   "description": "",
   "main": "build/main.js",
   "private": true,
@@ -25,8 +25,9 @@
     "electron-builder": "^24.6.4"
   },
   "build": {
-    "productName": "Firecamp",
     "appId": "com.firecamp.desktop",
+    "generateUpdatesFilesForAllChannels": true,
+    "productName": "Firecamp",
     "files": [
       "./build/**/*",
       "package.json",
