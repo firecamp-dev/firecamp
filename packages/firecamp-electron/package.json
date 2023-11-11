@@ -17,6 +17,8 @@
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/scripts": "workspace:*",
+    "electron-log": "^5.0.0",
+    "electron-updater": "^6.1.4",
     "react-fast-compare": "^3.2.2"
   },
   "devDependencies": {
@@ -46,6 +48,9 @@
       },
       "category": "public.app-category.developer-tools",
       "icon": "icons/app-icon.png"
+    },
+    "publish": {
+      "provider": "spaces"
     }
   }
 }
