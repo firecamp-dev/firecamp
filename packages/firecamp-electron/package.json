@@ -7,7 +7,7 @@
   "scripts": {
     "start": "tsc && electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pack": "electron-builder --dir",
+    "pack": "tsc && electron-builder --dir -c.compression=store -c.mac.identity=null",
     "build": "electron-builder",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -15,23 +15,34 @@
   "author": "",
   "license": "AGPLv3",
   "dependencies": {
-    "@firecamp/rest-executor": "workspace:*"
+    "@firecamp/rest-executor": "workspace:*",
+    "@firecamp/scripts": "workspace:*",
+    "react-fast-compare": "^3.2.2"
   },
   "devDependencies": {
     "@types/node": "^20.8.9",
-    "electron": "^27.0.2"
+    "electron": "^27.0.2",
+    "electron-builder": "^24.6.4"
   },
   "build": {
+    "productName": "Firecamp",
     "appId": "com.firecamp.desktop",
     "files": [
       "./build/**/*",
-      "dist/**/*",
-      "package.json"
+      "package.json",
+      {
+        "from": "../../build/development",
+        "to": "app"
+      }
     ],
     "directories": {
       "buildResources": "assets"
     },
     "mac": {
+      "artifactName": "${name}-${version}.${arch}.${ext}",
+      "target": {
+        "target": "dmg"
+      },
       "category": "public.app-category.developer-tools",
       "icon": "icons/app-icon.png"
     }

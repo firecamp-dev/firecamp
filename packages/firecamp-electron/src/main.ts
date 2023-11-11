@@ -1,12 +1,17 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
-import RestExecutor from '@firecamp/rest-executor';
+import RestExecutor from '@firecamp/rest-executor/dist/index';
 import * as path from 'node:path';
 
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const win = new BrowserWindow({
+    frame: false,
     width,
     height,
+    titleBarStyle: 'customButtonsOnHover',
+    // titleBarStyle: 'hiddenInset',
+    // titleBarStyle: 'hidden',
+    // transparent: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -14,7 +19,9 @@ const createWindow = () => {
 
   if (app.isPackaged) {
     // 'build/index.html'
-    // win.loadURL(`file://${__dirname}/../../build/prod/index.html`);
+    // win.loadURL(`file://${__dirname}/index.html`);
+    console.log(path.join(__dirname, 'index.html'));
+    win.loadFile(path.join(__dirname, '../app', 'index.html'));
   } else {
     // win.loadURL(`file://${__dirname}/../../../build/dev/index.html`);
     win.loadURL('https://localhost:3000');
