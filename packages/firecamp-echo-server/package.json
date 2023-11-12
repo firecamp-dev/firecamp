@@ -29,6 +29,7 @@
     "class-validator": "0.14.0",
     "cookie-parser": "^1.4.6",
     "hawk": "^9.0.1",
+    "moment": "^2.29.4",
     "raw-body": "^2.5.2",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",

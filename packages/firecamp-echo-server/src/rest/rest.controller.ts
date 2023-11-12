@@ -19,6 +19,7 @@ import {
   Ip,
   Header,
   StreamableFile,
+  Res,
 } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { response } from 'express';
@@ -35,7 +36,13 @@ import {
   hawk_key,
   oath_signing_key,
 } from 'src/assets/credentials';
-import { buildOauthSignatureBase, parseAuthHeader } from 'src/utilities/restControllerUtilities';
+import {
+  buildOauthSignatureBase,
+  parseAuthHeader,
+} from 'src/utilities/restControllerUtilities';
+import { get } from 'http';
+import * as moment from 'moment';
+
 
 @Controller('')
 export class RestController {
@@ -208,7 +215,7 @@ export class RestController {
       return res.status(401).send('Unauthorized');
     }
 
-    const argsMap = parseAuthHeader(headers.authorization.slice(7))
+    const argsMap = parseAuthHeader(headers.authorization.slice(7));
 
     if (
       !(
@@ -218,11 +225,11 @@ export class RestController {
         argsMap['response']
       )
     ) {
-        return res.status(401).send('Unauthorized');
+      return res.status(401).send('Unauthorized');
     }
 
-    if (argsMap['username'] !== echo_username){
-        return res.status(401).send('Unauthorized');
+    if (argsMap['username'] !== echo_username) {
+      return res.status(401).send('Unauthorized');
     }
 
     const HA1 = crypto
@@ -484,20 +491,309 @@ export class RestController {
     return { ip: ip };
   }
 
-  /** Utilities / Date and Time */
-  // 1. Current UTC time
-  // 2. Timestamp validity
-  // 3. Format timestamp
-  // 4. Extract timestamp unit
-  // 5. Time addition
-  // 6. Time subtraction
-  // 7. Start of time
-  // 8. Object representation
-  // 9. Before comparisons
-  // 10. After comparisons
-  // 11. Between timestamps
-  // 12. Leap year check
+  //  Date and Time
+  // Current UTC time
+  @Get('time/now')
+  timeNow() {
+    return new Date().toUTCString();
+  }
 
+  // Timestamp validity
+  @Get('time/valid')
+  timeValid(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format } = queryParams;
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+
+    const parsed = moment(timestamp, format, locale, strict);
+
+    return res.json({ valid: parsed.isValid() });
+  }
+
+  // Format timestamp
+  @Get('time/format')
+  timeFormat(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format } = queryParams;
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+
+    const parsed = moment(timestamp, format, locale, strict).format(format);
+
+    console.log(parsed);
+    return res.json({ format: parsed });
+  }
+
+  // Extract timestamp unit
+  @Get('time/extract')
+  timeExtract(@Query() queryParams, @Response() res) {
+    const { locale, format } = queryParams;
+    const timestamp = queryParams.timestamp || new Date().toUTCString();
+    const unit = queryParams.unit && queryParams.unit.toLowerCase() || 'year'
+    const strict = queryParams['strict']
+    ? queryParams['strict'].toLowerCase() === 'true'
+    : false;
+
+    const parsed = moment(timestamp, locale, format, strict)
+    const obj = {
+      years: parsed.year(),
+      months: parsed.month(),
+      date: parsed.date(),
+      hours: parsed.hour(),
+      minutes: parsed.minute(),
+      seconds: parsed.second(),
+      milliseconds: parsed.millisecond(),
+    };
+
+    return res.json({unit: obj[unit]})
+
+  }
+
+  // Time addition
+  @Get('time/add')
+  timeAddition(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format } = queryParams;
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+
+    const {
+      years,
+      days,
+      months,
+      quarters,
+      weeks,
+      hours,
+      minutes,
+      seconds,
+      milliseconds,
+    } = queryParams;
+
+    const additions = [
+      { unit: 'year', amount: years },
+      { unit: 'day', amount: days },
+      { unit: 'month', amount: months },
+      { unit: 'quarter', amount: quarters },
+      { unit: 'week', amount: weeks },
+      { unit: 'hour', amount: hours },
+      { unit: 'minute', amount: minutes },
+      { unit: 'second', amount: seconds },
+      { unit: 'millisecond', amount: milliseconds },
+    ];
+
+    const parsed = moment(timestamp, format, locale, strict);
+
+    additions.forEach((addition) => {
+      if (!addition.amount) {
+        return;
+      }
+      parsed;
+      parsed.add(addition.amount, addition.unit);
+    });
+
+    console.log(parsed);
+    return res.json({ sum: parsed });
+  }
+  // Time subtraction
+  @Get('time/subtract')
+  timeSubtraction(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format } = queryParams;
+
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+
+    const {
+      years,
+      days,
+      months,
+      quarters,
+      weeks,
+      hours,
+      minutes,
+      seconds,
+      milliseconds,
+    } = queryParams;
+
+    const subtractions = [
+      { unit: 'years', amount: years },
+      { unit: 'days', amount: days },
+      { unit: 'months', amount: months },
+      { unit: 'quarters', amount: quarters },
+      { unit: 'weeks', amount: weeks },
+      { unit: 'hours', amount: hours },
+      { unit: 'minutes', amount: minutes },
+      { unit: 'seconds', amount: seconds },
+      { unit: 'milliseconds', amount: milliseconds },
+    ];
+
+    const parsed = moment(timestamp, format, locale, strict);
+
+    subtractions.forEach((subtraction) => {
+      if (!subtraction.amount) {
+        return;
+      }
+      parsed.subtract(subtraction.amount, subtraction.unit);
+    });
+
+    return res.json({ difference: parsed });
+  }
+
+  // Start of time
+  @Get('time/start')
+  startOf(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format, unit } = queryParams;
+
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+
+    const parsed = moment(timestamp, format, locale, strict);
+
+    parsed.startOf(unit).format();
+
+    return res.json({ start: parsed.startOf(unit).format() });
+  }
+
+  // Object representation
+  @Get('time/object')
+  objectRepresentation(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format } = queryParams;
+
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+    
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+    const parsed = moment(timestamp, format, locale, strict);
+    const obj = {
+      years: parsed.year(),
+      months: parsed.month(),
+      date: parsed.date(),
+      hours: parsed.hour(),
+      minutes: parsed.minute(),
+      seconds: parsed.second(),
+      milliseconds: parsed.millisecond(),
+    };
+
+    console.log(obj);
+
+    return res.json(obj);
+  }
+  // Before comparisons
+  @Get('time/before')
+  timeBefore(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format, target } = queryParams;
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+    if (!target) {
+      return res.status(400).send('Invalid undefined in `target` query param');
+    }
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+    const parsed = moment(timestamp, format, locale, strict);
+    const parsedTarget = moment(target, format, locale, strict);
+
+    return res.json({ before: parsed.isBefore(parsedTarget) });
+  }
+  // After comparisons
+  @Get('time/after')
+  timeAfter(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format, target } = queryParams;
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+    if (!target) {
+      return res.status(400).send('Invalid undefined in `target` query param');
+    }
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+    const parsed = moment(timestamp, format, locale, strict);
+    const parsedTarget = moment(target, format, locale, strict);
+
+    return res.json({ after: parsed.isAfter(parsedTarget) });
+  }
+
+  // Between timestamps
+  @Get('time/between')
+  timeBetween(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format, start, end } = queryParams;
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+    if (!start) {
+      return res.status(400).send('Invalid undefined in `start` query param');
+    }
+    if (!end) {
+      return res.status(400).send('Invalid undefined in `end` query param');
+    }
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+    const parsed = moment(timestamp, format, locale, strict);
+    const parsedStart = moment(start, format, locale, strict);
+    const parsedEnd = moment(end, format, locale, strict);
+
+    return res.json({
+      between: parsed.isAfter(parsedStart) && parsed.isBefore(parsedEnd),
+    });
+  }
+
+  // Leap year check
+  @Get('time/leap')
+  leap(@Query() queryParams, @Response() res) {
+    const { timestamp, locale, format } = queryParams;
+    if (!timestamp) {
+      return res
+        .status(400)
+        .send('Invalid undefined in `timestamp` query param');
+    }
+
+    const strict = queryParams['strict']
+      ? queryParams['strict'].toLowerCase() === 'true'
+      : false;
+    const parsed = moment(timestamp, format, locale, strict);
+
+    return res.json({ leap: parsed.isLeapYear() });
+  }
   /** Auth: Digest */
   // 1. DigestAuth Request
 }
