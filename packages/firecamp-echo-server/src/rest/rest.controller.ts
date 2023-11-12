@@ -30,11 +30,11 @@ import { join } from 'path';
 import { createDeflate, createGzip } from 'zlib';
 import { Readable } from 'stream';
 import {
-  echo_username,
-  echo_password,
-  hawk_id,
-  hawk_key,
-  oath_signing_key,
+  echoUsername,
+  echoPassword,
+  hawkId,
+  hawkKey,
+  oathSigningKey,
 } from 'src/assets/credentials';
 import {
   buildOauthSignatureBase,
@@ -187,7 +187,7 @@ export class RestController {
     const username = decodedSplit[0];
     const password = decodedSplit[1];
 
-    if (username !== echo_username || password !== echo_password) {
+    if (username !== echoUsername || password !== echoPassword) {
       return res.status(401).send('Unauthorized');
     }
 
@@ -228,13 +228,13 @@ export class RestController {
       return res.status(401).send('Unauthorized');
     }
 
-    if (argsMap['username'] !== echo_username) {
+    if (argsMap['username'] !== echoUsername) {
       return res.status(401).send('Unauthorized');
     }
 
     const HA1 = crypto
       .createHash('md5')
-      .update(`${argsMap['username']}:${argsMap['realm']}:${echo_password}`)
+      .update(`${argsMap['username']}:${argsMap['realm']}:${echoPassword}`)
       .digest('hex');
     const HA2 = crypto
       .createHash('md5')
@@ -256,12 +256,12 @@ export class RestController {
   @Get('hawk-auth')
   async hawkAuth(@Req() req, @Response() res) {
     const credentialsFunc = function (id) {
-      if (id !== hawk_id) {
+      if (id !== hawkId) {
         return undefined;
       }
 
       const credentials: Credentials = {
-        key: hawk_key,
+        key: hawkKey,
         algorithm: 'sha256',
         user: 'Steve',
       };
@@ -317,7 +317,7 @@ export class RestController {
     const signatureBase = buildOauthSignatureBase('GET', base_uri, oauthParams);
 
     const expectedSignature = crypto
-      .createHmac('sha1', oath_signing_key)
+      .createHmac('sha1', oathSigningKey)
       .update(signatureBase)
       .digest('base64');
 
@@ -333,7 +333,7 @@ export class RestController {
         base_uri,
         normalized_param_string,
         base_string: baseString,
-        signing_key: oath_signing_key,
+        signing_key: oathSigningKey,
       });
     }
     const status = 'pass';
