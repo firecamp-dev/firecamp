@@ -1,6 +1,6 @@
 {
   "name": "@firecamp/desktop",
-  "version": "3.3.0-beta",
+  "version": "1.0.0-beta",
   "description": "",
   "main": "build/main.js",
   "private": true,
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.9",
-    "electron": "^27.0.2",
-    "electron-builder": "^24.6.4"
+    "electron": "^27.1.2",
+    "electron-builder": "^24.9.1"
   },
   "build": {
     "appId": "com.firecamp.desktop",
@@ -42,15 +42,25 @@
       "buildResources": "assets"
     },
     "mac": {
+      "sign": false,
       "artifactName": "${name}-${version}.${arch}.${ext}",
       "target": {
         "target": "dmg"
       },
       "category": "public.app-category.developer-tools",
-      "icon": "icons/app-icon.png"
-    },
-    "publish": {
-      "provider": "spaces"
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "icon": "icons/app-icon.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "publish": {
+        "provider": "spaces",
+        "name": "firecamp",
+        "region": "ams3",
+        "channel": "latest",
+        "path": "/desktop-apps/mac-dmg",
+        "acl": "public-read"
+      }
     }
   }
 }
