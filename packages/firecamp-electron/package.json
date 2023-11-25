@@ -5,10 +5,11 @@
   "main": "build/main.js",
   "private": true,
   "scripts": {
+    "afterSign": "scripts/notarize.js",
     "start": "tsc && electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "tsc && electron-builder --dir -c.compression=store -c.mac.identity=null",
-    "build": "electron-builder",
+    "build": "electron-builder -c.mac.identity=null",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
@@ -18,6 +19,7 @@
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/scripts": "workspace:*",
     "electron-log": "^5.0.0",
+    "electron-notarize": "^1.2.2",
     "electron-updater": "^6.1.4",
     "react-fast-compare": "^3.2.2"
   },
@@ -42,7 +44,6 @@
       "buildResources": "assets"
     },
     "mac": {
-      "sign": false,
       "artifactName": "${name}-${version}.${arch}.${ext}",
       "target": {
         "target": "dmg"
