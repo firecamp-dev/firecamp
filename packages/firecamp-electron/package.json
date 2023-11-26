@@ -1,7 +1,8 @@
 {
-  "name": "@firecamp/desktop",
-  "version": "1.0.0-beta",
-  "description": "",
+  "name": "@firecamp/electron",
+  "productName": "Firecamp",
+  "version": "3.0.0",
+  "description": "The Firecamp Desktop Application",
   "main": "build/main.js",
   "private": true,
   "scripts": {
@@ -29,7 +30,7 @@
     "electron-builder": "^24.9.1"
   },
   "build": {
-    "appId": "com.firecamp.desktop",
+    "appId": "com.firecamp.electron",
     "generateUpdatesFilesForAllChannels": true,
     "productName": "Firecamp",
     "files": [
@@ -44,14 +45,15 @@
       "buildResources": "assets"
     },
     "mac": {
-      "artifactName": "${name}-${version}.${arch}.${ext}",
+      "artifactName": "firecamp-${version}.${arch}.${ext}",
+      "executableName": "Firecamp",
       "target": {
         "target": "dmg"
       },
       "category": "public.app-category.developer-tools",
       "entitlements": "assets/entitlements.mac.plist",
       "entitlementsInherit": "assets/entitlements.mac.plist",
-      "icon": "icons/app-icon.png",
+      "icon": "assets/icons/app-icon.icns",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "publish": {
@@ -62,6 +64,9 @@
         "path": "/desktop-apps/mac-dmg",
         "acl": "public-read"
       }
+    },
+    "dmg": {
+      "sign": false
     }
   }
 }
