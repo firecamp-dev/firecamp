@@ -147,12 +147,16 @@ const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
   },
 
   prepareRequestForExecution: () => {
-    const { request, prepareAuthForExecution, prepareScriptsForExecution } =
-      get();
+    const {
+      request,
+      runtime: { authHeaders = [] },
+      prepareAuthForExecution,
+      prepareScriptsForExecution,
+    } = get();
     const auth = prepareAuthForExecution();
     const { preScripts, postScripts } = prepareScriptsForExecution();
     return {
-      ...request,
+      ...{ ...request, headers: [...request.headers, ...authHeaders] }, // merge auth headers to main headers
       auth,
       preScripts,
       postScripts,
