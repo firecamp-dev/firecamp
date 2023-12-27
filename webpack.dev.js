@@ -33,12 +33,12 @@ module.exports = merge(base, {
     ],
   },
   devServer: {
-    server: 'https',
-    https: {
-      key: readFileSync('x-dev-certs/localhost.key.pem'),
-      cert: readFileSync('x-dev-certs/localhost.cert.pem'),
-      ca: readFileSync('x-dev-certs/ca/rootCA.pem'),
-    },
+    // server: 'https',
+    // https: {
+    // key: readFileSync('x-dev-certs/localhost.key.pem'),
+    // cert: readFileSync('x-dev-certs/localhost.cert.pem'),
+    // ca: readFileSync('x-dev-certs/ca/rootCA.pem'),
+    // },
     static: path.join(__dirname, './build/development'),
     compress: true,
     port: 3000,

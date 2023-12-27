@@ -24,9 +24,16 @@ const createWindow = () => {
     win.loadFile(path.join(__dirname, '../app', 'index.html'));
   } else {
     // win.loadURL(`file://${__dirname}/../../../build/dev/index.html`);
-    win.loadURL('https://localhost:3000');
+    win.loadURL('http://localhost:3000');
 
     win.webContents.openDevTools();
+
+    win.webContents.on(
+      'did-fail-load',
+      (event, errorCode, errorDescription) => {
+        console.log('Failed to load:', errorCode, errorDescription);
+      }
+    );
 
     // Hot Reloading on 'node_modules/.bin/electronPath'
     // require('electron-reload')(__dirname, {
