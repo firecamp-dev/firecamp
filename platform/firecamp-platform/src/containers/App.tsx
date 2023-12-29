@@ -38,7 +38,6 @@ const App: FC<any> = () => {
     const init = async () => {
       setTimeout(async () => {
         await platformContext.app.initApp();
-        // await initApp();
       }, 100);
     };
     init();
