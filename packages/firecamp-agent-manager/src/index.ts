@@ -10,7 +10,7 @@ import {
 import RestExecutor from '@firecamp/rest-executor';
 import parseBody from '@firecamp/rest-executor/dist/helpers/body';
 import { _object } from '@firecamp/utils';
-// import * as extension from './chrome';
+import * as extension from './chrome';
 
 const restExecutors: { [key: TId]: RestExecutor } = {};
 
@@ -97,6 +97,6 @@ export const cancel = async (
   }
 };
 
-// export const pingExtension = (): Promise<string> => {
-//   // return extension.ping();
-// };
+export const pingExtension = (): Promise<string> => {
+  return extension.ping();
+};

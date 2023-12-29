@@ -13,6 +13,7 @@ import { platformEmitter } from './platform-emitter';
 import { useExplorerStore } from '../store/explorer';
 import _auth from '../services/auth';
 import { EProvider } from '../services/auth/types';
+import { ecies } from './ecies/ecies';
 
 const userService = {
   isLoggedIn: () => {
@@ -87,13 +88,15 @@ const initApp = async () => {
 
 const initSession = async () => {
   const { fetchExplorer } = useExplorerStore.getState();
-  const socketId = localStorage.getItem('socketId');
+  const accessToken = await ecies.getAccessToken(); //.catch(console.log);
+  if (!accessToken) return;
 
   //1/ check if user is logged in or not
   const wrsId = localStorage.getItem('workspace');
-  // if (!socketId) return AppService.modals.openSignIn()
+  // if (!accessToken) return AppService.modals.openSignIn()
   CloudApiGlobal.setGlobalHeaders({
     [ECloudApiHeaders.WorkspaceId]: wrsId,
+    [ECloudApiHeaders.Authorization]: `bearer ${accessToken}`,
   });
   Rest.auth
     .session(wrsId)
@@ -111,7 +114,7 @@ const initSession = async () => {
         Realtime.connect({
           endpoint: process.env.FIRECAMP_API_HOST,
           auth: {
-            token: socketId,
+            token: accessToken,
             workspace: wrsId,
           },
           userId: user.__ref.id,
@@ -176,7 +179,7 @@ const logout = () => {
   Rest.auth
     .logout()
     .then((res) => {
-      localStorage.removeItem('socketId');
+      ecies.clear();
       localStorage.removeItem('switchToOrg');
       localStorage.removeItem('workspace');
       localStorage.removeItem('org');

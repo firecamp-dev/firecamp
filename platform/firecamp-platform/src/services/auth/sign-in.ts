@@ -1,8 +1,9 @@
 import { Rest } from '@firecamp/cloud-apis';
 import { _misc } from '@firecamp/utils';
+import { EFirecampAgent } from '@firecamp/types';
 import { EProvider, IAuthResponse } from './types';
 import { githubAuth, googleAuth } from './oauth2';
-import { EFirecampAgent } from '@firecamp/types';
+import { ecies } from '../ecies/ecies';
 
 /** credentials require while sign-in using Firecamp domain */
 export interface ICredentials {
@@ -22,10 +23,14 @@ export default async (
       case EProvider.LOCAL: {
         // request to sign-in via email/password
         try {
-          const response = await Rest.auth.signIn(username, password);
+          const { data } = await Rest.auth.signIn(username, password);
+          const {
+            __meta: { accessToken, refreshToken },
+          } = data;
+          await ecies.setTokens(accessToken, refreshToken);
           // validate auth response
           return Promise.resolve({
-            response: response.data,
+            response: data,
             provider: EProvider.LOCAL,
           });
         } catch (e) {
@@ -59,9 +64,12 @@ export default async (
 
         return Rest.auth
           .viaGithub(oAuthCode)
-          .then(({ data }) => {
+          .then(async ({ data }) => {
             if (data) {
-              localStorage.setItem('socketId', data.__meta.accessToken);
+              const {
+                __meta: { accessToken, refreshToken },
+              } = data;
+              await ecies.setTokens(accessToken, refreshToken);
               return Promise.resolve({
                 response: data,
                 provider: EProvider.GITHUB,
