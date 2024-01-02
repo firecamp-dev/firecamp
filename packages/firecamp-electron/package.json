@@ -6,11 +6,11 @@
   "main": "build/main.js",
   "private": true,
   "scripts": {
-    "afterSign": "scripts/notarize.js",
     "start": "tsc && electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "tsc && electron-builder --dir -c.compression=store -c.mac.identity=null",
-    "build": "electron-builder -c.mac.identity=null",
+    "build": "electron-builder",
+    "build:release": "electron-builder --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
@@ -33,11 +33,12 @@
     "appId": "com.firecamp.electron",
     "generateUpdatesFilesForAllChannels": true,
     "productName": "Firecamp",
+    "afterSign": "scripts/notarize.js",
     "files": [
       "./build/**/*",
       "package.json",
       {
-        "from": "../../build/development",
+        "from": "../../build/production",
         "to": "app"
       }
     ],
@@ -48,22 +49,30 @@
       "artifactName": "firecamp-${version}.${arch}.${ext}",
       "executableName": "Firecamp",
       "target": {
-        "target": "dmg"
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
       },
       "category": "public.app-category.developer-tools",
-      "entitlements": "entitlements.mac.plist",
-      "entitlementsInherit": "entitlements.mac.plist",
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
       "icon": "icons/mac/512.png",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
-      "publish": {
-        "provider": "spaces",
-        "name": "firecamp",
-        "region": "ams3",
-        "channel": "latest",
-        "path": "/desktop-apps/mac-dmg",
-        "acl": "public-read"
-      }
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "firecamp-dev",
+          "repo": "website"
+        },
+        {
+          "provider": "spaces",
+          "name": "firecamp",
+          "region": "ams3",
+          "channel": "latest",
+          "path": "/desktop-apps/mac-dmg",
+          "acl": "public-read"
+        }
+      ]
     },
     "dmg": {
       "sign": false
