@@ -2,8 +2,9 @@ import { app, BrowserWindow, ipcMain, nativeImage, screen } from 'electron';
 import RestExecutor from '@firecamp/rest-executor/dist/index';
 import * as path from 'node:path';
 import { appIcon, trayIcon } from './icon';
-import AppUpdater from './updater';
+import { AppUpdate } from './updater/updater';
 
+const appUpdater = new AppUpdate();
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const win = new BrowserWindow({
@@ -52,11 +53,21 @@ const createWindow = () => {
     //   hardResetMethod: 'exit',
     // });
   }
+  win.on('ready-to-show', () => {
+    win.maximize();
+    win.show();
+    win.focus();
+
+    if (!appUpdater.winEventsRegistered) {
+      appUpdater.registerEvents(win);
+      appUpdater.showMsg = false;
+      appUpdater.checkForUpdate();
+    }
+  });
 };
 
 app.whenReady().then(() => {
   createWindow();
-  const appUpdater = new AppUpdater();
 
   const reMap: Record<string, any> = {};
   ipcMain.handle('http:send', async (event, request, variables) => {
