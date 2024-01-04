@@ -653,6 +653,9 @@ importers:
       '@firecamp/scripts':
         specifier: workspace:*
         version: link:../firecamp-scripts
+      electron-is-dev:
+        specifier: ^2.0.0
+        version: 2.0.0
       electron-log:
         specifier: ^5.0.0
         version: 5.0.0
@@ -15061,6 +15064,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /electron-is-dev@2.0.0:
+    resolution: {integrity: sha512-3X99K852Yoqu9AcW50qz3ibYBWY79/pBhlMCab8ToEWS48R0T9tyxRiQhwylE7zQdXrMnx2JKqUJyMPmt5FBqA==}
+    dev: false
 
   /electron-log@5.0.0:
     resolution: {integrity: sha512-vB3akupmQvA8jAyNL9rULZtf6WoP8vsabjXsRtiqXS6/D37SwN/4LEyj4JD+9Bv6xoTcx/LrVnsIKEEWdq5ClQ==}

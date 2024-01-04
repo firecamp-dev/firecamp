@@ -1,6 +1,8 @@
-import { app, BrowserWindow, ipcMain, screen } from 'electron';
+import { app, BrowserWindow, ipcMain, nativeImage, screen } from 'electron';
 import RestExecutor from '@firecamp/rest-executor/dist/index';
 import * as path from 'node:path';
+import { appIcon, trayIcon } from './icon';
+import AppUpdater from './updater';
 
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -8,6 +10,7 @@ const createWindow = () => {
     frame: false,
     width,
     height,
+    icon: nativeImage.createFromPath(appIcon),
     titleBarStyle: 'customButtonsOnHover',
     // titleBarStyle: 'hiddenInset',
     // titleBarStyle: 'hidden',
@@ -53,6 +56,7 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
   createWindow();
+  const appUpdater = new AppUpdater();
 
   const reMap: Record<string, any> = {};
   ipcMain.handle('http:send', async (event, request, variables) => {

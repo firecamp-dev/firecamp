@@ -1,6 +1,7 @@
 {
   "name": "@firecamp/electron",
-  "version": "3.0.0",
+  "productName": "Firecamp",
+  "version": "3.0.1",
   "description": "The Firecamp Desktop Application",
   "main": "build/main.js",
   "private": true,
@@ -14,7 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "tsc && electron-builder --dir -c.compression=store -c.mac.identity=null",
     "build": "electron-builder -c.mac.identity=null",
-    "build:release": "electron-builder --linux --x64 --publish always",
+    "build:release": "electron-builder -m --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
@@ -23,6 +24,7 @@
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/scripts": "workspace:*",
+    "electron-is-dev": "^2.0.0",
     "electron-log": "^5.0.0",
     "electron-notarize": "^1.2.2",
     "electron-updater": "^6.1.4",
@@ -58,7 +60,9 @@
       "type": "distribution",
       "target": {
         "target": "dmg",
-        "arch": ["x64"]
+        "arch": [
+          "x64"
+        ]
       },
       "category": "public.app-category.developer-tools",
       "entitlements": "assets/entitlements.mac.plist",
@@ -72,7 +76,9 @@
       "category": "Development",
       "target": {
         "target": "AppImage",
-        "arch": ["x64", "arm64"]
+        "arch": [
+          "x64"
+        ]
       }
     },
     "nsis": {
@@ -81,15 +87,12 @@
     },
     "win": {
       "icon": "icons/win/logo.ico",
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "verifyUpdateCodeSignature": false
     },
     "publish": [
-      {
-        "provider": "github",
-        "owner": "firecamp-dev",
-        "repo": "website"
-      },
       {
         "provider": "spaces",
         "name": "firecamp",

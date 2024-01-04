@@ -8,3 +8,4 @@ src/**.js
 coverage
 *.log
 !src/declarations.d.ts
+dev-app-update.yml
