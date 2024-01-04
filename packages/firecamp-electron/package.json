@@ -1,16 +1,20 @@
 {
   "name": "@firecamp/electron",
-  "productName": "Firecamp",
   "version": "3.0.0",
   "description": "The Firecamp Desktop Application",
   "main": "build/main.js",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/firecamp-dev/website.git",
+    "__directory": "packages/firecamp-electron"
+  },
   "scripts": {
     "start": "tsc && electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "tsc && electron-builder --dir -c.compression=store -c.mac.identity=null",
-    "build": "electron-builder",
-    "build:release": "electron-builder --publish always",
+    "build": "electron-builder -c.mac.identity=null",
+    "build:release": "electron-builder --linux --x64 --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
@@ -45,37 +49,55 @@
     "directories": {
       "buildResources": "assets"
     },
+    "dmg": {
+      "sign": false
+    },
     "mac": {
-      "artifactName": "firecamp-${version}.${arch}.${ext}",
+      "artifactName": "firecamp-${version}.electron.${arch}.${ext}",
       "executableName": "Firecamp",
+      "type": "distribution",
       "target": {
         "target": "dmg",
-        "arch": ["x64", "arm64"]
+        "arch": ["x64"]
       },
       "category": "public.app-category.developer-tools",
       "entitlements": "assets/entitlements.mac.plist",
       "entitlementsInherit": "assets/entitlements.mac.plist",
       "icon": "icons/mac/512.png",
       "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "publish": [
-        {
-          "provider": "github",
-          "owner": "firecamp-dev",
-          "repo": "website"
-        },
-        {
-          "provider": "spaces",
-          "name": "firecamp",
-          "region": "ams3",
-          "channel": "latest",
-          "path": "/desktop-apps/mac-dmg",
-          "acl": "public-read"
-        }
-      ]
+      "gatekeeperAssess": false
     },
-    "dmg": {
-      "sign": false
-    }
+    "linux": {
+      "icon": "icons/mac/512.png",
+      "category": "Development",
+      "target": {
+        "target": "AppImage",
+        "arch": ["x64", "arm64"]
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "icon": "icons/win/logo.ico",
+      "target": ["nsis"],
+      "verifyUpdateCodeSignature": false
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "firecamp-dev",
+        "repo": "website"
+      },
+      {
+        "provider": "spaces",
+        "name": "firecamp",
+        "region": "ams3",
+        "channel": "latest",
+        "path": "/desktop-apps/mac-dmg",
+        "acl": "public-read"
+      }
+    ]
   }
 }
