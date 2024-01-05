@@ -1,10 +1,18 @@
-import { app, BrowserWindow, ipcMain, nativeImage, screen } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  nativeImage,
+  screen,
+} from 'electron';
 import RestExecutor from '@firecamp/rest-executor/dist/index';
 import * as path from 'node:path';
 import { appIcon, trayIcon } from './icon';
-import { AppUpdate } from './updater/updater';
+import { AppUpdater } from './updater/updater';
+import { prepareAppMenus } from './menu';
 
-const appUpdater = new AppUpdate();
+const appUpdater = new AppUpdater();
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const win = new BrowserWindow({
@@ -53,6 +61,9 @@ const createWindow = () => {
     //   hardResetMethod: 'exit',
     // });
   }
+
+  Menu.setApplicationMenu(prepareAppMenus(win, appUpdater));
+
   win.on('ready-to-show', () => {
     win.maximize();
     win.show();
@@ -60,8 +71,7 @@ const createWindow = () => {
 
     if (!appUpdater.winEventsRegistered) {
       appUpdater.registerEvents(win);
-      appUpdater.showMsg = false;
-      appUpdater.checkForUpdate();
+      appUpdater.checkForUpdate(false);
     }
   });
 };
