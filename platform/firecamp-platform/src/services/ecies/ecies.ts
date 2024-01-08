@@ -1,22 +1,30 @@
 import { encrypt, decrypt, PrivateKey, PublicKey } from 'eciesjs';
+import CloudApiGlobal, { Rest } from '@firecamp/cloud-apis';
 import { fcEncryptedIdb } from '../idb/idb';
+import { ECloudApiHeaders } from '../../types';
 
 class Ecies {
   private db: typeof fcEncryptedIdb;
   constructor() {
     this.db = fcEncryptedIdb;
     this.init();
+
+    setInterval(() => {
+      this.rotateTokens();
+    }, 5 * 60 * 1000); // check for token rotation on every 5min
   }
-  private async init(): Promise<{ secret: any; publicKey: any }> {
-    let [s, pbk] = await this.db.getMany(['s', 'pbk']);
-    if (s && pbk) return { secret: s, publicKey: pbk };
+  private async init(): Promise<{ secret: any; publicKey: any; ts: number }> {
+    let [s, pbk, ts] = await this.db.getMany(['s', 'pbk', 'ts']);
+    if (s && pbk && ts) return { secret: s, publicKey: pbk, ts };
 
     const sk = new PrivateKey();
+    const _ts = new Date().valueOf();
     await this.db.setMany([
       ['s', sk.secret],
       ['pbk', sk.publicKey],
+      ['ts', _ts],
     ]);
-    return { secret: sk.secret, publicKey: sk.publicKey };
+    return { secret: sk.secret, publicKey: sk.publicKey, ts: _ts };
   }
 
   private async encrypt(data: string) {
@@ -31,6 +39,33 @@ class Ecies {
     return decrypt(_s, data).toString();
   }
 
+  // silently rotate access and refresh tokens if the last timestamp is 30min old
+  public async rotateTokens() {
+    let ts = await this.db.get('ts');
+    if (!ts) ts = 0;
+    const cts = new Date().valueOf();
+    // if the ts diff is less than 30min then don't rotate token
+    if (Math.abs(cts - ts) < 30 * 60 * 1000) return false;
+
+    try {
+      const at = await this.getAccessToken();
+      const rt = await this.getRefreshToken();
+      if (!at || !rt) return false;
+      const { data } = await Rest.auth.rotateTokens(at, rt);
+      if (!data?.data) return false;
+      const { accessToken, refreshToken } = data.data;
+      await this.setTokens(accessToken, refreshToken);
+      CloudApiGlobal.setGlobalHeader(
+        ECloudApiHeaders.Authorization,
+        `bearer ${accessToken}`
+      );
+      return true;
+    } catch (e) {
+      // console.log('error while rotating tokens', e);
+      return false;
+    }
+  }
+
   public async setTokens(at: string, rt: string) {
     const _at = await this.encrypt(at);
     const _rt = await this.encrypt(rt);
@@ -39,6 +74,7 @@ class Ecies {
     return this.db.setMany([
       ['at', _at],
       ['rt', _rt],
+      ['ts', new Date().valueOf()],
     ]);
   }
 

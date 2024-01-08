@@ -88,6 +88,7 @@ const initApp = async () => {
 
 const initSession = async () => {
   const { fetchExplorer } = useExplorerStore.getState();
+  await ecies.rotateTokens();
   const accessToken = await ecies.getAccessToken(); //.catch(console.log);
   if (!accessToken) return;
 
