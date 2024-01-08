@@ -916,8 +916,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/firecamp-agent-manager
       '@firecamp/cloud-apis':
-        specifier: 0.2.11
-        version: 0.2.11
+        specifier: 0.2.12
+        version: 0.2.12
       '@firecamp/cookie-manager':
         specifier: ^0.0.0
         version: link:../../packages/firecamp-cookie-manager
@@ -4745,8 +4745,8 @@ packages:
       - supports-color
     dev: true
 
-  /@firecamp/cloud-apis@0.2.11:
-    resolution: {integrity: sha512-t3VYuQiMChC2ZYFluw9a1pXfPtG7VhMdr64hY96OsQBWapRX3ClmiZPUpRgxytOhRUlZH3P1fgtp2T3aMAQQKg==}
+  /@firecamp/cloud-apis@0.2.12:
+    resolution: {integrity: sha512-L72eo3C10it0dJ5kVd36DdJAQUNyiyI7/JhluTar+pCR8Jwum8d4/hFLO6QwyAiIojeWs/XQ+RZM2vn0KxS2Iw==}
     engines: {node: '>=10'}
     dependencies:
       axios: 0.21.4
