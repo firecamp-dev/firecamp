@@ -43,7 +43,7 @@ export class AppUpdater {
     });
 
     autoUpdater.on('download-progress', (progress: ProgressInfo) => {
-      console.log('the update download progress is ', progress);
+      // console.log('the update download progress is ', progress);
       win.webContents.send('download-progress', {
         version: this.newVersion || 'New Version',
         percentage: `${Math.floor(progress.percent)}%`,
@@ -51,7 +51,7 @@ export class AppUpdater {
     });
 
     autoUpdater.on('update-not-available', (info: UpdateInfo) => {
-      console.log('the update is bot available ', info);
+      // console.log('the update is bot available ', info);
       win.webContents.send('app_update_timeline', 'Update-Not-Available');
       if (this.showDialog) {
         this.showDialog = false;
@@ -60,7 +60,7 @@ export class AppUpdater {
     });
 
     autoUpdater.on('update-downloaded', (info: UpdateInfo) => {
-      console.log('the update has been downloaded ', info);
+      // console.log('the update has been downloaded ', info);
       win.webContents.send('update-downloaded', { version: info.version });
       showUpdateDownloadedWinDialog(win); // currently the win and mac both have the same dialog modal
       // showUpdateDownloadedMacDialog(win);
