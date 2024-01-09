@@ -289,7 +289,7 @@ export const initialiseStoreFromRequest = (
       isCodeSnippetOpen: false,
       requestPanel: {
         ...requestPanel,
-        activeTab: ERequestPanelTabs.Body,
+        activeTab: ERequestPanelTabs.Params,
       },
     },
     runtime: {
