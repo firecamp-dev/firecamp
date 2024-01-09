@@ -1,7 +1,7 @@
 {
   "name": "@firecamp/electron",
   "productName": "Firecamp",
-  "version": "3.0.2",
+  "version": "3.3.0-beta.1",
   "description": "The Firecamp Desktop Application",
   "main": "build/main.js",
   "private": true,
@@ -11,11 +11,11 @@
     "directory": "packages/firecamp-electron"
   },
   "scripts": {
-    "start": "tsc && electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pack": "tsc && electron-builder --dir -c.compression=store -c.mac.identity=null",
-    "build": "electron-builder -c.mac.identity=null",
-    "build:release": "electron-builder -ml --publish always",
+    "start": "pnpm build && electron .",
+    "build": "tsc",
+    "release": "pnpm build && electron-builder -ml --publish always",
+    "pack": "pnpm build && electron-builder --dir -c.compression=store -c.mac.identity=null",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
