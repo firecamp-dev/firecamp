@@ -17,9 +17,9 @@
 
 <br/>
 
-> **🚧 We're currently working on the desktop application which can be found on the [feat/62-desktop](https://github.com/firecamp-dev/firecamp/tree/feat/62-desktop) branch.**
+> **🚧 We're currently launching the desktop applications you can read the announcement on this separate discussion page**
 >
-> **[Read more 👀](https://github.com/firecamp-dev/firecamp/issues/62)**
+> **[Here is the announcement 👀](https://github.com/firecamp-dev/firecamp/discussions/167)**
 
 <br/>
 
