@@ -12,15 +12,14 @@
 <p align="center">
    <a href="https://discord.gg/8hRaqhK"><img alt="Discord online members" src="https://badgen.net/discord/members/8hRaqhK?color=5865F2&label=Discord&style=for-the-badge" /></a>
    <a href="https://github.com/firecamp-dev/firecamp/stargazers"><img src="https://img.shields.io/github/stars/firecamp-dev/firecamp" alt="GitHub Stars"></a>
-   <a href="https://github.com/firecamp-dev/firecamp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License"></a>
    <a href="https://github.com/firecamp-dev/firecamp/pulse"><img src="https://img.shields.io/github/commit-activity/y/firecamp-dev/firecamp" alt="Commits-per-month"></a>
 </p>
 
 <br/>
 
-> **🚧 We're currently working on the desktop application which can be found on the [feat/62-desktop](https://github.com/firecamp-dev/firecamp/tree/feat/62-desktop) branch.**
+> **🚧 We're currently launching the desktop applications you can read the announcement on this separate discussion page**
 >
-> **[Read more 👀](https://github.com/firecamp-dev/firecamp/issues/62)**
+> **[Here is the announcement 👀](https://github.com/firecamp-dev/firecamp/discussions/167)**
 
 <br/>
 
