@@ -74,7 +74,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
                 grantTypesOptions.find((t) => t.id === activeGrantType)?.name ||
                 ''
               }
-              rightIcon={
+              rightSection={
                 <VscTriangleDown
                   size={12}
                   className={cx({ 'transform rotate-180': isOpen })}

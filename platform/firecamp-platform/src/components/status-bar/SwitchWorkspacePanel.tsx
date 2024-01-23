@@ -21,7 +21,7 @@ const SwitchWorkspacePanel: FC<any> = ({ className = '' }) => {
       <div className="mb-4 w-60">
         <Input
           placeholder="Search"
-          icon={<Search size={16} />}
+          leftSection={<Search size={16} />}
         />
       </div>
       <div className="workspace-wrapper flex overflow-auto flex-nowrap custom-scrollbar">
@@ -57,7 +57,7 @@ const WorkspaceCard: FC<any> = () => {
           </span>
         </div>
         <div className="ml-auto workspace-card-action">
-          <Button text="Switch" primary xs compact transparent />
+          <Button text="Switch" size='compact-xs' primary transparent />
         </div>
       </div>
       <div className="flex flex-row p-2">

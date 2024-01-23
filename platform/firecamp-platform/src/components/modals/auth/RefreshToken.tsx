@@ -122,7 +122,7 @@ const Body: FC<any> = ({ onClose = () => { } }) => {
               key={'password'}
               name={'password'}
               type={'password'}
-              icon={<Lock size={16} />}
+              leftSection={<Lock size={16} />}
               onKeyDown={_onKeyDown}
               {...getInputProps('password')}
             />

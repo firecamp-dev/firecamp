@@ -1,107 +1,26 @@
 import { FC } from 'react';
-import { Button as MantineButton, createStyles } from '@mantine/core';
+import cx from 'classnames';
+import { Button as MantineButton } from '@mantine/core';
 import { IButton } from './Button.interfaces';
 
-// custom styles for variants
-const useStyles = createStyles(
-  (theme, { variant, color, primary, secondary, transparent, animate }: IButton) => ({
-    root: {
-      display: 'flex',
-      fontWeight: 'normal',
-      
-      ...(!animate ? { ':active': { transform: 'none' } }: {}),
-      ...(transparent
-        ? {
-            ':hover': {
-              backgroundColor: 'transparent',
-            },
-          }
-        : {}),
-      ...(variant === 'outline'
-        ? {
-            color: primary
-              ? theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'light' ? 6 : 8
-                ]
-              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-            borderColor: primary
-              ? theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'light' ? 6 : 8
-                ]
-              : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][4],
-            ':hover': {
-              ...(primary ? { color: theme.white } : {}),
-              backgroundColor: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 7 : 9
-                  ]
-                : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][
-                    theme.colorScheme === 'light' ? 3 : 5
-                  ],
-            },
-          }
-        : {}),
-      // same color for both light/dark color variant
-      ...(secondary
-        ? {
-            color: theme.white,
-            backgroundColor: theme.colors.dark[4],
-            ':hover': {
-              backgroundColor: theme.colors.dark[5],
-            },
-          }
-        : {}),
-      '&:disabled, &[data-disabled]': {
-        ...(transparent || ['subtle'].includes(variant)
-          ? {
-              color: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-              backgroundColor: 'transparent',
-            }
-          : {}),
-        ...(variant === 'filled'
-          ? {
-              color: theme.white,
-              backgroundColor: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8],
-            }
-          : {}),
-        ...(variant === 'outline'
-          ? {
-              color: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-              borderColor: primary
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[
-                    theme.colorScheme === 'light' ? 'gray' : color
-                  ][4],
-            }
-          : {}),
-        ...(secondary
-          ? {
-              color: theme.white,
-              backgroundColor: theme.colors.dark[4],
-            }
-          : {}),
-      },
-    },
-    leftIcon: {
-      paddingLeft: 'calc(0.875rem  / 1.5)',
-      paddingRight: 'calc(0.875rem  / 1.5)',
-    },
-  })
-);
+enum EDefaultStyles {
+  leftIcon = 'px-2.5',
+  root = 'flex font-normal',
+  preventButtonAnimation = 'active:transform-none',
+  transparentButton = 'hover:bg-transparent',
+  // same color for both light/dark color variant
+  secondaryButton = 'text-secondaryColor-text bg-secondaryColor hover:bg-secondaryColor-hover',
+  outlineVariantDefault = 'text-tab-foreground border-tab-border hover:bg-activityBar-border',
+  outlineVariantPrimary = 'text-primaryColor border-primaryColor hover:bg-primaryColor-hover hover:text-secondaryColor-text',
+  // custom classes when button is disabled
+  disabledFilledVariantPrimary = 'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-primaryColor',
+  disabledFilledVariantSecondary = 'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-secondaryColor',
+  disabledFilledVariantDanger = 'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-error',
+  disabledSubtleVariantDefault = 'data-[disabled=true]:text-tab-foreground data-[disabled=true]:bg-transparent',
+  disabledSubtleVariantPrimary = 'data-[disabled=true]:text-primaryColor data-[disabled=true]:bg-transparent',
+  disabledOutlineVariantDefault = 'data-[disabled=true]:text-tab-foreground data-[disabled=true]:border-tab-border data-[disabled=true]:bg-transparent',
+  disabledOutlineVariantPrimary = 'data-[disabled=true]:text-primaryColor data-[disabled=true]:border-primaryColor data-[disabled=true]:bg-transparent',
+}
 
 enum EVariant {
   primary = 'filled',
@@ -119,7 +38,7 @@ const Button: FC<IButton> = ({
   children,
   classNames = {},
   size,
-  variant,
+  variant = EVariant.primary,
 
   primary = false,
   ghost = false,
@@ -153,15 +72,7 @@ const Button: FC<IButton> = ({
     size;
 
   // default size if not passed is sm
-  const customColor = danger ? 'red' : primary ? 'primaryColor' : 'dark';
-  const { classes, cx } = useStyles({
-    variant: customVariant ?? 'filled',
-    color: customColor,
-    primary,
-    secondary,
-    transparent,
-    animate
-  });
+  const customColor = danger ? 'red' : primary ? 'primary-color' : 'dark';
 
   return (
     <MantineButton
@@ -172,15 +83,61 @@ const Button: FC<IButton> = ({
         ...classNames,
         root: cx(
           classNames.root,
-          classes.root,
+          EDefaultStyles.root,
+          { [EDefaultStyles.preventButtonAnimation]: !animate },
+          { [EDefaultStyles.transparentButton]: transparent },
           {
-            'justify-center': props.fullWidth && !props.leftIcon,
+            [EDefaultStyles.secondaryButton]: secondary,
           },
           {
-            [classes.leftIcon]: !text,
+            [EDefaultStyles.outlineVariantPrimary]:
+              customVariant === EVariant.outline && primary,
+          },
+          {
+            [EDefaultStyles.outlineVariantDefault]:
+              customVariant === EVariant.outline && customColor === 'dark',
+          },
+          // custom disabled classes when button is disabled
+          {
+            [EDefaultStyles.disabledFilledVariantPrimary]:
+              props.disabled && customVariant === EVariant.primary && primary,
+          },
+          {
+            [EDefaultStyles.disabledFilledVariantSecondary]:
+              props.disabled && secondary,
+          },
+          {
+            [EDefaultStyles.disabledFilledVariantDanger]:
+              props.disabled && danger,
+          },
+          {
+            [EDefaultStyles.disabledSubtleVariantPrimary]:
+              props.disabled &&
+              (transparent || customVariant === EVariant.ghost) &&
+              primary,
+          },
+          {
+            [EDefaultStyles.disabledSubtleVariantDefault]:
+              props.disabled &&
+              (transparent || customVariant === EVariant.ghost) &&
+              !primary,
+          },
+          {
+            [EDefaultStyles.disabledOutlineVariantPrimary]:
+              props.disabled && customVariant === EVariant.outline && primary,
+          },
+          {
+            [EDefaultStyles.disabledOutlineVariantDefault]:
+              props.disabled && customVariant === EVariant.outline && !primary,
+          },
+          {
+            'justify-center': props.fullWidth && !props.leftSection,
+          },
+          {
+            [EDefaultStyles.leftIcon]: !text,
           }
         ),
-        leftIcon: cx(classNames.leftIcon, {
+        section: cx(classNames.section, {
           'mr-0': !text,
         }),
       }}

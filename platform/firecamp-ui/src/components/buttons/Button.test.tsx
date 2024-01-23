@@ -11,7 +11,7 @@ describe('Button : ', () => {
   });
 
   it('renders button with icon only', () => {
-    render(<Button leftIcon={<Menu size={10} data-testid={'menu-icon'} />} />);
+    render(<Button leftSection={<Menu size={10} data-testid={'menu-icon'} />} />);
     const leftIcon = screen.getByTestId('menu-icon').closest('span');
     expect(leftIcon).toHaveClass('mr-0');
   });
@@ -22,7 +22,7 @@ describe('Button : ', () => {
         fullWidth
         text="Full width button"
         data-testid={'button-element'}
-        leftIcon={undefined}
+        leftSection={undefined}
       />
     );
     const button = screen.getByTestId('button-element');

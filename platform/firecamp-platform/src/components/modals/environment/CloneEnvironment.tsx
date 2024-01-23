@@ -178,8 +178,7 @@ const CloneEnvironment: FC<IModal> = ({ opened, onClose = () => {} }) => {
                 onKeyDown={() => {}}
                 onBlur={() => {}}
                 error={error.name}
-                // iconPosition="right"
-                // icon={<VscEdit />}
+                // rightSection={<VscEdit />}
               />
             </div>
 

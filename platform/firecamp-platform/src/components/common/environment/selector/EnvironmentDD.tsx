@@ -67,7 +67,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => { } }) => {
           classNames={{
             root: '!text-info',
           }}
-          rightIcon={
+          rightSection={
             <ChevronDown
               size={16}
               className={cx({ 'transform rotate-180': isOpen })}
@@ -75,8 +75,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => { } }) => {
           }
           transparent
           primary
-          compact
-          xs
+          size='compact-xs'
         />
       )}
       selected={menu?.selected?.name || ''}

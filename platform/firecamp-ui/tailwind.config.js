@@ -13,6 +13,7 @@ module.exports = {
   ],
   theme: {
     colors: {
+      inherit: 'inherit',
       'app-background': 'var(--app-background)',
       'app-background-secondary': 'var(--app-background-secondary)',
       'app-foreground': 'var(--app-foreground)',
@@ -77,9 +78,12 @@ module.exports = {
 
       'heading-color': 'var(--heading-color)',
       primaryColor: 'var(--app-primary)',
+      'primaryColor-focus': 'var(--app-primary-focus)',
+      'primaryColor-hover': 'var(--app-primary-hover)',
       'primaryColor-text': '#ffffff',
       secondaryColor: 'var(--app-secondary)',
       'secondaryColor-text': '#ffffff',
+      'secondaryColor-hover': 'var(--app-secondary-hover)',
 
       transparent: '#ffffff00',
 
@@ -148,7 +152,7 @@ module.exports = {
     preflight: false,
   },
   safelist: [
-    "data-[side='bottom']:animate-slideDownAndFade",
-    "data-[side='bottom']:animate-slideUpAndFade",
+    "data-[position='bottom']:animate-slideDownAndFade",
+    "data-[position='top']:animate-slideUpAndFade",
   ],
 };

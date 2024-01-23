@@ -91,7 +91,7 @@ ButtonIcon.args = {
   text: 'Sample Button...',
   primary: true,
   sm: true,
-  leftIcon: <Menu size={16} className="z-20" />,
+  leftSection: <Menu size={16} className="z-20" />,
 };
 
 export const CaretButton = Template.bind({});
@@ -99,7 +99,7 @@ CaretButton.args = {
   text: 'Button with caret icon',
   primary: true,
   sm: true,
-  rightIcon: <VscTriangleDown size={12} />,
+  rightSection: <VscTriangleDown size={12} />,
 };
 
 export const ButtonWithToolTip = Template.bind({});
@@ -123,7 +123,7 @@ ButtonWithUpperCaseText.args = {
   text: 'Button with uppercase text',
   primary: true,
   sm: true,
-  uppercase: true,
+  tt: 'uppercase'
 };
 
 export const ButtonVariant = () => {
@@ -197,7 +197,7 @@ export const ButtonSizes = () => {
     <div className="flex gap-2">
       <div className="flex flex-col gap-2">
         {[
-          { text: 'xs', xs: true, compact: true, primary: true },
+          { text: 'xs', size: 'compact-xs', primary: true },
           { text: 'xs', xs: true, primary: true },
           { text: 'sm', sm: true, primary: true },
           { text: 'md', md: true, primary: true },
@@ -220,13 +220,13 @@ ButtonIconPosition.args = {
       text: 'Sample Button (with left icon)',
       primary: true,
       md: true,
-      leftIcon: <Menu size={16} className="z-20" />,
+      leftSection: <Menu size={16} className="z-20" />,
     },
     {
       text: 'Sample Button (with right icon)',
       primary: true,
       md: true,
-      rightIcon: <Menu size={16} className="z-20" />,
+      rightSection: <Menu size={16} className="z-20" />,
     },
   ],
 };

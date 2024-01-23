@@ -29,7 +29,7 @@ const CopyButton: FC<ICopyButton> = ({
 
   return (
     <Button
-      leftIcon={
+      leftSection={
         <Copy
           size={12}
           onClick={_onClickCopy}
@@ -38,7 +38,7 @@ const CopyButton: FC<ICopyButton> = ({
         />
       }
       text={showText ? text : ''}
-      rightIcon={
+      rightSection={
         animation && showCopied ? (
           <span className="text-sm">Copied!</span>
         ) : (

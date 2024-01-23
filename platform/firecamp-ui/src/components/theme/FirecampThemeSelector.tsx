@@ -5,6 +5,7 @@ import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import DropdownMenu from '../dropdown/DropdownMenu';
 import Button from '../buttons/Button';
 import { EFirecampThemeVariant } from './FirecampThemeProvider.interfaces';
+import { useFCThemeVariantContext } from './FirecampThemeVariantProvider';
 
 const ThemeOptions = [
   {
@@ -25,7 +26,9 @@ const ThemeOptions = [
   },
 ];
 const FirecampThemeSelector = () => {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { value: colorScheme, setValue: toggleColorScheme } =
+    useFCThemeVariantContext();
+  const { setColorScheme } = useMantineColorScheme();
   const [isOpen, toggleOpen] = useState(false);
   const [activeTheme, updateActiveTheme] = useState<{
     name: string;
@@ -36,6 +39,18 @@ const FirecampThemeSelector = () => {
     const activeThemeOption = ThemeOptions.find(
       (t) => t.value === (colorScheme as EFirecampThemeVariant)
     );
+
+    // update the color schema of mantine
+    if (activeThemeOption) {
+      setColorScheme(
+        [
+          EFirecampThemeVariant.LightPrimary,
+          EFirecampThemeVariant.LightSecondary,
+        ].includes(colorScheme)
+          ? 'light'
+          : 'dark'
+      );
+    }
     updateActiveTheme(activeThemeOption);
   }, [colorScheme]);
 
@@ -50,7 +65,7 @@ const FirecampThemeSelector = () => {
             root: 'w-[220px]',
             inner: 'flex justify-between w-full',
           }}
-          rightIcon={
+          rightSection={
             <VscTriangleDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}

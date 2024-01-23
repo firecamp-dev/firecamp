@@ -1,9 +1,6 @@
 import { FC } from 'react';
-import {
-  Checkbox as MantineCheckbox,
-  CheckboxProps,
-  createStyles,
-} from '@mantine/core';
+import cx from 'classnames';
+import { Checkbox as MantineCheckbox, CheckboxProps } from '@mantine/core';
 
 export interface ICheckbox extends CheckboxProps {
   /**
@@ -23,78 +20,6 @@ export interface ICheckbox extends CheckboxProps {
   showLabel?: boolean;
 }
 
-const useStyles = createStyles(
-  (theme, { primary, checked, labelPosition }: Partial<ICheckbox>) => ({
-    disabled: {
-      opacity: '50% !important',
-      '&:checked': {
-        borderColor: primary
-          ? theme.colors[theme.primaryColor][
-              theme.colorScheme === 'dark' ? 8 : 6
-            ]
-          : 'initial',
-      },
-      borderColor: 'initial !important',
-    },
-    input: {
-      borderRadius: '0px',
-      borderColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.gray[4]
-          : theme.colors.dark[5],
-      backgroundColor: 'transparent !important',
-      '&:focus': {
-        ...(checked && primary
-          ? {
-              borderColor: `${
-                theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'dark' ? 8 : 6
-                ]
-              } !important`,
-            }
-          : {
-              borderColor: `${
-                theme.colorScheme === 'dark'
-                  ? theme.colors.gray[4]
-                  : theme.colors.dark[5]
-              } !important`,
-            }),
-      },
-    },
-    icon: {
-      ...(primary
-        ? {
-            color: `${
-              theme.colors[theme.primaryColor][
-                theme.colorScheme === 'dark' ? 8 : 6
-              ]
-            } !important`,
-          }
-        : {
-            color: `${
-              theme.colorScheme === 'dark'
-                ? theme.colors.gray[4]
-                : theme.colors.dark[5]
-            } !important`,
-          }),
-    },
-    label: {
-      ...(labelPosition === 'left'
-        ? {
-            paddingRight: '0.5rem',
-          }
-        : {
-            paddingLeft: '0.5rem',
-          }),
-      color: `${
-        theme.colorScheme === 'dark'
-          ? theme.colors.gray[4]
-          : theme.colors.dark[5]
-      }  !important`,
-    },
-  })
-);
-
 const Checkbox: FC<ICheckbox> = ({
   color,
   label,
@@ -107,16 +32,8 @@ const Checkbox: FC<ICheckbox> = ({
   labelPosition,
   ...props
 }) => {
-  const { classes, cx, theme } = useStyles({ primary, checked, labelPosition });
-  const customColor = primary
-    ? 'primaryColor'
-    : theme.colorScheme === 'dark'
-    ? 'gray'
-    : 'dark';
-
   return (
     <MantineCheckbox
-      color={customColor}
       size={'xs'}
       radius={'xs'}
       label={showLabel ? label : ''}
@@ -125,13 +42,36 @@ const Checkbox: FC<ICheckbox> = ({
       labelPosition={labelPosition}
       classNames={{
         ...classNames,
-        input: cx(classes.input, classNames.input, {
-          [classes.disabled]: disabled,
-        }),
-        icon: cx(classes.icon, classNames.icon, {
-          [classes.disabled]: disabled && checked,
-        }),
-        label: cx(classes.label, classNames.label),
+        input: cx(
+          'rounded-none	border-app-foreground !bg-transparent',
+          {
+            'checked:border-primaryColor focus:!border-primaryColor':
+              checked && primary,
+          },
+          {
+            'focus:!border-app-foreground checked:border-app-foreground': !(
+              checked && primary
+            ),
+          },
+          {
+            'opacity-50 !border-inherit': disabled,
+          },
+          { 'checked:border-primaryColor': disabled && primary },
+          { 'checked:border-inherit	': disabled && !primary },
+          classNames.input
+        ),
+        icon: cx(
+          { '!text-primaryColor': primary },
+          { '!text-app-foreground': !primary },
+          classNames.icon,
+          { 'opacity-50 !border-inherit': disabled && checked }
+        ),
+        label: cx(
+          '!text-app-foreground',
+          { 'pr-2': labelPosition === 'left' },
+          { 'pl-2': labelPosition === 'left' },
+          classNames.label
+        ),
       }}
       onChange={(e) => onToggleCheck(label, e.target.checked)}
       data-testid="checkbox"

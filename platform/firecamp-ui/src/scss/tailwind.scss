@@ -480,9 +480,6 @@
 .contents{
   display: contents;
 }
-.list-item{
-  display: list-item;
-}
 .hidden{
   display: none;
 }
@@ -514,9 +511,6 @@
 .h-12{
   height: 3rem;
 }
-.h-2{
-  height: 0.5rem;
-}
 .h-32{
   height: 8rem;
 }
@@ -544,14 +538,8 @@
 .h-96{
   height: 24rem;
 }
-.h-\[10px\]{
-  height: 10px;
-}
 .h-\[21px\]{
   height: 21px;
-}
-.h-\[30px\]{
-  height: 30px;
 }
 .h-\[340px\]{
   height: 340px;
@@ -596,6 +584,15 @@
 .min-h-0{
   min-height: 0px;
 }
+.min-h-\[30px\]{
+  min-height: 30px;
+}
+.min-h-\[400px\]{
+  min-height: 400px;
+}
+.min-h-\[auto\]{
+  min-height: auto;
+}
 .\!w-auto{
   width: auto !important;
 }
@@ -613,9 +610,6 @@
 }
 .w-2{
   width: 0.5rem;
-}
-.w-20{
-  width: 5rem;
 }
 .w-28{
   width: 7rem;
@@ -647,9 +641,6 @@
 .w-7{
   width: 1.75rem;
 }
-.w-8{
-  width: 2rem;
-}
 .w-9{
   width: 2.25rem;
 }
@@ -662,9 +653,6 @@
 .w-\[32rem\]{
   width: 32rem;
 }
-.w-\[60px\]{
-  width: 60px;
-}
 .w-auto{
   width: auto;
 }
@@ -674,10 +662,6 @@
 }
 .w-full{
   width: 100%;
-}
-.w-max{
-  width: -moz-max-content;
-  width: max-content;
 }
 .w-screen{
   width: 100vw;
@@ -694,6 +678,9 @@
 }
 .min-w-full{
   min-width: 100%;
+}
+.max-w-3xl{
+  max-width: 48rem;
 }
 .max-w-full{
   max-width: 100%;
@@ -943,11 +930,23 @@
 .\!border-none{
   border-style: none !important;
 }
+.border-none{
+  border-style: none;
+}
+.\!border-app-background{
+  border-color: var(--app-background) !important;
+}
 .\!border-app-border{
   border-color: var(--app-border) !important;
 }
+.\!border-inherit{
+  border-color: inherit !important;
+}
 .\!border-input-border{
   border-color: var(--input-border) !important;
+}
+.\!border-primaryColor{
+  border-color: var(--app-primary) !important;
 }
 .\!border-statusBar-border{
   border-color: var(--statusBar-border) !important;
@@ -1051,6 +1050,9 @@
 .\!bg-focus2{
   background-color: var(--focus-level-2) !important;
 }
+.\!bg-focus4{
+  background-color: var(--focus-level-4) !important;
+}
 .\!bg-statusBar-background-active{
   background-color: var(--statusBar-background-active) !important;
 }
@@ -1116,6 +1118,9 @@
 }
 .bg-primaryColor{
   background-color: var(--app-primary);
+}
+.bg-secondaryColor{
+  background-color: var(--app-secondary);
 }
 .bg-statusBar-background{
   background-color: var(--statusBar-background);
@@ -1238,6 +1243,10 @@
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+.px-2\.5{
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -1355,6 +1364,9 @@
 }
 .pb-6{
   padding-bottom: 1.5rem;
+}
+.pb-8{
+  padding-bottom: 2rem;
 }
 .pb-80{
   padding-bottom: 20rem;
@@ -1481,6 +1493,9 @@
 .text-xs{
   font-size: 10px;
 }
+.\!font-bold{
+  font-weight: 700 !important;
+}
 .font-bold{
   font-weight: 700;
 }
@@ -1520,8 +1535,14 @@
 .leading-7{
   line-height: 1.75rem;
 }
+.leading-\[21px\]{
+  line-height: 21px;
+}
 .\!text-activityBar-foreground-inactive{
   color: var(--activityBar-foreground-inactive) !important;
+}
+.\!text-app-foreground{
+  color: var(--app-foreground) !important;
 }
 .\!text-app-foreground-active{
   color: var(--app-foreground-active) !important;
@@ -1537,6 +1558,10 @@
 }
 .\!text-primaryColor{
   color: var(--app-primary) !important;
+}
+.\!text-secondaryColor-text{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 .text-activityBar-foreground{
   color: var(--activityBar-foreground);
@@ -1682,12 +1707,14 @@
 .outline{
   outline-style: solid;
 }
+.outline-2{
+  outline-width: 2px;
+}
+.outline-transparent{
+  outline-color: #ffffff00;
+}
 .blur{
   --tw-blur: blur(8px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-.invert{
-  --tw-invert: invert(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .filter{
@@ -1703,8 +1730,11 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
-.duration-100{
-  transition-duration: 100ms;
+.placeholder\:text-input-placeholder::-moz-placeholder{
+  color: var(--input-placeholder);
+}
+.placeholder\:text-input-placeholder::placeholder{
+  color: var(--input-placeholder);
 }
 .before\:absolute::before{
   content: var(--tw-content);
@@ -1876,6 +1906,15 @@
 .last-of-type\:border-r-tab-border:last-of-type{
   border-right-color: var(--tab-border);
 }
+.checked\:border-app-foreground:checked{
+  border-color: var(--app-foreground);
+}
+.checked\:border-inherit:checked{
+  border-color: inherit;
+}
+.checked\:border-primaryColor:checked{
+  border-color: var(--app-primary);
+}
 .hover\:border-focusBorder:hover{
   border-color: var(--focus-border);
 }
@@ -1894,6 +1933,9 @@
 .hover\:\!bg-focusColor:hover{
   background-color: #ffffff1a !important;
 }
+.hover\:bg-activityBar-border:hover{
+  background-color: var(--activityBar-border);
+}
 .hover\:bg-focus1:hover{
   background-color: var(--focus-level-1);
 }
@@ -1909,8 +1951,17 @@
 .hover\:bg-primaryColor:hover{
   background-color: var(--app-primary);
 }
+.hover\:bg-primaryColor-hover:hover{
+  background-color: var(--app-primary-hover);
+}
+.hover\:bg-secondaryColor-hover:hover{
+  background-color: var(--app-secondary-hover);
+}
 .hover\:bg-tab-background-hover:hover{
   background-color: var(--tab-background-hover);
+}
+.hover\:bg-transparent:hover{
+  background-color: #ffffff00;
 }
 .hover\:pr-1:hover{
   padding-right: 0.25rem;
@@ -1953,8 +2004,17 @@
 .focus\:\!border-none:focus{
   border-style: none !important;
 }
+.focus\:\!border-app-foreground:focus{
+  border-color: var(--app-foreground) !important;
+}
+.focus\:\!border-primaryColor:focus{
+  border-color: var(--app-primary) !important;
+}
 .focus\:bg-input-background-focus:focus{
   background-color: var(--input-background-focus);
+}
+.focus\:bg-primaryColor-focus:focus{
+  background-color: var(--app-primary-focus);
 }
 .focus-visible\:\!border-none:focus-visible{
   border-style: none !important;
@@ -1964,8 +2024,23 @@
   --tw-shadow-colored: 0 0 #0000 !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
+.active\:transform-none:active{
+  transform: none;
+}
+.disabled\:bg-input-background:disabled{
+  background-color: var(--input-background);
+}
+.disabled\:text-inherit:disabled{
+  color: inherit;
+}
 .group:hover .group-hover\:h-auto{
   height: auto;
+}
+.peer:checked ~ .peer-checked\:border-primaryColor{
+  border-color: var(--app-primary);
+}
+.peer:checked ~ .peer-checked\:bg-primaryColor{
+  background-color: var(--app-primary);
 }
 @keyframes slideDownAndFade{
   from{
@@ -1977,7 +2052,7 @@
     transform: translateY(0);
   }
 }
-.data-\[side\=\'bottom\'\]\:animate-slideDownAndFade[data-side='bottom']{
+.data-\[position\=\'bottom\'\]\:animate-slideDownAndFade[data-position='bottom']{
   animation: slideDownAndFade 200ms ease-in-out;
 }
 @keyframes slideUpAndFade{
@@ -1990,8 +2065,52 @@
     transform: translateY(0);
   }
 }
-.data-\[side\=\'bottom\'\]\:animate-slideUpAndFade[data-side='bottom']{
+.data-\[position\=\'top\'\]\:animate-slideUpAndFade[data-position='top']{
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.data-\[disabled\=true\]\:border-primaryColor[data-disabled=true]{
+  border-color: var(--app-primary);
+}
+.data-\[disabled\=true\]\:border-tab-border[data-disabled=true]{
+  border-color: var(--tab-border);
+}
+.data-\[disabled\=true\]\:bg-error[data-disabled=true]{
+  background-color: var(--error);
+}
+.data-\[disabled\=true\]\:bg-input-background[data-disabled=true]{
+  background-color: var(--input-background);
+}
+.data-\[disabled\=true\]\:bg-primaryColor[data-disabled=true]{
+  background-color: var(--app-primary);
+}
+.data-\[disabled\=true\]\:bg-secondaryColor[data-disabled=true]{
+  background-color: var(--app-secondary);
+}
+.data-\[disabled\=true\]\:bg-transparent[data-disabled=true]{
+  background-color: #ffffff00;
+}
+.data-\[disabled\=true\]\:\!text-secondaryColor-text[data-disabled=true]{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+.data-\[disabled\=true\]\:text-inherit[data-disabled=true]{
+  color: inherit;
+}
+.data-\[disabled\=true\]\:text-primaryColor[data-disabled=true]{
+  color: var(--app-primary);
+}
+.data-\[disabled\=true\]\:text-secondaryColor-text[data-disabled=true]{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.data-\[disabled\=true\]\:text-tab-foreground[data-disabled=true]{
+  color: var(--tab-foreground);
+}
+.data-\[invalid\=true\]\:text-inherit[data-invalid=true]{
+  color: inherit;
+}
+.\[\&\>div\]\:\!block>div{
+  display: block !important;
 }
 
 @import url(../components/split-view/SplitView.scss);

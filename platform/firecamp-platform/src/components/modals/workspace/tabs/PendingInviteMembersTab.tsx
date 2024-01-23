@@ -200,7 +200,7 @@ const RoleDD: FC<{
       handler={() => (
         <Button
           text={_role.name}
-          rightIcon={
+          rightSection={
             <VscTriangleDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}

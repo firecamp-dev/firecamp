@@ -17,16 +17,15 @@ const TypedArrayViewDropDown = ({
       handler={() => (
         <Button
           text={selectedOption.name}
-          rightIcon={
+          rightSection={
             <VscTriangleDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }
+          size='compact-xs'
           primary
           ghost
-          compact
-          xs
         />
       )}
       options={options}

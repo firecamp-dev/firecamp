@@ -139,8 +139,5 @@ export { default as Empty } from './components/empty/Empty';
 
 export { default as Loader } from './components/loader/Loader';
 
-export {
-  default as FirecampThemeProvider,
-  useFirecampStyle,
-} from './components/theme/FirecampThemeProvider';
+export { default as FirecampThemeProvider } from './components/theme/FirecampThemeProvider';
 export { default as FirecampThemeSelector } from './components/theme/FirecampThemeSelector';

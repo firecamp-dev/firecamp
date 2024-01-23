@@ -175,16 +175,15 @@ const AuthTypesDD: FC<any> = ({ types, name, onSelect }) => {
           <Button
             text={name || ''}
             classNames={{ root: "font-bold" }}
-            rightIcon={
+            rightSection={
               <VscTriangleDown
                 size={12}
                 className={cx({ 'transform rotate-180': isOpen })}
               />
             }
+            size='compact-xs'
             primary
             ghost
-            compact
-            xs
           />
         )}
         options={types}

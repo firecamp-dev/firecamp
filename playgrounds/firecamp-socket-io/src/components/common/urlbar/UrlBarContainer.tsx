@@ -106,7 +106,7 @@ const SIOVersionDropDown: FC<any> = ({
         handler={() => (
           <Button
             text={selectedOption.name}
-            rightIcon={
+            rightSection={
               <VscTriangleDown
                 size={12}
                 className={cx({ 'transform rotate-180': isDropDownOpen })}

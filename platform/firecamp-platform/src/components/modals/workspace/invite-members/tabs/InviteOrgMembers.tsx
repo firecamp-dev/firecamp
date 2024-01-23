@@ -68,7 +68,7 @@ const InviteOrgMembers: FC<IProps> = ({
                   classNames={{
                     inner: 'flex justify-between w-full',
                   }}
-                  rightIcon={
+                  rightSection={
                     <VscTriangleDown
                       size={12}
                       className={cx({ 'transform rotate-180': isOpen })}
@@ -103,7 +103,7 @@ const InviteOrgMembers: FC<IProps> = ({
                 classNames={{
                   inner: 'flex justify-between w-full',
                 }}
-                rightIcon={
+                rightSection={
                   <VscTriangleDown
                     size={12}
                     className={cx({ 'transform rotate-180': rolePreview })}

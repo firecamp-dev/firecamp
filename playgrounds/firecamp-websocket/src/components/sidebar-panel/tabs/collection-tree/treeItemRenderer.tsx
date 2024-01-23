@@ -217,9 +217,8 @@ export default {
                   context.focusItem(item.data.__ref.id);
                   openMessageInPlg(item.data.__ref.id);
                 }}
+                size='compact-xs'
                 ghost
-                compact
-                xs
               />
             ) : (
               <></>

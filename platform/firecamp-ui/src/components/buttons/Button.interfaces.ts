@@ -1,6 +1,7 @@
 import { ButtonProps } from '@mantine/core';
 
 export interface IButton extends ButtonProps {
+  type?: 'submit' | 'reset' | 'button' | undefined;
   /** button text to show */
   text?: string;
 

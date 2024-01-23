@@ -1,53 +1,26 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import {
   ScrollArea as MantineScrollArea,
   ScrollAreaProps,
-  createStyles,
 } from '@mantine/core';
 
 export interface IScrollArea extends ScrollAreaProps {}
 
-const useStyles = createStyles((theme) => ({
-  root: {
-    height: '100%',
-    whiteSpace: 'nowrap',
-  },
-  // TODO: update styles `&[data-radix-scroll-area-viewport]` when issue is resolved
-  // @ref: https://github.com/radix-ui/primitives/issues/926#issuecomment-1266790070
-  viewport: {
-    '&[data-radix-scroll-area-viewport]': {
-      '& > :first-of-type': {
-        display: 'block !important',
-      },
-    },
-  },
-  scrollbar: {
-    '&, &:hover': {
-      backgroundColor: 'transparent',
-    },
-
-    '&[data-orientation="vertical"] .mantine-ScrollArea-thumb': {
-      backgroundColor:
-        theme.colorScheme === 'light'
-          ? theme.fn.rgba(theme.colors.dark[3], 0.18)
-          : theme.fn.rgba(theme.colors.gray[6], 0.18),
-    },
-
-    '&[data-orientation="horizontal"] .mantine-ScrollArea-thumb': {
-      backgroundColor:
-        theme.colorScheme === 'light'
-          ? theme.fn.rgba(theme.colors.dark[3], 0.18)
-          : theme.fn.rgba(theme.colors.gray[6], 0.18),
-    },
-  },
-}));
+enum EDefaultStyles {
+  scrollbar = 'bg-transparent hover:bg-transparent ',
+  thumb = '!bg-focus4',
+  root = 'h-full whitespace-nowrap',
+  // TODO: update styles of viewport when issue is resolved
+  // @ref: https://github.com/radix-ui/primitives/issues/926#issuecomment-1447283516
+  viewport = '[&>div]:!block',
+}
 
 const ScrollArea: FC<IScrollArea> = ({
   classNames = {},
   children,
   ...props
 }) => {
-  const { classes, cx } = useStyles();
   return (
     <MantineScrollArea
       type="hover"
@@ -55,9 +28,10 @@ const ScrollArea: FC<IScrollArea> = ({
       {...props}
       classNames={{
         ...classNames,
-        scrollbar: cx(classes.scrollbar, classNames.scrollbar),
-        root: cx(classes.root, classNames.root),
-        viewport: cx(classes.viewport, classNames.viewport),
+        scrollbar: cx(EDefaultStyles.scrollbar, classNames.scrollbar),
+        thumb: cx(EDefaultStyles.thumb, classNames.thumb),
+        root: cx(EDefaultStyles.root, classNames.root),
+        viewport: cx(EDefaultStyles.viewport, classNames.viewport),
       }}
     >
       {children}

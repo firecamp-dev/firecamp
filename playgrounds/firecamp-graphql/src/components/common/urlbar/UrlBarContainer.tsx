@@ -79,7 +79,7 @@ const SuffixButtons = () => {
         title={'open schema doc'}
         data-testid="open-graphql-schema-doc"
         onClick={() => toggleDoc(true)}
-        leftIcon={<File size={18} />}
+        leftSection={<File size={18} />}
         secondary
         xs
       />
@@ -87,7 +87,7 @@ const SuffixButtons = () => {
         id={`refresh-schema-${tabId}`}
         title={'refresh schema'}
         data-testid="refresh-graphql-schema"
-        leftIcon={<RotateCw size={18} />}
+        leftSection={<RotateCw size={18} />}
         onClick={fetchIntrospectionSchema}
         primary
         xs

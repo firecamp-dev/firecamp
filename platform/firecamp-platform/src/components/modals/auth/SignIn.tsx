@@ -23,7 +23,7 @@ const SignIn: FC<IModal> = ({ opened, onClose }) => {
         <GithubGoogleAuth />
         <Button
           text="Sign In with Email"
-          leftIcon={<Mail size={18} />}
+          leftSection={<Mail size={18} />}
           classNames={{ 
             root: 'mb-5',
             inner: 'ml-[30%]'

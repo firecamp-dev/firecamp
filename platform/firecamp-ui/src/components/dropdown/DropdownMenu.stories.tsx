@@ -113,8 +113,7 @@ export const GlobalCreate = () => {
           classNames={{ root: 'font-bold hover:!bg-focus1' }}
           primary
           ghost
-          compact
-          xs
+          size='compact-xs'
         />
       )}
       options={[
@@ -261,8 +260,7 @@ export const BodyTab = () => {
           text={selected || 'None'}
           classNames={{ root: 'font-bold hover:!bg-focus1' }}
           ghost
-          compact
-          xs
+          size='compact-xs'
           primary
         />
       )}
@@ -335,8 +333,7 @@ export const EmitterBody = () => {
           classNames={{ root: 'hover:!bg-focus1' }}
           primary
           ghost
-          compact
-          xs
+          size='compact-xs'
         />
       )}
       options={[
@@ -419,9 +416,8 @@ export const RequestStatusBar = () => {
         handler={() => (
           <Button
             text={selected}
+            size='compact-xs'
             secondary
-            compact
-            xs
             classNames={{ root: 'leading-6 !rounded-br-none !rounded-tr-none' }}
           />
         )}
@@ -444,12 +440,11 @@ export const RequestStatusBar = () => {
         sm
       />
       <Button
-        leftIcon={<SendHorizonal />}
+        leftSection={<SendHorizonal />}
         onClick={() => {}}
         classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
+        size='compact-xs'
         primary
-        compact
-        xs
       />
     </div>
   );
@@ -662,15 +657,14 @@ export const EnvCollectionOption = () => {
         <Button
           text={selected}
           classNames={{ root: '!text-info' }}
-          rightIcon={
+          rightSection={
             <VscTriangleDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }
+          size='compact-xs'
           ghost
-          compact
-          xs
         />
       )}
       selected={selected || ''}

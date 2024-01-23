@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
 // import { useDrag, useDrop } from 'react-dnd';
 
-import '../../scss/tailwind.scss';
+// import '../../scss/tailwind.scss';
 import './Tabs.scss';
 import { ITab } from './interfaces/Tab.interface';
 import Count from './Count';

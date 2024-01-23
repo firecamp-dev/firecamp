@@ -2,7 +2,11 @@
 import { FC } from "react";
 import cx from 'classnames';
 
-//import '../../scss/tailwind.scss';
+// make sure to import css scripts in order 1. preflight, 2. mantine Core, 3. tailwind styles
+import "../../scss/preflight.css";
+import "@mantine/core/styles.css";
+import "../../scss/tailwind.scss";
+
 import { IRootContainer } from "./interfaces/RootContainer.interfaces"
 
 /**

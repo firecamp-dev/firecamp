@@ -80,11 +80,10 @@ const EmitterPlayground = () => {
             />
             <Button
               text="Send"
-              rightIcon={<SendHorizonal size={12} />}
+              rightSection={<SendHorizonal size={12} />}
               onClick={() => emit(plgEmitter)}
+              size='compact-xs'
               primary
-              compact
-              xs
             />
           </TabHeader.Right>
         </TabHeader>

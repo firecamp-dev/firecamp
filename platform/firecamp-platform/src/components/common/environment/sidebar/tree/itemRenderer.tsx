@@ -207,8 +207,7 @@ export default {
                       );
                 }}
                 ghost
-                compact
-                xs
+                size='compact-xs'
               />
             ) : (
               <></>

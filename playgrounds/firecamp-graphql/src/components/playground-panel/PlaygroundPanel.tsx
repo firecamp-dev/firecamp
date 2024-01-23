@@ -54,7 +54,7 @@ const TabsSuffixComp = () => {
   return (
     <Button
       text="add playground"
-      leftIcon={<Plus size={12} />}
+      leftSection={<Plus size={12} />}
       onClick={() => addPlayground()}
       transparent
       xs

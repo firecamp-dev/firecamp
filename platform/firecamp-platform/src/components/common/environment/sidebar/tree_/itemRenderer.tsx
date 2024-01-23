@@ -164,9 +164,8 @@ export default {
                 context.focusItem(item.data.__ref.id);
                 openEnv(item.data);
               }}
-              compact
+              size='compact-xs'
               ghost
-              xs
             />
 
             {item.data.__ref.isEnvironment ? (

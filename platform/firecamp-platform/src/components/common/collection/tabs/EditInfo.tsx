@@ -57,8 +57,7 @@ const EditInfo: FC<IProps> = ({
               onBlur={() => {}}
               error={error.name}
               // error={error.name}
-              // iconPosition="right"
-              // icon={<VscEdit />}
+              // rightSection={<VscEdit />}
             />
           </div>
 
