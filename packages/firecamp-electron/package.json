@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pnpm build && electron .",
     "build": "tsc",
-    "release": "pnpm build && electron-builder -ml --publish always",
+    "release": "pnpm build && electron-builder -mlw --publish always",
     "pack": "pnpm build && electron-builder --dir -c.compression=store -c.mac.identity=null",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -112,9 +112,12 @@
       "artifactName": "Firecamp-${version}.${arch}.${ext}",
       "executableName": "Firecamp",
       "icon": "icons/win/logo.ico",
-      "target": [
-        "nsis"
-      ],
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      },
       "verifyUpdateCodeSignature": false,
       "publish": [
         {
