@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
+import { Flame } from 'lucide-react';
 import { EFirecampAgent } from '@firecamp/types';
 import { StatusBar } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
@@ -22,7 +22,7 @@ const StatusBarContainer: FC<any> = ({ className = '' }) => {
           id={'status-bar-firecamp-version'}
           data-tip={`Firecamp`}
         >
-          <VscRemote size={12} />
+          <Flame size={12} />
           <span className="pl-1">Firecamp</span>
         </div>
         <DDMenuContainer />
