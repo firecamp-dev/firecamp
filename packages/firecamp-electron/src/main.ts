@@ -6,7 +6,7 @@ import {
   nativeImage,
   screen,
 } from 'electron';
-import RestExecutor from '@firecamp/rest-executor/dist/index';
+import RestExecutor from '@firecamp/rest-executor/dist';
 import * as path from 'node:path';
 import { appIcon, trayIcon } from './icon';
 import { AppUpdater } from './updater/updater';
