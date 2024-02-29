@@ -51,7 +51,6 @@ const createHandleConnectionExecutor: TStoreSlice<
 
       // on open
       executor.onOpen(() => {
-        console.log('The connection is now open...');
         state.changePlaygroundConnectionState(EConnectionState.Open);
       });
 
@@ -77,7 +76,6 @@ const createHandleConnectionExecutor: TStoreSlice<
       // set executor in playground
       state.setPlaygroundExecutor(executor);
     } catch (error) {
-      console.log(error);
       console.info({
         API: 'websocket.connect',
         error,
@@ -117,7 +115,6 @@ const createHandleConnectionExecutor: TStoreSlice<
        */
       const state = get();
       const { playground } = state;
-      console.log(playground, 'playground...');
       if (
         playground &&
         playground.executor &&
