@@ -653,6 +653,9 @@ importers:
       '@firecamp/scripts':
         specifier: workspace:*
         version: link:../firecamp-scripts
+      '@firecamp/socket.io-executor':
+        specifier: workspace:*
+        version: link:../../playgrounds/firecamp-socket-io-executor
       '@firecamp/ws-executor':
         specifier: workspace:*
         version: link:../../playgrounds/firecamp-ws-executor

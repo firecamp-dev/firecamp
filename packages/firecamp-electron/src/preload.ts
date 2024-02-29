@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
+import { PreloadSocketIO } from './preload/socket-io';
 import { PreloadWS } from './preload/ws';
 
 contextBridge.exposeInMainWorld('__electron__', {
@@ -20,6 +21,7 @@ contextBridge.exposeInMainWorld('__electron__', {
     },
   },
   webSocket: PreloadWS,
+  io: PreloadSocketIO,
 });
 
 /* electron has limitation that we can not send DOM elements like files over ipc, thus we need to send only file meta including name, path and type */
