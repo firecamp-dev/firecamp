@@ -653,6 +653,9 @@ importers:
       '@firecamp/scripts':
         specifier: workspace:*
         version: link:../firecamp-scripts
+      '@firecamp/ws-executor':
+        specifier: workspace:*
+        version: link:../../playgrounds/firecamp-ws-executor
       electron-is-dev:
         specifier: ^2.0.0
         version: 2.0.0

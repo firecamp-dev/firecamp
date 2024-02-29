@@ -94,7 +94,7 @@ export default class Executor implements IExecutor {
 
           // Send log to set cookie
           const logH = this.#log.success(Upgrade, '', Upgrade, {
-            value: response.headers,
+            value: JSON.stringify(response.headers, null, 4),
             type: EMessageBodyType.Json,
           });
           this.#emitLog(logH);

@@ -24,6 +24,7 @@
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/scripts": "workspace:*",
+    "@firecamp/ws-executor": "workspace:*",
     "electron-is-dev": "^2.0.0",
     "electron-log": "^5.0.0",
     "electron-notarize": "^1.2.2",

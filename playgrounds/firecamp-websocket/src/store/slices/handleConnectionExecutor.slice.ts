@@ -44,13 +44,14 @@ const createHandleConnectionExecutor: TStoreSlice<
       const executor: IExecutor =
         _misc.firecampAgent() === EFirecampAgent.Desktop
           ? // @ts-ignore
-            window.fc.websocket(_ops)
+            window.__electron__.webSocket(_ops)
           : new Executor(_ops);
 
       // console.log(_misc.firecampAgent(), executor);
 
       // on open
       executor.onOpen(() => {
+        console.log('The connection is now open...');
         state.changePlaygroundConnectionState(EConnectionState.Open);
       });
 
@@ -76,6 +77,7 @@ const createHandleConnectionExecutor: TStoreSlice<
       // set executor in playground
       state.setPlaygroundExecutor(executor);
     } catch (error) {
+      console.log(error);
       console.info({
         API: 'websocket.connect',
         error,
@@ -115,6 +117,7 @@ const createHandleConnectionExecutor: TStoreSlice<
        */
       const state = get();
       const { playground } = state;
+      console.log(playground, 'playground...');
       if (
         playground &&
         playground.executor &&

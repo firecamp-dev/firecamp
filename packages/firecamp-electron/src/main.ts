@@ -25,6 +25,7 @@ const createWindow = () => {
     // titleBarStyle: 'hidden',
     // transparent: true,
     webPreferences: {
+      sandbox: false,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
