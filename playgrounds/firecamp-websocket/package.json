@@ -44,7 +44,7 @@
     "prop-types": "^15.6.2",
     "react-fast-compare": "^3.2.0",
     "react-ga": "^3.1.2",
-    "react-virtualized": "^9.21.5",
+    "react-virtualized": "^9.22.5",
     "zustand": "^4.3.9"
   },
   "devDependencies": {
