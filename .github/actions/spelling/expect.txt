@@ -1,6 +1,7 @@
 abksi
 adpcm
 ajv
+APPIMAGE
 applixware
 arraybufferview
 asds
@@ -52,6 +53,7 @@ dssc
 dts
 duplicat
 eamodio
+eciesjs
 ecmascript
 edt
 EGraph
@@ -229,6 +231,7 @@ ROfb
 Rpbjpvc
 rsd
 rtls
+rustc
 saf
 salesforce
 salesforcecli
@@ -268,6 +271,7 @@ timestamptz
 TItem
 tocstop
 TODOs
+togglefullscreen
 Tokenfrom
 TOODs
 tooltiptext
