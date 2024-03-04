@@ -15,11 +15,8 @@ const showUpdateDownloadedMacDialog = (win: any) => {
   dialog.showMessageBoxSync(win, {
     type: 'question',
     title: '👏️ Installed New Version',
-    message:
-      'New version has been installed successfully, You can restart the app',
-    detail:
-      // 'New updates are installed successfully, It will get reflected after app relaunch',
-      'Please save your unsaved tabs first if you are in-between your work.',
+    message: 'The new version is installed. You may now restart the app.',
+    detail: 'Please ensure you save any open, unsaved work before proceeding.',
     buttons: ['Cancel', 'Relaunch'],
     noLink: true,
   });
