@@ -1420,8 +1420,8 @@ importers:
         specifier: ^4.1.1
         version: 4.2.3
       crypto-js:
-        specifier: ^4.1.1
-        version: 4.1.1
+        specifier: ^4.2.0
+        version: 4.2.0
       debounce-promise:
         specifier: ^3.1.2
         version: 3.1.2
@@ -4780,7 +4780,7 @@ packages:
       '@firecamp/url': 0.0.20
       '@firecamp/utils': 0.0.15
       nanoid: 3.3.4
-      parse-curl: github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
+      parse-curl: git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
     dev: false
 
   /@firecamp/types@0.1.14:
@@ -12234,6 +12234,7 @@ packages:
   /binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
+    requiresBuild: true
 
   /binaryextensions@4.18.0:
     resolution: {integrity: sha512-PQu3Kyv9dM4FnwB7XGj1+HucW+ShvJzJqjuw1JkKVs1mWdwOKVcRjOi+pV9X52A0tNvrPCsPkbFFQb+wE1EAXw==}
@@ -14159,8 +14160,8 @@ packages:
       randomfill: 1.0.4
     dev: true
 
-  /crypto-js@4.1.1:
-    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
+  /crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
     dev: false
 
   /crypto-random-string@2.0.0:
@@ -28747,7 +28748,7 @@ packages:
       uglify-js:
         optional: true
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.19
+      '@jridgewell/trace-mapping': 0.3.17
       jest-worker: 27.5.1
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
@@ -31757,8 +31758,8 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
 
-  github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
-    resolution: {tarball: https://codeload.github.com/firecamp-forks/parse-curl.js/tar.gz/366e62aebfb88b5974b223c1f4c5b456cefab0a0}
+  git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
+    resolution: {commit: 366e62aebfb88b5974b223c1f4c5b456cefab0a0, repo: git@github.com:firecamp-forks/parse-curl.js.git, type: git}
     name: parse-curl
     version: 0.2.6
     dependencies:
