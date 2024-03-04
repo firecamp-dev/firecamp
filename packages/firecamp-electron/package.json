@@ -1,7 +1,7 @@
 {
   "name": "@firecamp/electron",
   "productName": "Firecamp",
-  "version": "3.3.0-beta.2",
+  "version": "3.3.0-beta.3",
   "description": "The Firecamp Desktop Application",
   "main": "build/main.js",
   "private": true,
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.9",
-    "electron": "^27.1.2",
+    "electron": "^29.1.0",
     "electron-builder": "^24.13.3"
   },
   "build": {

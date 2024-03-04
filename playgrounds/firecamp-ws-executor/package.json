@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@firecamp/types": "^0.2.2",
+    "@firecamp/url": "0.0.20",
     "@firecamp/utils": "^0.0.24",
     "comment-json": "^4.1.1",
     "mitt": "^3.0.0",

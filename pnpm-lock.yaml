@@ -679,8 +679,8 @@ importers:
         specifier: ^20.8.9
         version: 20.8.9
       electron:
-        specifier: ^27.1.2
-        version: 27.1.2
+        specifier: ^29.1.0
+        version: 29.1.0
       electron-builder:
         specifier: ^24.13.3
         version: 24.13.3(electron-builder-squirrel-windows@24.13.3)
@@ -1809,6 +1809,9 @@ importers:
       '@firecamp/types':
         specifier: ^0.2.2
         version: 0.2.2
+      '@firecamp/url':
+        specifier: 0.0.20
+        version: 0.0.20
       '@firecamp/utils':
         specifier: ^0.0.24
         version: 0.0.24
@@ -2006,6 +2009,9 @@ importers:
       '@firecamp/types':
         specifier: ^0.2.2
         version: 0.2.2
+      '@firecamp/url':
+        specifier: 0.0.20
+        version: 0.0.20
       '@firecamp/utils':
         specifier: ^0.0.24
         version: 0.0.24
@@ -9675,6 +9681,12 @@ packages:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
     dev: true
 
+  /@types/node@20.11.24:
+    resolution: {integrity: sha512-Kza43ewS3xoLgCEpQrsT+xRo/EJej1y0kVYGiLFE1NEODXGzTfwiC6tXTLMQskn1X4/Rjlh0MQUvx9W+L9long==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
+
   /@types/node@20.8.9:
     resolution: {integrity: sha512-UzykFsT3FhHb1h7yD4CA4YhBHq545JC0YnEz41xkipN88eKQtL6rSgocL5tbAP6Ola9Izm/Aw4Ora8He4x0BHg==}
     dependencies:
@@ -15214,14 +15226,14 @@ packages:
       - supports-color
     dev: false
 
-  /electron@27.1.2:
-    resolution: {integrity: sha512-Dy6BUuGLiIJv+zfsXwr78TV2TNppi24rXF4PIIS+OjDblEKdkI9r1iM8JUd3/x3sbGUy5mdLMSPhvmu//IhkgA==}
+  /electron@29.1.0:
+    resolution: {integrity: sha512-giJVIm0sWVp+8V1GXrKqKTb+h7no0P3ooYqEd34AD9wMJzGnAeL+usj+R0155/0pdvvP1mgydnA7lcaFA2M9lw==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
     requiresBuild: true
     dependencies:
       '@electron/get': 2.0.3
-      '@types/node': 18.15.11
+      '@types/node': 20.11.24
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
