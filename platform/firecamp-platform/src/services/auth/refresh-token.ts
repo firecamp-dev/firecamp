@@ -43,9 +43,9 @@ export default async ({
         }
         break;
 
-      // Re-LogIn via gitHub
+      // re-logIn via gitHub
       case EProvider.GITHUB:
-        const code = await githubAuth.authorize();
+        const code = await githubAuth.authorize.electron();
 
         if (code) {
           response = await Rest.auth.refreshToken.reLogin({

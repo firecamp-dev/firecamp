@@ -60,7 +60,8 @@ const createHandleConnectionExecutor: TStoreSlice<
 
       const executor: IExecutorInterface =
         _misc.firecampAgent() === EFirecampAgent.Desktop
-          ? window.fc.io(_ops)
+          ? //@ts-ignore
+            window.__electron__.io(_ops)
           : new Executor(_ops);
 
       // on open

@@ -30,38 +30,24 @@ export default async (body: IRestBody): Promise<any> => {
     // prepare form data
     case ERestBodyTypes.FormData:
       if (_array.isEmpty(value as any[])) return {};
-      if (isNode) {
-        // prepare multipart/form-data using form-data lib in node environment
-        const FormData = (await import('form-data')).default;
-        const form = new FormData();
-        (value as any[]).forEach((row: IKeyValueTable) => {
-          if (row?.type === EKeyValueTableRowType.File) {
+
+      const form: FormData = new FormData();
+      // append entries into form
+      (value as any[]).forEach((row: IKeyValueTable) => {
+        if (row?.type === EKeyValueTableRowType.File) {
+          if (isNode) {
             //@ts-ignore
-            if (!row.file && !_string.isEmpty(row.value || '')) {
-              // read the file using its path
-              form.append(row.key, fs.createReadStream(row.value || ''));
-            } else {
-              //@ts-ignore
-              form.append(row.key, row.file);
-            }
+            const f = fs.createReadStream(row.file.path);
+            form.append(row.key, f);
           } else {
-            form.append(row.key, row.value);
-          }
-        });
-        return form;
-      } else {
-        const form: FormData = new FormData();
-        // append entries into form
-        (value as any[]).forEach((row: IKeyValueTable) => {
-          if (row?.type === EKeyValueTableRowType.File) {
             //@ts-ignore
             form.append(row.key, row.file);
-          } else {
-            form.append(row.key, row.value);
           }
-        });
-        return form;
-      }
+        } else {
+          form.append(row.key, row.value);
+        }
+      });
+      return form;
 
     // encode data using the qs library
     case ERestBodyTypes.UrlEncoded:

@@ -45,7 +45,6 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
       .signIn(EProvider.LOCAL, { username, password })
       .then(({ response }) => {
         // console.log(response.accessToken, response.user, response.workspace, "sign in response")
-        localStorage.setItem('socketId', response.__meta.accessToken);
         // localStorage.setItem('workspace', response.workspace.__ref.id); //handled at initWorkspace fn
         platformContext.app.initApp();
         platformContext.app.modals.close();

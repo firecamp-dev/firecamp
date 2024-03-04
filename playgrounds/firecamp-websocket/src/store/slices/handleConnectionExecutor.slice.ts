@@ -44,7 +44,7 @@ const createHandleConnectionExecutor: TStoreSlice<
       const executor: IExecutor =
         _misc.firecampAgent() === EFirecampAgent.Desktop
           ? // @ts-ignore
-            window.fc.websocket(_ops)
+            window.__electron__.webSocket(_ops)
           : new Executor(_ops);
 
       // console.log(_misc.firecampAgent(), executor);

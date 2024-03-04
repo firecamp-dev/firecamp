@@ -1,6 +1,9 @@
 import { Rest } from '@firecamp/cloud-apis';
+import { _misc } from '@firecamp/utils';
+import { EFirecampAgent } from '@firecamp/types';
 import { EProvider, IAuthResponse } from './types';
 import { githubAuth, googleAuth } from './oauth2';
+import { ecies } from '../ecies/ecies';
 
 /** credentials require while sign-in using Firecamp domain */
 export interface ICredentials {
@@ -8,25 +11,26 @@ export interface ICredentials {
   password: string;
 }
 
-/**
- * sign-in user into their account via Firecamp, Google or GitHub domain
- */
+/**  sign-in user into their account via Firecamp, Google or GitHub */
 export default async (
   provider: EProvider,
-  credentials: ICredentials = { username: '', password: '' }
+  credentials: ICredentials = { username: '', password: '' },
+  code?: string // if github/google auth from web then oauth code will exist from oauth web redirect method
 ): Promise<{ response: IAuthResponse; provider: EProvider } | any> => {
-  console.log(provider, 111);
   try {
     const { username = '', password = '' } = credentials;
-
     switch (provider) {
       case EProvider.LOCAL: {
-        // Request to sign-in via Firecamp domain
+        // request to sign-in via email/password
         try {
-          const response = await Rest.auth.signIn(username, password);
+          const { data } = await Rest.auth.signIn(username, password);
+          const {
+            __meta: { accessToken, refreshToken },
+          } = data;
+          await ecies.setTokens(accessToken, refreshToken);
           // validate auth response
           return Promise.resolve({
-            response: response.data,
+            response: data,
             provider: EProvider.LOCAL,
           });
         } catch (e) {
@@ -50,35 +54,48 @@ export default async (
         });
       }
       case EProvider.GITHUB:
-        // Fetch auth code
-        githubAuth.authorize();
+        // fetch auth code
+        const oAuthCode =
+          _misc.firecampAgent() == EFirecampAgent.Desktop
+            ? await githubAuth.authorize.electron()
+            : code;
 
-      // Send auth code to authenticate
-      // const response = await Rest.auth.viaGithub(code);
-      // console.log(response, "121212121")
+        // send auth code to authenticate
 
-      // if (validateAuthResponse(response?.data)) {
-      //   return Promise.resolve({
-      //     response: response.data,
-      //     provider: EProvider.GITHUB,
-      //   });
-      // } else
-      //   return Promise.reject({
-      //     message: 'Failed to login into your account',
-      //   });
+        return Rest.auth
+          .viaGithub(oAuthCode)
+          .then(async ({ data }) => {
+            if (data) {
+              const {
+                __meta: { accessToken, refreshToken },
+              } = data;
+              await ecies.setTokens(accessToken, refreshToken);
+              return Promise.resolve({
+                response: data,
+                provider: EProvider.GITHUB,
+              });
+            } else {
+              return Promise.reject({
+                message: 'failed to login into your account',
+              });
+            }
+          })
+          .catch((e) => {
+            // setError(e.response?.data?.message || e.message);
+          });
 
       default:
         console.log(provider);
         return Promise.reject({
-          message: 'Failed to login into your account',
+          message: 'failed to login into your account',
         });
     }
   } catch (e) {
     console.log(e, 'e....');
     return Promise.reject({
       message: e?.data?.message
-        ? `Failed to login into your account: ${e.data.message || '-'}`
-        : 'Failed to login into your account',
+        ? `failed to login into your account: ${e.data.message || '-'}`
+        : 'failed to login into your account',
     });
   }
 };

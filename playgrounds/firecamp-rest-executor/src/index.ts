@@ -14,6 +14,7 @@ import { _env, _array, _object, _table } from '@firecamp/utils';
 import __url from '@firecamp/url';
 import parseBody from './helpers/body';
 import { IRestExecutor, TRestExecutionResponse } from './types';
+import axiosTauriApiAdapter from './tauri-adapter';
 
 //@ts-ignore //TODO: research in depth about url esm module, it's import value in console is { default: {...}, __esModule: true }
 const _url = __url.default || __url;
@@ -84,15 +85,20 @@ export default class RestExecutor implements IRestExecutor {
     return tl.join('\n');
   }
 
-  private _normalizeResponse(axiosResponse: AxiosResponse): IRestResponse {
+  private _normalizeResponse(res: AxiosResponse): IRestResponse {
+    let dataType = typeof res.data;
+    let body = '';
+    if (dataType == 'string') body = res.data;
+    else if (dataType == 'object') body = JSON.stringify(res.data, null, 4);
+    else body = res.data;
     return {
-      code: axiosResponse.status,
-      status: axiosResponse.statusText,
-      body: axiosResponse.data,
-      headers: _table.objectToTable(axiosResponse.headers || {}),
+      code: res.status,
+      status: res.statusText,
+      body,
+      headers: _table.objectToTable(res.headers || {}),
       // @ts-ignore
-      responseTime: axiosResponse?.config?.metadata?.responseTime || 0,
-      responseSize: Number(axiosResponse?.headers?.['content-length']) || 0,
+      responseTime: res?.config?.metadata?.responseTime || 0,
+      responseSize: Number(res?.headers?.['content-length']) || 0,
     };
   }
 
@@ -119,7 +125,7 @@ export default class RestExecutor implements IRestExecutor {
       signal: this._controller.signal,
       timeout: config?.requestTimeout,
       maxRedirects: config?.maxRedirects,
-      transformResponse: (response) => response,
+      // transformResponse: (response) => response,
       withCredentials: false,
     };
 
@@ -139,7 +145,9 @@ export default class RestExecutor implements IRestExecutor {
 
     // TODO: Check sending file without serialize in desktop environment
     // parse body payload
+    // console.log(body, 555);
     if (body?.value) {
+      // console.log(body, 7777);
       axiosRequest.data = await parseBody(body);
     }
     return axiosRequest;
@@ -239,9 +247,14 @@ export default class RestExecutor implements IRestExecutor {
         const axiosRequest: AxiosRequestConfig = await this._prepare(request);
         try {
           // execute request
-          const axiosResponse = await axios(axiosRequest);
+          const axiosResponse = await axios({
+            /** @ts-ignore */
+            // adapter: window?.__TAURI__ ? axiosTauriApiAdapter : null,
+            ...axiosRequest,
+          });
           // normalize response according to Firecamp REST request's response
           const response = this._normalizeResponse(axiosResponse);
+
           // prepare timeline of request execution
           response.timeline = this._timeline(axiosRequest, axiosResponse);
           return Promise.resolve({
@@ -262,7 +275,7 @@ export default class RestExecutor implements IRestExecutor {
                 error: {
                   message: e.message,
                   code: e.code,
-                  e,
+                  e: isNode ? null : e, //@note: electron can not clone the error object to send over ipc
                 },
               },
               variables,
@@ -276,7 +289,7 @@ export default class RestExecutor implements IRestExecutor {
               error: {
                 message: e.message,
                 code: e.code,
-                e,
+                e: isNode ? null : e, //@note: electron can not clone the error object to send over ipc
               },
             },
             variables,

@@ -11,6 +11,9 @@ import { useEnvStore } from '../store/environment';
 import { useModalStore } from '../store/modal';
 import { platformEmitter } from './platform-emitter';
 import { useExplorerStore } from '../store/explorer';
+import _auth from '../services/auth';
+import { EProvider } from '../services/auth/types';
+import { ecies } from './ecies/ecies';
 
 const userService = {
   isLoggedIn: () => {
@@ -47,21 +50,54 @@ const switchWorkspace = async (
 
 //initialize app flow on first load, after login and after signup
 const initApp = async () => {
-  const { fetchExplorer } = useExplorerStore.getState();
-  CloudApiGlobal.setHost(process.env.FIRECAMP_API_HOST);
+  const urlParams = new URLSearchParams(location.search);
+  console.log(urlParams);
+  const code = urlParams.get('code');
+  const _error = urlParams.get('error');
+  const errorDescription = urlParams.get('error_description');
 
-  // Set client id and app version into cloud-api headers
+  CloudApiGlobal.setHost(process.env.FIRECAMP_API_HOST);
+  // set  app version into cloud-api headers
   CloudApiGlobal.setGlobalHeaders({
     [ECloudApiHeaders.AppVersion]: process.env.APP_VERSION || '',
   });
 
-  const socketId = localStorage.getItem('socketId');
+  Promise.resolve()
+    .then(async () => {
+      if (code) {
+        await _auth
+          .signIn(EProvider.GITHUB, { username: '', password: '' }, code)
+          .then(async () => {
+            AppService.notify.success(`You're signed in successfully.`, {
+              labels: { alert: 'success' },
+            });
+            //@ts-ignore
+            window?.history?.replaceState({}, '', '/');
+          })
+          .catch((e) => {
+            // setError(e.response?.data?.message || e.message);
+          });
+      }
+      return;
+    })
+    .finally(() => {
+      initSession();
+    });
+  // if (errorDescription) setError(errorDescription);
+};
+
+const initSession = async () => {
+  const { fetchExplorer } = useExplorerStore.getState();
+  await ecies.rotateTokens();
+  const accessToken = await ecies.getAccessToken(); //.catch(console.log);
+  if (!accessToken) return;
 
   //1/ check if user is logged in or not
   const wrsId = localStorage.getItem('workspace');
-  // if (!socketId) return AppService.modals.openSignIn()
+  // if (!accessToken) return AppService.modals.openSignIn()
   CloudApiGlobal.setGlobalHeaders({
     [ECloudApiHeaders.WorkspaceId]: wrsId,
+    [ECloudApiHeaders.Authorization]: `bearer ${accessToken}`,
   });
   Rest.auth
     .session(wrsId)
@@ -73,22 +109,13 @@ const initApp = async () => {
       await fetchExplorer(workspace.__ref.id);
       return res.data;
     })
-    .then((res) => {
-      // if auth happens via github/google then success message would be set at localStorage from identity page
-      const sMessage = localStorage.getItem('authSuccessMessage');
-      if (sMessage) {
-        AppService.notify.success(sMessage);
-        localStorage.removeItem('authSuccessMessage');
-      }
-      return res;
-    })
     .then(({ user }) => {
       // subscribe request changes (pull actions)
       try {
         Realtime.connect({
           endpoint: process.env.FIRECAMP_API_HOST,
           auth: {
-            token: socketId,
+            token: accessToken,
             workspace: wrsId,
           },
           userId: user.__ref.id,
@@ -119,6 +146,7 @@ const initApp = async () => {
     })
     .catch(console.log);
 };
+
 const initUser = (user: any) => {
   const { setUser } = useUserStore.getState();
   setUser(user);
@@ -152,7 +180,7 @@ const logout = () => {
   Rest.auth
     .logout()
     .then((res) => {
-      localStorage.removeItem('socketId');
+      ecies.clear();
       localStorage.removeItem('switchToOrg');
       localStorage.removeItem('workspace');
       localStorage.removeItem('org');
