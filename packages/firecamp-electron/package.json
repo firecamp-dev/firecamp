@@ -35,7 +35,7 @@
   "devDependencies": {
     "@types/node": "^20.8.9",
     "electron": "^27.1.2",
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.13.3"
   },
   "build": {
     "appId": "com.firecamp.electron",
