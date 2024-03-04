@@ -5,8 +5,7 @@ const showUpdateDownloadedWinDialog = (win: any) => {
   dialog.showMessageBoxSync(win, {
     type: 'question',
     title: '👏️ Installed New Version',
-    message:
-      'New version has been installed successfully, You can restart the app',
+    message: 'The new version is installed. You may now restart the app.',
     detail: 'Please ensure you save any open, unsaved work before proceeding.',
     buttons: ['Cancel', 'Restart'],
   });
