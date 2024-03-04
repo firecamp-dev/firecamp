@@ -75,6 +75,11 @@
       "gatekeeperAssess": false,
       "publish": [
         {
+          "provider": "github",
+          "owner": "firecamp-dev",
+          "repo": "firecamp"
+        },
+        {
           "provider": "spaces",
           "name": "firecamp",
           "region": "ams3",
@@ -96,6 +101,11 @@
         ]
       },
       "publish": [
+        {
+          "provider": "github",
+          "owner": "firecamp-dev",
+          "repo": "firecamp"
+        },
         {
           "provider": "spaces",
           "name": "firecamp",
@@ -122,6 +132,11 @@
       },
       "verifyUpdateCodeSignature": false,
       "publish": [
+        {
+          "provider": "github",
+          "owner": "firecamp-dev",
+          "repo": "firecamp"
+        },
         {
           "provider": "spaces",
           "name": "firecamp",

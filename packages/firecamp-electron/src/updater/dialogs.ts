@@ -7,8 +7,7 @@ const showUpdateDownloadedWinDialog = (win: any) => {
     title: '👏️ Installed New Version',
     message:
       'New version has been installed successfully, You can restart the app',
-    detail:
-      'Please save your unsaved tabs first if you are in-between your work.',
+    detail: 'Please ensure you save any open, unsaved work before proceeding.',
     buttons: ['Cancel', 'Restart'],
   });
 };
