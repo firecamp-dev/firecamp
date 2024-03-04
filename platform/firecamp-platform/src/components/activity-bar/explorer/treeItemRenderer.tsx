@@ -34,6 +34,18 @@ const FolderCloseIcon = (props) => (
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log(item, 'arrow context');
+    const leftAligned : boolean = false;
+
+    const alignClass = cx({
+      "text-left": leftAligned,
+      "text-right": !leftAligned,
+    });
+    const requestTokenClass = cx({
+     "pr-5": leftAligned,
+      "pl-5": !leftAligned,
+      "w-11": true,
+      "mr-2":true,
+    });
 
     if (item.data?.__ref?.isRequest) {
       const { type = null, method = '' } = item.data?.__meta;
@@ -41,14 +53,14 @@ export default {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type', 'm-r-4')} {...context.arrowProps}>{text}</div>
+            <div className={cx(text, 'collection_leaf-node-type', 'm-r-4', alignClass)} {...context.arrowProps}>{text}</div>
           );
         case ERequestTypes.GraphQL:
-          return <FcIconGraphQL className="text-graphql" size={24}  {...context.arrowProps} />;
+          return <FcIconGraphQL className={cx(requestTokenClass,"text-graphql")} size={24}  {...context.arrowProps} />;
         case ERequestTypes.WebSocket:
-          return <FcIconWebSocket className="" size={24} {...context.arrowProps} />;
+          return <FcIconWebSocket className={requestTokenClass} size={24} {...context.arrowProps} />;
         case ERequestTypes.SocketIO:
-          return <FcIconSocketIoSquare className="" size={24} {...context.arrowProps} />;
+          return <FcIconSocketIoSquare className={requestTokenClass} size={24} {...context.arrowProps} />;
         default:
           return <></>;
       }
