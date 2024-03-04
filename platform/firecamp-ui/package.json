@@ -92,7 +92,7 @@
     "@mantine/form": "^6.0.17",
     "@mantine/hooks": "^6.0.14",
     "@mantine/modals": "^6.0.17",
-    "@monaco-editor/react": "4.4.5",
+    "@monaco-editor/react": "4.6.0",
     "@radix-ui/react-dropdown-menu": "^2.0.1",
     "@radix-ui/react-scroll-area": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.2",
