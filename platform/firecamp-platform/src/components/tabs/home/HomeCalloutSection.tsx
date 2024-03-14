@@ -70,7 +70,9 @@ const CalloutBox = ({
   return (
     <div className="flex flex-col border border-app-border rounded-sm p-4 m-auto">
       <p className={'text-base font-semibold mb-2 mt-1'}>{title}</p>
-      <p className="text-base text-app-foreground-inactive mb-2">{description}</p>
+      <p className="text-base text-app-foreground-inactive mb-2">
+        {description}
+      </p>
       <a
         href=""
         className="text-base font-semibold !text-info cursor-pointer mb-2"

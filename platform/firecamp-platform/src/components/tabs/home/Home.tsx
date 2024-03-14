@@ -119,7 +119,7 @@ const RequestItem: FC<IRequestItem> = ({
   label,
   icon,
   hasInvertIcon = false, //TODO : removed classname
-  openRequest = () => { },
+  openRequest = () => {},
 }) => {
   return (
     <div
@@ -138,7 +138,7 @@ const RequestItem: FC<IRequestItem> = ({
 
 const Theme: FC<any> = () => {
   return (
-    <div className='mb-6'>
+    <div className="mb-6">
       <div className="block text-base uppercase font-semibold text-app-foreground-inactive mb-6">
         Themes
       </div>

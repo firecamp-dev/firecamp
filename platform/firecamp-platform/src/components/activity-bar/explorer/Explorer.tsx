@@ -80,8 +80,8 @@ const Explorer: FC<any> = () => {
   const isMouseDown = useRef(false);
   //effect: register and unregister treeDataProvider instance
   useEffect(() => {
-    document.body.onmousedown = () => isMouseDown.current = true;
-    document.body.onmouseup = () => isMouseDown.current = false
+    document.body.onmousedown = () => (isMouseDown.current = true);
+    document.body.onmouseup = () => (isMouseDown.current = false);
     registerTDP(dataProvider.current);
     return unRegisterTDP;
   }, []);
@@ -159,46 +159,67 @@ const Explorer: FC<any> = () => {
         // console.log({ nodeItem });
         _openReqInTab(nodeItem);
       }
-    }, 10)
+    }, 10);
   };
 
-  const shouldIDropTheCollection = useCallback((item: any, target: any): boolean => {
+  const shouldIDropTheCollection = useCallback(
+    (item: any, target: any): boolean => {
+      const { childIndex, targetType, depth, parentItem } = target;
+      const index = workspace.__meta.cOrders.indexOf(item.__ref.id);
+      console.log(
+        workspace.__meta.cOrders,
+        item.__ref,
+        target,
+        childIndex,
+        index
+      );
+      // if (index == dropIndex) return false;
+      /** collection can only reorder at depth 0 */
+      if (targetType == 'between-items' && depth == 0 && parentItem == 'root')
+        return true;
+      else return false;
+    },
+    [workspace.__meta.cOrders, collections]
+  );
 
-    const { childIndex, targetType, depth, parentItem } = target;
-    const index = workspace.__meta.cOrders.indexOf(item.__ref.id);
-    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index);
-    // if (index == dropIndex) return false;
-    /** collection can only reorder at depth 0 */
-    if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
-    else return false;
-  }, [workspace.__meta.cOrders, collections]);
+  const shouldIDropTheFolder = useCallback(
+    (item: any, target: any): boolean => {
+      const { targetType, depth, parentItem } = target;
+      /** folder can be dropped on collection */
+      if (targetType == 'item' && depth == 0 && parentItem == 'root')
+        return true;
 
-  const shouldIDropTheFolder = useCallback((item: any, target: any): boolean => {
-    const { targetType, depth, parentItem } = target;
-    /** folder can be dropped on collection */
-    if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
+      const parentCollection = collections.find(
+        (i) => i.__ref.id == parentItem
+      );
+      const parentFolder = folders.find((i) => i.__ref.id == parentItem);
 
-    const parentCollection = collections.find((i) => i.__ref.id == parentItem);
-    const parentFolder = folders.find((i) => i.__ref.id == parentItem);
+      /**folders can be drop on collection/folder or reorder within the same depth/level */
+      if (parentCollection || parentFolder) return true;
+      return false;
+    },
+    [collections, folders]
+  );
 
-    /**folders can be drop on collection/folder or reorder within the same depth/level */
-    if (parentCollection || parentFolder) return true;
-    return false;
-  }, [collections, folders]);
+  const shouldIDropTheRequest = useCallback(
+    (target: any): boolean => {
+      const { targetType, depth, parentItem } = target;
+      /** request can be dropped on collection */
+      if (targetType == 'item' && depth == 0 && parentItem == 'root')
+        return true;
 
-  const shouldIDropTheRequest = useCallback((target: any): boolean => {
-    const { targetType, depth, parentItem } = target;
-    /** request can be dropped on collection */
-    if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
+      const parentCollection = collections.find(
+        (i) => i.__ref.id == parentItem
+      );
+      const parentFolder = folders.find((i) => i.__ref.id == parentItem);
 
-    const parentCollection = collections.find((i) => i.__ref.id == parentItem);
-    const parentFolder = folders.find((i) => i.__ref.id == parentItem);
+      /** request can be drop on collection and folder or reorder within the same depth/level */
+      if (parentCollection || parentFolder) return true;
 
-    /** request can be drop on collection and folder or reorder within the same depth/level */
-    if (parentCollection || parentFolder) return true;
-
-    return false;
-  }, [collections, folders]);
+      return false;
+    },
+    [collections, folders]
+  );
 
   const canDropAt = useCallback(
     (item, target) => {
@@ -209,7 +230,8 @@ const Explorer: FC<any> = () => {
 
       // console.clear();
 
-      if (isItemCollection) return shouldIDropTheCollection(itemPayload, target);
+      if (isItemCollection)
+        return shouldIDropTheCollection(itemPayload, target);
       if (isItemFolder) return shouldIDropTheFolder(itemPayload, target);
       if (isItemRequest) return shouldIDropTheRequest(target);
       return false;
@@ -217,74 +239,91 @@ const Explorer: FC<any> = () => {
     [collections, folders]
   );
 
-  const reorderCollections = useCallback((childIndex: number, collection: any) => {
-    const index = workspace.__meta.cOrders.indexOf(collection.__ref.id);
-    if (index < 0) return;
-    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
-    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
-    if (dropIndex == index) return;
-    changeWorkspaceMetaOrders(collection.__ref.id, dropIndex)
-  }, [workspace.__meta.cOrders]);
+  const reorderCollections = useCallback(
+    (childIndex: number, collection: any) => {
+      const index = workspace.__meta.cOrders.indexOf(collection.__ref.id);
+      if (index < 0) return;
+      // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+      const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+      if (dropIndex == index) return;
+      changeWorkspaceMetaOrders(collection.__ref.id, dropIndex);
+    },
+    [workspace.__meta.cOrders]
+  );
 
-  const reorderWithinCollection = useCallback((childIndex: number, item: any) => {
-    const itemType = item.__ref.isRequest ? 'request' : 'folder'
-    const collection = collections.find(c => c.__ref.id == item.__ref.collectionId);
-    if (!collection) return;
-    const index = collection.__meta[itemType == 'request' ? 'rOrders' : 'fOrders'].indexOf(item.__ref.id);
-    if (index < 0) return;
+  const reorderWithinCollection = useCallback(
+    (childIndex: number, item: any) => {
+      const itemType = item.__ref.isRequest ? 'request' : 'folder';
+      const collection = collections.find(
+        (c) => c.__ref.id == item.__ref.collectionId
+      );
+      if (!collection) return;
+      const index = collection.__meta[
+        itemType == 'request' ? 'rOrders' : 'fOrders'
+      ].indexOf(item.__ref.id);
+      if (index < 0) return;
 
-    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
-    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
-    if (dropIndex == index) return;
-    changeCollectionChildrenPosition(
-      item.__ref.collectionId,
-      item.__ref.id,
-      dropIndex,
-      itemType
-    );
-  }, [collections]);
+      // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+      const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+      if (dropIndex == index) return;
+      changeCollectionChildrenPosition(
+        item.__ref.collectionId,
+        item.__ref.id,
+        dropIndex,
+        itemType
+      );
+    },
+    [collections]
+  );
 
-  const reorderWithinFolder = useCallback((childIndex: number, item: any) => {
-    const itemType = item.__ref.isRequest ? 'request' : 'folder'
-    const folder = folders.find(c => c.__ref.id == item.__ref.folderId);
-    if (!folder) return;
-    const index = folder.__meta[itemType == 'request' ? 'rOrders' : 'fOrders'].indexOf(item.__ref.id);
-    if (index < 0) return;
+  const reorderWithinFolder = useCallback(
+    (childIndex: number, item: any) => {
+      const itemType = item.__ref.isRequest ? 'request' : 'folder';
+      const folder = folders.find((c) => c.__ref.id == item.__ref.folderId);
+      if (!folder) return;
+      const index = folder.__meta[
+        itemType == 'request' ? 'rOrders' : 'fOrders'
+      ].indexOf(item.__ref.id);
+      if (index < 0) return;
 
-    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
-    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
-    if (dropIndex == index) return;
+      // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+      const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+      if (dropIndex == index) return;
 
-    changeFolderChildrenPosition(
-      item.__ref.folderId,
-      item.__ref.id,
-      dropIndex,
-      itemType
-    );
-  }, [folders]);
+      changeFolderChildrenPosition(
+        item.__ref.folderId,
+        item.__ref.id,
+        dropIndex,
+        itemType
+      );
+    },
+    [folders]
+  );
 
-  const itemDropOnCollectionOrFolder = useCallback((targetItem: string, itemType: 'request' | 'folder', item: any) => {
-    console.log('itemDropOnCollectionOrFolder');
-    if (!targetItem) return;
-    const moveTo: { collectionId: string; folderId?: string } = {
-      collectionId: '',
-    };
+  const itemDropOnCollectionOrFolder = useCallback(
+    (targetItem: string, itemType: 'request' | 'folder', item: any) => {
+      console.log('itemDropOnCollectionOrFolder');
+      if (!targetItem) return;
+      const moveTo: { collectionId: string; folderId?: string } = {
+        collectionId: '',
+      };
 
-    const _targetCol = collections.find((i) => i.__ref.id == targetItem);
-    if (_targetCol) {
-      console.log('item drop on collection');
-      moveTo.collectionId = _targetCol.__ref.id;
-    }
-    else {
-      console.log('item drop on folder');
-      const _targetFolder = folders.find((i) => i.__ref.id == targetItem);
-      if (_targetFolder) {
-        moveTo.collectionId = _targetFolder.__ref.collectionId;
-        moveTo.folderId = _targetFolder.__ref.id;
+      const _targetCol = collections.find((i) => i.__ref.id == targetItem);
+      if (_targetCol) {
+        console.log('item drop on collection');
+        moveTo.collectionId = _targetCol.__ref.id;
+      } else {
+        console.log('item drop on folder');
+        const _targetFolder = folders.find((i) => i.__ref.id == targetItem);
+        if (_targetFolder) {
+          moveTo.collectionId = _targetFolder.__ref.collectionId;
+          moveTo.folderId = _targetFolder.__ref.id;
+        }
       }
-    }
-    _moveItem(item, moveTo, itemType);
-  }, [collections, folders]);
+      _moveItem(item, moveTo, itemType);
+    },
+    [collections, folders]
+  );
 
   const _moveItem = (item, moveTo, itemType: 'request' | 'folder') => {
     if (itemType == 'folder') {
@@ -296,7 +335,6 @@ const Explorer: FC<any> = () => {
     } else {
     }
   };
-
 
   const onDrop = (items, target) => {
     console.log(items, target, 'onDrop');
@@ -334,14 +372,30 @@ const Explorer: FC<any> = () => {
           reorderWithinFolder(childIndex, item);
         } else {
           // TODO: move item to folder within collection
-          console.log('move item to folder within collection', childIndex, explorerTreeRef);
-          itemDropOnCollectionOrFolder(moveToParent.__ref.id, isItemRequest ? 'request' : 'folder', item);
+          console.log(
+            'move item to folder within collection',
+            childIndex,
+            explorerTreeRef
+          );
+          itemDropOnCollectionOrFolder(
+            moveToParent.__ref.id,
+            isItemRequest ? 'request' : 'folder',
+            item
+          );
         }
       } else {
         if (item.__ref.folderId) {
           // TODO: moving item to collection root
-          console.log('move item to collection root', childIndex, explorerTreeRef);
-          itemDropOnCollectionOrFolder(item.__ref.collectionId, isItemRequest ? 'request' : 'folder', item);
+          console.log(
+            'move item to collection root',
+            childIndex,
+            explorerTreeRef
+          );
+          itemDropOnCollectionOrFolder(
+            item.__ref.collectionId,
+            isItemRequest ? 'request' : 'folder',
+            item
+          );
         } else {
           // reorder within collection
           console.log('reorder within collection');
@@ -353,7 +407,11 @@ const Explorer: FC<any> = () => {
        * if targetItem exists then item is being moved/dropped to collection/folder
        * item is being dropped on item, here it'll be dropped on folder or collection
        */
-      itemDropOnCollectionOrFolder(targetItem, isItemRequest ? 'request' : 'folder', item);
+      itemDropOnCollectionOrFolder(
+        targetItem,
+        isItemRequest ? 'request' : 'folder',
+        item
+      );
     }
   };
 

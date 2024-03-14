@@ -18,11 +18,7 @@ export default {
           size={12}
           opacity={'0.6'}
         />
-        <Folder
-          className="mr-1 flex-none"
-          size={16}
-          opacity={0.8}
-        />
+        <Folder className="mr-1 flex-none" size={16} opacity={0.8} />
       </>
     );
   },
@@ -149,12 +145,11 @@ export default {
             </span>
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
-
             {item.data.__ref.isItem ? (
               <Button
                 text={'Open'}
                 classNames={{
-                  root: 'hover:!bg-focus2 ml-1 !text-app-foreground-inactive'
+                  root: 'hover:!bg-focus2 ml-1 !text-app-foreground-inactive',
                 }}
                 onClick={(e) => {
                   e.preventDefault();

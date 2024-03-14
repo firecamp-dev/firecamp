@@ -9,10 +9,9 @@ const _labels: IConfirm['labels'] = {
 const ConfirmationModal: FC<IConfirm> = ({
   message = '',
   labels,
-  onConfirm = () => { },
-  onCancel = () => { },
+  onConfirm = () => {},
+  onCancel = () => {},
 }) => {
-
   const l = { ..._labels, ...labels };
   return (
     <div>
@@ -44,7 +43,7 @@ export interface IConfirm {
   message: string;
 
   /** btn labels */
-  labels?: { confirm?: string; cancel?: string; };
+  labels?: { confirm?: string; cancel?: string };
 
   /** show a specific note in eye caching note box */
   note?: string;

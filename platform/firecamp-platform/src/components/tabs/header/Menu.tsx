@@ -82,7 +82,7 @@ const Menu: FC = () => {
       classNames={{
         dropdown: '!pt-0 -ml-2 border-focusBorder',
         label: 'uppercase',
-        item: '!px-5'
+        item: '!px-5',
       }}
       menuProps={{
         position: 'right',

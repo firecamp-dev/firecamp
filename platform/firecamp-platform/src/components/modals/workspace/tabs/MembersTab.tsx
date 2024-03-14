@@ -136,7 +136,11 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
         break;
       case 'action':
         return (
-          <div className={cx("px-2", {"hidden": row.role === EUserRolesWorkspace.Owner})}>
+          <div
+            className={cx('px-2', {
+              hidden: row.role === EUserRolesWorkspace.Owner,
+            })}
+          >
             <Trash2
               size={14}
               className="text-error cursor-pointer"

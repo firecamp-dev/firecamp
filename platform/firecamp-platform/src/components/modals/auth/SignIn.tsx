@@ -11,7 +11,12 @@ import platformContext from '../../../services/platform-context';
  */
 const SignIn: FC<IModal> = ({ opened, onClose }) => {
   return (
-    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
+    <Drawer
+      opened={opened}
+      onClose={onClose}
+      size={440}
+      classNames={{ body: 'mt-[10vh]' }}
+    >
       {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
       <div className="mb-4">
         <FcLogo className="mx-auto w-14" size={80} />
@@ -24,10 +29,10 @@ const SignIn: FC<IModal> = ({ opened, onClose }) => {
         <Button
           text="Sign In with Email"
           leftIcon={<Mail size={18} />}
-          classNames={{ 
+          classNames={{
             root: 'mb-5',
-            inner: 'ml-[30%]'
-           }}
+            inner: 'ml-[30%]',
+          }}
           onClick={() => platformContext.app.modals.openSignInWithEmail()}
           outline
           fullWidth
