@@ -147,12 +147,16 @@ const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
   },
 
   prepareRequestForExecution: () => {
-    const { request, prepareAuthForExecution, prepareScriptsForExecution } =
-      get();
+    const {
+      request,
+      runtime: { authHeaders = [] },
+      prepareAuthForExecution,
+      prepareScriptsForExecution,
+    } = get();
     const auth = prepareAuthForExecution();
     const { preScripts, postScripts } = prepareScriptsForExecution();
     return {
-      ...request,
+      ...{ ...request, headers: [...request.headers, ...authHeaders] }, // merge auth headers to main headers
       auth,
       preScripts,
       postScripts,
@@ -181,7 +185,7 @@ const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
         console.log({ response, variables, testResult });
         if (response?.error) {
           const error = response.error;
-          console.log(error.message, error.code, error.e.response, error.e);
+          console.log(error.message, error.code, error.e?.response, error.e);
         }
         if (response) {
           set((s) => ({ response, testResult, scriptErrors })); // TODO: check what to set/ response or testScriptResponse

@@ -1,0 +1,151 @@
+{
+  "name": "@firecamp/electron",
+  "productName": "Firecamp",
+  "version": "3.3.0-beta.3",
+  "description": "The Firecamp Desktop Application",
+  "main": "build/main.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/firecamp-dev/firecamp.git",
+    "directory": "packages/firecamp-electron"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pnpm build && electron .",
+    "build": "tsc",
+    "release": "pnpm build && electron-builder -mlw --publish always",
+    "pack": "pnpm build && electron-builder --dir -c.compression=store -c.mac.identity=null",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "AGPLv3",
+  "dependencies": {
+    "@firecamp/rest-executor": "workspace:*",
+    "@firecamp/scripts": "workspace:*",
+    "@firecamp/socket.io-executor": "workspace:*",
+    "@firecamp/ws-executor": "workspace:*",
+    "electron-is-dev": "^2.0.0",
+    "electron-log": "^5.0.0",
+    "electron-notarize": "^1.2.2",
+    "electron-updater": "^6.1.4",
+    "react-fast-compare": "^3.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.9",
+    "electron": "^29.1.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.firecamp.electron",
+    "generateUpdatesFilesForAllChannels": true,
+    "productName": "Firecamp",
+    "afterSign": "scripts/notarize.js",
+    "files": [
+      "./build/**/*",
+      "package.json",
+      {
+        "from": "../../build/production",
+        "to": "app"
+      }
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "dmg": {
+      "sign": false
+    },
+    "mac": {
+      "artifactName": "Firecamp-${version}.${arch}.${ext}",
+      "executableName": "Firecamp",
+      "type": "distribution",
+      "target": {
+        "target": "default",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      },
+      "category": "public.app-category.developer-tools",
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "icon": "icons/mac/512.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "firecamp-dev",
+          "repo": "firecamp"
+        },
+        {
+          "provider": "spaces",
+          "name": "firecamp",
+          "region": "ams3",
+          "channel": "latest",
+          "path": "/electron-apps/mac",
+          "acl": "public-read"
+        }
+      ]
+    },
+    "linux": {
+      "artifactName": "Firecamp-${version}.${arch}.${ext}",
+      "executableName": "Firecamp",
+      "icon": "icons/mac/512.png",
+      "category": "Development",
+      "target": {
+        "target": "AppImage",
+        "arch": [
+          "x64"
+        ]
+      },
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "firecamp-dev",
+          "repo": "firecamp"
+        },
+        {
+          "provider": "spaces",
+          "name": "firecamp",
+          "region": "ams3",
+          "channel": "latest",
+          "path": "/electron-apps/linux",
+          "acl": "public-read"
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "artifactName": "Firecamp-${version}.${arch}.${ext}",
+      "executableName": "Firecamp",
+      "icon": "icons/win/logo.ico",
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      },
+      "verifyUpdateCodeSignature": false,
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "firecamp-dev",
+          "repo": "firecamp"
+        },
+        {
+          "provider": "spaces",
+          "name": "firecamp",
+          "region": "ams3",
+          "channel": "latest",
+          "path": "/electron-apps/win",
+          "acl": "public-read"
+        }
+      ]
+    }
+  }
+}

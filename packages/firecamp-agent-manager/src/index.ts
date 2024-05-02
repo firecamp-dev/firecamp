@@ -30,15 +30,19 @@ export const send = async (
   testResult: any;
   scriptErrors: any[];
 }> => {
+  const requestId = request.__ref.id;
+  let res: any;
   switch (firecampAgent) {
     case EFirecampAgent.Desktop:
-      return window.fc.restExecutor.send(request, variables);
+      //@ts-ignore
+      return await window.__electron__.http.send(request, variables);
     case EFirecampAgent.Extension:
-      return extension.send(request, variables);
     case EFirecampAgent.Web:
       restExecutors[request.__ref.id] = new RestExecutor();
       //@ts-ignore
-      return await restExecutors[request.__ref.id].send(request, variables);
+      res = restExecutors[request.__ref.id].send(request, variables);
+      delete restExecutors[requestId];
+      return res;
     case EFirecampAgent.Cloud:
       if (request.body?.type == ERestBodyTypes.FormData) {
         const body = await parseBody(request.body);
@@ -76,14 +80,13 @@ export const cancel = async (
 ): Promise<void> => {
   switch (firecampAgent) {
     case EFirecampAgent.Desktop:
-      return window.fc.restExecutor.cancel(requestId);
-    case EFirecampAgent.Extension:
-      return extension.cancel(requestId);
+      /** @ts-ignore */
+      return window.__electron__.http.stop(requestId);
+    // case EFirecampAgent.Extension:
+    //   return extension.cancel(requestId);
     case EFirecampAgent.Web:
       restExecutors[requestId].cancel();
-
       delete restExecutors[requestId];
-
       return;
     case EFirecampAgent.Cloud:
       const response = await axios.get(

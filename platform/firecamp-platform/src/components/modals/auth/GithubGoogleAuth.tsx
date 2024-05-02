@@ -1,11 +1,14 @@
 import { FC, useState } from 'react';
-
+import { Button } from '@firecamp/ui';
 import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
 // import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
 
 import _auth from '../../../services/auth';
-import { Button } from '@firecamp/ui';
 import { EProvider } from '../../../services/auth/types';
+import { _misc } from '@firecamp/utils';
+import { EFirecampAgent } from '@firecamp/types';
+import platformContext from '../../../services/platform-context';
+import AppService from '../../../services/app.service';
 
 const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
   const [disableSignInWithGoogleButton, setDisableSignInWithGoogleButton] =
@@ -14,31 +17,35 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
   const [disableSignInWithGitHubButton, setDisableSignInWithGitHubButton] =
     useState(false);
 
-  const _initApp = async (response, provider) => {
+  const closeModal = async () => {
     try {
-      // Close auth modal on Sign In success
-      onClose();
+      // close auth modal on sign in success
+      typeof onClose == 'function' && onClose();
       return Promise.resolve();
-    } catch (error) {
-      return Promise.reject({
-        API: 'authModel._initApp',
-        error,
-      });
-    }
+    } catch (e) { }
   };
 
   const _githubOAuth = async (e: any) => {
     if (e) e.preventDefault();
-
     if (!!disableSignInWithGitHubButton) return Promise.reject('');
     setDisableSignInWithGitHubButton(true);
 
-    _auth
+    if (_misc.firecampAgent() == EFirecampAgent.Web) {
+      _auth.oauth2.githubAuth.authorize.web();
+      return;
+    }
+
+    return _auth
       .signIn(EProvider.GITHUB)
       .then(async ({ response, provider }) => {
-        // Note: It'll never reach here as It'll redirect to the identity page after git auth
-        console.log(response, 'response....');
-        await _initApp(response, provider);
+        platformContext.app.modals.close();
+        // note: this'll be reachable only for desktop environment
+        await platformContext.app.initApp().then(() => {
+          AppService.notify.success(`You're signed in successfully.`, {
+            labels: { alert: 'success' },
+          });
+        });
+        await closeModal();
       })
       .catch((e) => {
         console.log(e);
@@ -59,7 +66,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       .signIn(EProvider.GOOGLE)
       .then(async ({ response, provider }) => {
         console.log(response, 'response....');
-        await _initApp(response, provider);
+        await closeModal();
       })
       .finally(() => {
         setDisableSignInWithGoogleButton(false);
@@ -73,7 +80,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
         //     // Enable to click sign up/ sign in button
         //     setDisableSignInWithGoogleButton(false);
         //     // Init App
-        //     await _initApp(response, provider);
+        //     await closeModal();
         //     resolve(response);
         //   },
         //   error => {

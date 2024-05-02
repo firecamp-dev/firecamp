@@ -7,28 +7,15 @@
 </p>
 
 <h3 align="center"><b>Firecamp</b></h3>
-<p align="center"><b>dx-first open-source API devtool</b></p>
+<h4 align="center"><b>Open Source Postman Alternative</b></h4>
 
 <p align="center">
    <a href="https://discord.gg/8hRaqhK"><img alt="Discord online members" src="https://badgen.net/discord/members/8hRaqhK?color=5865F2&label=Discord&style=for-the-badge" /></a>
    <a href="https://github.com/firecamp-dev/firecamp/stargazers"><img src="https://img.shields.io/github/stars/firecamp-dev/firecamp" alt="GitHub Stars"></a>
-   <a href="https://github.com/firecamp-dev/firecamp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License"></a>
    <a href="https://github.com/firecamp-dev/firecamp/pulse"><img src="https://img.shields.io/github/commit-activity/y/firecamp-dev/firecamp" alt="Commits-per-month"></a>
 </p>
 
 <br/>
-
-> **🚧 We're currently working on the desktop application which can be found on the [feat/62-desktop](https://github.com/firecamp-dev/firecamp/tree/feat/62-desktop) branch.**
->
-> **[Read more 👀](https://github.com/firecamp-dev/firecamp/issues/62)**
-
-<br/>
-
-<p align="center">
-  <a href="https://firecamp.dev">
-  <img alt ="firecamp-cover" src="https://github.com/firecamp-dev/firecamp/assets/5078921/1ef25fd3-bf97-4bd0-b440-7c1f4ef3eb22"/>
-  </a>
-</p>
 
 # Firecamp
 
@@ -40,8 +27,23 @@ Firecamp is a dx-first API development platform that helps developers design, de
 - ⛺ build APIs faster without switching between tools and apps. documentation, cli, ci/cd under one roof <br/>
   
 
-👉 live at https://firecamp.dev
+👉 Web: https://firecamp.dev
 
+## Download Firecamp Desktop Application
+
+1. [Firecamp for MacOS Intel](https://fcamp.co/mac)
+2. [Firecamp for  MacOS Silicon](https://fcamp.co/mac-silicon)
+3. [Firecamp for Windows](https://fcamp.co/win-x64)
+4. [Firecamp for Linux AppImage](https://fcamp.co/linux-appImage)
+
+<br/>
+
+
+<p align="center">
+  <a href="https://firecamp.dev">
+  <img alt ="firecamp-cover" src="https://github.com/firecamp-dev/firecamp/assets/5078921/1ef25fd3-bf97-4bd0-b440-7c1f4ef3eb22"/>
+  </a>
+</p>
 
 ## 🚀 Getting started with Firecamp
 To get started with Firecamp, follow these steps:
@@ -95,9 +97,6 @@ There is a dedicated GUI playground for each API protocol you would be using for
   Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
  
 ## 🛣️  Roadmap
-
-
-💻  Desktop Apps: Get the Desktop app for your preferred OS/platform <br/>
 
 🛰️ Self-hosted: Host Firecamp on your own server
 

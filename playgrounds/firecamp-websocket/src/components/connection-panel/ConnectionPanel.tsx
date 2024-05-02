@@ -49,6 +49,11 @@ const ConnectionPanel = () => {
         name: 'Params',
         count: cPanelUi.params,
       },
+      {
+        id: 'headers',
+        name: 'Headers',
+        count: cPanelUi.headers,
+      },
       // {
       //   id: 'config',
       //   name: 'Config',

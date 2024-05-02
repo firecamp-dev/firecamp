@@ -1,0 +1,44 @@
+{
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devPath": "https://localhost:3000",
+    "distDir": "../dist",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "firecamp-desktop",
+    "version": "0.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "http": {
+        "scope": ["https://*", "http://*"],
+        "all": true,
+        "request": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.firecamp.dev",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "fullscreen": true,
+        "resizable": true,
+        "title": "Firecamp, API Campsite"
+      }
+    ]
+  }
+}

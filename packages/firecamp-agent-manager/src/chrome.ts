@@ -2,7 +2,7 @@
 
 import { IRest, IRestResponse, TId } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
-import RestExecutor from '@firecamp/rest-executor/dist/esm';
+import RestExecutor from '@firecamp/rest-executor';
 
 // Holds the rest executors instance to handle
 const restExecutors: { [key: TId]: RestExecutor } = {};

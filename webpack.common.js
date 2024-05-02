@@ -23,13 +23,6 @@ const plugins = [
     favicon: 'templates/favicon.png',
     hash: true,
   }),
-  new HtmlWebpackPlugin({
-    inject: true,
-    chunks: ['identity'],
-    filename: 'identity.html',
-    template: 'templates/identity.html',
-    favicon: 'templates/favicon.png',
-  }),
   new NodePolyfillPlugin(),
   new webpack.ProgressPlugin({
     entries: true,
@@ -164,10 +157,6 @@ module.exports = {
     index: path.join(
       __dirname,
       './platform/firecamp-platform/src/containers/index.tsx'
-    ),
-    identity: path.join(
-      __dirname,
-      './platform/firecamp-platform/src/containers/identity.tsx'
     ),
   },
   optimization: {

@@ -1,3 +1,4 @@
+const { readFileSync } = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
@@ -32,7 +33,12 @@ module.exports = merge(base, {
     ],
   },
   devServer: {
-    //server: 'https',
+    // server: 'https',
+    // https: {
+    // key: readFileSync('x-dev-certs/localhost.key.pem'),
+    // cert: readFileSync('x-dev-certs/localhost.cert.pem'),
+    // ca: readFileSync('x-dev-certs/ca/rootCA.pem'),
+    // },
     static: path.join(__dirname, './build/development'),
     compress: true,
     port: 3000,
