@@ -39,10 +39,10 @@ export default {
       const { type = null, method = '' } = item.data?.__meta;
       switch (type) {
         case ERequestTypes.Rest:
-          const text = method.toUpperCase();
-          return (
-            <div className={cx(text, 'collection_leaf-node-type', 'm-r-4')} {...context.arrowProps}>{text}</div>
-          );
+        const text = method.toUpperCase();
+        return (
+        <div className={cx(text, 'collection_leaf-node-type', 'm-r-4')} {...context.arrowProps}>{text}</div>
+        );
         case ERequestTypes.GraphQL:
           return <FcIconGraphQL className="text-graphql" size={24}  {...context.arrowProps} />;
         case ERequestTypes.WebSocket:
@@ -217,6 +217,7 @@ export default {
                   ? 'collection'
                   : 'request'
             }
+            methodType={item.data?.__meta?.type}
           />
         </div>
         {children}
