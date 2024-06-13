@@ -43,9 +43,9 @@ export default () => {
       }
       window.$crisp.push(['safe', true]);
       const resetSession = localStorage.getItem('resetCrispSession');
-      if(resetSession != '1') {
+      if (resetSession != '1') {
         localStorage.setItem('resetCrispSession', '1');
-        window.$crisp.push(["do", "session:reset"]);
+        window.$crisp.push(['do', 'session:reset']);
       }
     }
   }, []);
