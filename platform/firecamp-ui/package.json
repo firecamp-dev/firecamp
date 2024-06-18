@@ -46,7 +46,7 @@
     "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
     "@storybook/addon-interactions": "^6.5.10",
-    "@storybook/addon-jest": "^6.5.10",
+    "@storybook/addon-jest": "^8.1.10",
     "@storybook/addon-links": "^6.5.10",
     "@storybook/builder-webpack5": "^6.5.10",
     "@storybook/jest": "^0.0.10",
