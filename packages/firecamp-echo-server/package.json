@@ -34,7 +34,7 @@
     "socket.io-v2": "npm:socket.io@2.4.1",
     "socket.io-v3": "npm:socket.io@3.1.2",
     "socket.io-v4": "npm:socket.io@4.5.4",
-    "ws": "8.8.0"
+    "ws": "8.17.1"
   },
   "devDependencies": {
     "@nestjs/cli": "9.0.0",
