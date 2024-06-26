@@ -89,7 +89,7 @@
     "redux": "^3.2.1",
     "xml-js": "^1.6.9",
     "xmljson": "^0.2.0",
-    "zustand": "^4.3.9"
+    "zustand": "^4.5.3"
   },
   "prettier": {
     "singleQuote": true

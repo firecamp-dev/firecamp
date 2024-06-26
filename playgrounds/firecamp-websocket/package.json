@@ -45,7 +45,7 @@
     "react-fast-compare": "^3.2.0",
     "react-ga": "^3.1.2",
     "react-virtualized": "^9.21.5",
-    "zustand": "^4.3.9"
+    "zustand": "^4.5.3"
   },
   "devDependencies": {
     "@types/jest": "29.2.4",
