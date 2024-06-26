@@ -1039,8 +1039,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0
       zustand:
-        specifier: ^4.3.9
-        version: 4.3.9(react@18.2.0)
+        specifier: ^4.5.3
+        version: 4.5.3(react@18.2.0)
     devDependencies:
       '@types/chrome':
         specifier: ^0.0.204
@@ -1740,8 +1740,8 @@ importers:
         specifier: npm:socket.io-client@4.1.3
         version: /socket.io-client@4.1.3
       zustand:
-        specifier: ^4.3.9
-        version: 4.3.9(react@18.2.0)
+        specifier: ^4.5.3
+        version: 4.5.3(react@18.2.0)
     devDependencies:
       '@types/jest':
         specifier: 29.2.4
@@ -1937,8 +1937,8 @@ importers:
         specifier: ^9.21.5
         version: 9.22.3(react-dom@18.2.0)(react@18.2.0)
       zustand:
-        specifier: ^4.3.9
-        version: 4.3.9(react@18.2.0)
+        specifier: ^4.5.3
+        version: 4.5.3(react@18.2.0)
     devDependencies:
       '@types/jest':
         specifier: 29.2.4
@@ -4780,7 +4780,7 @@ packages:
       '@firecamp/url': 0.0.20
       '@firecamp/utils': 0.0.15
       nanoid: 3.3.4
-      parse-curl: github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
+      parse-curl: git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
     dev: false
 
   /@firecamp/types@0.1.14:
@@ -8460,6 +8460,7 @@ packages:
 
   /@storybook/expect@28.1.3-5:
     resolution: {integrity: sha512-lS1oJnY1qTAxnH87C765NdfvGhksA6hBcbUVI5CHiSbNsEtr456wtg/z+dT9XlPriq1D5t2SgfNL9dBAoIGyIA==}
+    deprecated: In Storybook 8, this package functionality has been integrated to a new package called @storybook/test, which uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with 'npx storybook@latest upgrade', you will get prompted and will get an automigration for the new package. Please migrate when you can.
     dependencies:
       '@types/jest': 28.1.3
     dev: true
@@ -31660,13 +31661,16 @@ packages:
       readable-stream: 3.6.0
     dev: true
 
-  /zustand@4.3.9(react@18.2.0):
-    resolution: {integrity: sha512-Tat5r8jOMG1Vcsj8uldMyqYKC5IZvQif8zetmLHs9WoZlntTHmIoNM8TpLRY31ExncuUvUOXehd0kvahkuHjDw==}
+  /zustand@4.5.3(react@18.2.0):
+    resolution: {integrity: sha512-iH1gA/3uOMR0Gz260Fsklxo7wWEXJ008p1bO9O6gxwkbvBUaTDlcVChkDKGGSsvdbOyVce0nQfBitVH6sbYyew==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
-      immer: '>=9.0'
+      '@types/react': '>=16.8'
+      immer: '>=9.0.6'
       react: '>=16.8'
     peerDependenciesMeta:
+      '@types/react':
+        optional: true
       immer:
         optional: true
       react:
@@ -31680,8 +31684,8 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
 
-  github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
-    resolution: {tarball: https://codeload.github.com/firecamp-forks/parse-curl.js/tar.gz/366e62aebfb88b5974b223c1f4c5b456cefab0a0}
+  git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
+    resolution: {commit: 366e62aebfb88b5974b223c1f4c5b456cefab0a0, repo: git@github.com:firecamp-forks/parse-curl.js.git, type: git}
     name: parse-curl
     version: 0.2.6
     dependencies:
