@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { Braces, Pencil } from 'lucide-react'; 
+import { Braces, Pencil } from 'lucide-react';
 
 import {
   RootContainer,

@@ -6,7 +6,6 @@ import { collection } from './collection';
 import { environment } from './environment';
 import { platform } from './platform';
 
-
 export default {
   app: AppService,
   request,

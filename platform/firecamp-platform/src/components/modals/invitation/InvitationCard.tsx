@@ -51,7 +51,7 @@ const InvitationCard: FC<IInvitationCard> = ({
       <TabHeader className="!px-0">
         <TabHeader.Right>
           <Button
-            text={isRequesting ? 'Accepting...': 'Accept Invitation'}
+            text={isRequesting ? 'Accepting...' : 'Accept Invitation'}
             disabled={disabled}
             onClick={() => onAccept()}
             primary

@@ -9,8 +9,7 @@ import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';
 import platformContext from '../../../../services/platform-context';
 
-
-const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => { } }) => {
+const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   const { environments, activeEnvId } = useEnvStore(
     (s) => ({
       environments: s.environments,
