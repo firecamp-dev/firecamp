@@ -75,6 +75,7 @@ export interface IWorkspaceStore {
   onNewRequestCreate: (request: any) => void;
   createRequest: (payload: { [k: string]: any }) => void;
   deleteRequest: (rId: TId) => void;
+  startDuplicate: (rId: TId) => void;
 
   // change orders
   changeWorkspaceMetaOrders: (itemId: TId, position: number) => Promise<any>;
@@ -516,6 +517,22 @@ export const useExplorerStore = create<IWorkspaceStore>(
           state.toggleProgressBar(false);
         });
       return res;
+    },
+    startDuplicate: async (rId: string) => {
+      //TODO AFTER DUPLICATE API
+      //   const state = get();
+      //   state.toggleProgressBar(true);
+      //   const res = await Rest.request
+      //     .duplicate(rId)
+      //     .catch((e) => {
+      //       if (e.message == 'Network Error') {
+      //         //TODO: show error notification
+      //       }
+      //     })
+      //     .finally(() => {
+      //       state.toggleProgressBar(false);
+      //     });
+      //   return res;
     },
 
     onCreateRequest: (request: any) => {
