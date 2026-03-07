@@ -45,7 +45,7 @@ const CollectionMenu = ({
     prefix: () => <FolderPlus size={14} />,
     name: 'Add Folder',
     onClick: () => {
-      console.log(collectionId, folderId);
+      // console.log(collectionId, folderId);
       if (!platformContext.app.user.isLoggedIn()) {
         return platformContext.app.modals.openSignIn();
       }
@@ -64,6 +64,20 @@ const CollectionMenu = ({
               };
             }
             const isValid = Regex.FolderName.test(val);
+
+            const existingFolders = useExplorerStore.getState().explorer.folders;
+            const parentFolderId = folderId || collectionId;
+            const isDuplicateName = existingFolders.some(
+            (folder) =>            
+              folder.name === val && folder.__ref.collectionId === parentFolderId
+            );
+
+            if (isDuplicateName) {
+              return {
+                isValid: false,
+                message: 'A folder with the same name already exists in this location.',
+              };
+            }
             return {
               isValid,
               message:
