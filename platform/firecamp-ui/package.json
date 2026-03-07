@@ -103,7 +103,7 @@
     "firecamp-treeview": "^0.0.1-0",
     "fuzzysort": "^2.0.1",
     "markdown-it": "^13.0.1",
-    "monaco-editor": "^0.34.0",
+    "monaco-editor": "^0.50.0",
     "nanoid": "3.3.4",
     "postcss-loader": "^6.2.1",
     "prettify-xml": "^1.2.0",

@@ -1074,7 +1074,7 @@ importers:
         version: 6.0.17(@mantine/core@6.0.14)(@mantine/hooks@6.0.14)(react-dom@18.2.0)(react@18.2.0)
       '@monaco-editor/react':
         specifier: 4.4.5
-        version: 4.4.5(monaco-editor@0.34.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.4.5(monaco-editor@0.50.0)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.0.1
         version: 2.0.1(@types/react@18.2.29)(react-dom@18.2.0)(react@18.2.0)
@@ -1106,8 +1106,8 @@ importers:
         specifier: ^13.0.1
         version: 13.0.1
       monaco-editor:
-        specifier: ^0.34.0
-        version: 0.34.1
+        specifier: ^0.50.0
+        version: 0.50.0
       nanoid:
         specifier: 3.3.4
         version: 3.3.4
@@ -4780,7 +4780,7 @@ packages:
       '@firecamp/url': 0.0.20
       '@firecamp/utils': 0.0.15
       nanoid: 3.3.4
-      parse-curl: github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
+      parse-curl: git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
     dev: false
 
   /@firecamp/types@0.1.14:
@@ -5996,24 +5996,24 @@ packages:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
     dev: true
 
-  /@monaco-editor/loader@1.3.2(monaco-editor@0.34.1):
+  /@monaco-editor/loader@1.3.2(monaco-editor@0.50.0):
     resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
     peerDependencies:
       monaco-editor: '>= 0.21.0 < 1'
     dependencies:
-      monaco-editor: 0.34.1
+      monaco-editor: 0.50.0
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react@4.4.5(monaco-editor@0.34.1)(react-dom@18.2.0)(react@18.2.0):
+  /@monaco-editor/react@4.4.5(monaco-editor@0.50.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-IImtzU7sRc66OOaQVCG+5PFHkSWnnhrUWGBuH6zNmH2h0YgmAhcjHZQc/6MY9JWEbUtVF1WPBMJ9u1XuFbRrVA==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@monaco-editor/loader': 1.3.2(monaco-editor@0.34.1)
-      monaco-editor: 0.34.1
+      '@monaco-editor/loader': 1.3.2(monaco-editor@0.50.0)
+      monaco-editor: 0.50.0
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -8460,6 +8460,7 @@ packages:
 
   /@storybook/expect@28.1.3-5:
     resolution: {integrity: sha512-lS1oJnY1qTAxnH87C765NdfvGhksA6hBcbUVI5CHiSbNsEtr456wtg/z+dT9XlPriq1D5t2SgfNL9dBAoIGyIA==}
+    deprecated: In Storybook 8, this package functionality has been integrated to a new package called @storybook/test, which uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with 'npx storybook@latest upgrade', you will get prompted and will get an automigration for the new package. Please migrate when you can.
     dependencies:
       '@types/jest': 28.1.3
     dev: true
@@ -23341,8 +23342,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /monaco-editor@0.34.1:
-    resolution: {integrity: sha512-FKc80TyiMaruhJKKPz5SpJPIjL+dflGvz4CpuThaPMc94AyN7SeC9HQ8hrvaxX7EyHdJcUY5i4D0gNyJj1vSZQ==}
+  /monaco-editor@0.50.0:
+    resolution: {integrity: sha512-8CclLCmrRRh+sul7C08BmPBP3P8wVWfBHomsTcndxg5NRCEPfu/mc2AGU8k37ajjDVXcXFc12ORAMUkmk+lkFA==}
     dev: false
 
   /move-concurrently@1.0.1:
@@ -31680,8 +31681,8 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
 
-  github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
-    resolution: {tarball: https://codeload.github.com/firecamp-forks/parse-curl.js/tar.gz/366e62aebfb88b5974b223c1f4c5b456cefab0a0}
+  git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
+    resolution: {commit: 366e62aebfb88b5974b223c1f4c5b456cefab0a0, repo: git@github.com:firecamp-forks/parse-curl.js.git, type: git}
     name: parse-curl
     version: 0.2.6
     dependencies:
