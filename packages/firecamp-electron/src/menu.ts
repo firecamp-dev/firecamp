@@ -118,6 +118,7 @@ const prepareAppMenus = (win: any, appUpdater: AppUpdater) => {
         {
           type: 'separator',
         },
+        { role: 'hide', label: 'Hide Firecamp', accelerator: 'Cmd+H' }, // Hide the app
         {
           label: `Version ${app.getVersion()}`,
           enabled: false,
