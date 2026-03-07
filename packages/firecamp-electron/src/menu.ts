@@ -37,6 +37,17 @@ const prepareAppMenus = (win: any, appUpdater: AppUpdater) => {
           type: 'separator',
         },
         {
+          role: 'hide',
+          label: 'Hide Firecamp',
+          accelerator: 'CmdOrCtrl+H',
+          click() {
+            app.hide();
+          },
+        },
+        {
+          type: 'separator',
+        },
+        {
           label: 'Quit',
           role: 'quit',
         },
