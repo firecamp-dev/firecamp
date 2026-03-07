@@ -16,7 +16,7 @@ const appUpdater = new AppUpdater();
 const createWindow = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const win = new BrowserWindow({
-    frame: false,
+    frame: true,
     width,
     height,
     icon: nativeImage.createFromPath(appIcon),
