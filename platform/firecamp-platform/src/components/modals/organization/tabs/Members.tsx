@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Trash2 } from 'lucide-react';
 import cx from 'classnames';
 import {
   Button,
@@ -13,6 +13,18 @@ import { Rest } from '@firecamp/cloud-apis';
 import platformContext from '../../../../services/platform-context';
 import { EUserRolesWorkspace } from '../../../../types';
 import { getFormalDate } from '../OrgManagement';
+
+// TODO: remove this mock when "@firecamp/cloud-apis" implement `organization.removeMember`
+const mockedRmMember = {
+  async removeMember(organizationId: string, id: string) {
+    console.log(`try to remove ${id} from org ${organizationId}`);
+    const luck = Math.round(Math.random());
+    console.log('luck: ', luck);
+    if (luck === 0) {
+      throw new Error('the API say cannot delete rn');
+    }
+  },
+};
 
 const columns = [
   { id: 'index', name: 'No.', key: 'index', width: '35px', fixedWidth: true },
@@ -37,6 +49,7 @@ const columns = [
   //   width: '130px',
   //   fixedWidth: true,
   // },
+  { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
 ];
 
 const RoleOptions = [
@@ -72,6 +85,33 @@ const Members = ({
       tableApi.current.initialize(memberList);
     }
   }, [members]);
+
+  const onRemoveMember = (row) => {
+    platformContext.window.confirm({
+      message: `You're sure to remove ${row.name} from the organization?`,
+      labels: {
+        cancel: 'Cancel',
+        confirm: 'Yes, remove the member.',
+      },
+      onConfirm: () => {
+        // TODO: remove this mock when "@firecamp/cloud-apis" implement `organization.removeMember`
+        // Rest.organization
+        mockedRmMember
+          .removeMember(organizationId, row.id)
+          .then(() => {
+            tableApi.current.removeRow(row.id);
+            platformContext.app.notify.success(
+              'The member has been removed successfully.'
+            );
+          })
+          .catch((e) => {
+            platformContext.app.notify.alert(
+              e.response?.data.message || e.message
+            );
+          });
+      },
+    });
+  };
 
   const onChangeRole = (row) => {
     platformContext.window.confirm({
@@ -118,7 +158,9 @@ const Members = ({
         return <div className="px-2 text-base"> {rowIndex + 1} </div>;
         break;
       case 'name':
-        return <div className="p-1 text-base">{`${cellValue} - ${row.email}`}</div>;
+        return (
+          <div className="p-1 text-base">{`${cellValue} - ${row.email}`}</div>
+        );
         break;
       case 'joinedAt':
         return <div className="p-1 text-base">{cellValue}</div>;
@@ -134,6 +176,21 @@ const Members = ({
                 onSelect={(role) => onChangeRole({ ...row, role })}
               />
             )}
+          </div>
+        );
+        break;
+      case 'action':
+        return (
+          <div
+            className={cx('px-2', {
+              hidden: row.role === EUserRolesWorkspace.Owner,
+            })}
+          >
+            <Trash2
+              size={14}
+              className="text-error cursor-pointer"
+              onClick={() => onRemoveMember(row)}
+            />
           </div>
         );
         break;

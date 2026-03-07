@@ -146,7 +146,9 @@ const CollectionMenu = ({
   return (
     <div>
       <DropdownMenu
-        handler={() => <MoreHorizontal className="cursor-pointer " size={14} opacity={0.6}/>}
+        handler={() => (
+          <MoreHorizontal className="cursor-pointer " size={14} opacity={0.6} />
+        )}
         options={menuType == EMenuType.Request ? requestMenu : commonMenu}
         width={144}
         onSelect={(value) => value.onClick()}

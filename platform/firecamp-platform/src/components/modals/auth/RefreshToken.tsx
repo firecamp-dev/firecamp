@@ -13,7 +13,7 @@ import { useUserStore } from '../../../store/user';
 /**
  * RefreshToken component for user to authenticate.
  */
-const RefreshToken: FC<IModal> = ({ opened, onClose = () => { } }) => {
+const RefreshToken: FC<IModal> = ({ opened, onClose = () => {} }) => {
   return (
     <Modal opened={opened} onClose={onClose} closeOnEscape={false}>
       <Header />
@@ -40,14 +40,13 @@ const Header: FC<any> = () => {
 /**
  * Body component for RefreshToken modal contains all main functionalities to signUp
  */
-const Body: FC<any> = ({ onClose = () => { } }) => {
+const Body: FC<any> = ({ onClose = () => {} }) => {
   const { user } = useUserStore(
     (s) => ({
       user: s.user,
     }),
     shallow
   );
-
 
   const form = useForm({
     initialValues: { password: '' },
@@ -128,12 +127,7 @@ const Body: FC<any> = ({ onClose = () => { } }) => {
             />
           </div>
 
-          <Button
-            text="Sign in"
-            onClick={onSubmit(_onSubmit)}
-            fullWidth
-            sm
-          />
+          <Button text="Sign in" onClick={onSubmit(_onSubmit)} fullWidth sm />
         </form>
       </div>
     </div>

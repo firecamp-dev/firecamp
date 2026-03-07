@@ -55,8 +55,8 @@ const EnvironmentCollection = () => {
   const openEnv = (env) => {
     openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
   };
-  const openCreateColEnv = () => { };
-  const deleteEnv = () => { };
+  const openCreateColEnv = () => {};
+  const deleteEnv = () => {};
 
   if (!envTdpInstance) return <></>;
   return (
@@ -134,7 +134,7 @@ const CollectionScopedEnvCollection = () => {
     });
   };
 
-  const openCreateColEnv = () => { };
+  const openCreateColEnv = () => {};
 
   const deleteEnv = (envId: string) => {
     platformContext.window
@@ -235,7 +235,7 @@ const Globals = () => {
             text={'Open'}
             onClick={() => openEnv(globalEnv)}
             classNames={{
-              root: 'hover:!bg-focusColor !text-app-foreground-inactive'
+              root: 'hover:!bg-focusColor !text-app-foreground-inactive',
             }}
             ghost
             compact

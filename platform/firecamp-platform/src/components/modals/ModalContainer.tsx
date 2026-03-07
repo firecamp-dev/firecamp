@@ -60,7 +60,7 @@ export const ModalContainer = () => {
         return <CloneEnvironment opened={isOpen} onClose={close} />;
 
       // User
-      case EPlatformModalTypes.UserProfile: 
+      case EPlatformModalTypes.UserProfile:
         return <ProfileManagement opened={isOpen} onClose={close} />;
 
       // Auth

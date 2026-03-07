@@ -1,11 +1,5 @@
 import { FC, useRef, useState } from 'react';
-import {
-  Button,
-  Container,
-  Input,
-  ProgressBar,
-  TabHeader,
-} from '@firecamp/ui';
+import { Button, Container, Input, ProgressBar, TabHeader } from '@firecamp/ui';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { TreeDataProvider } from './tree/dataProvider';
 import treeRenderer from './tree/itemRenderer';
@@ -84,7 +78,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     <>
       <ProgressBar active={state.isExecuting} />
       <>
-        <div className='h-[340px] pt-4'>
+        <div className="h-[340px] pt-4">
           <div className="mt-4">
             <Input
               label={label}
@@ -92,8 +86,8 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
               name={'promptInput'}
               value={state.inputValue}
               onChange={_onChangeValue}
-              onKeyDown={() => { }}
-              onBlur={() => { }}
+              onKeyDown={() => {}}
+              onBlur={() => {}}
               error={state.error}
               data-autofocus
             />
@@ -117,9 +111,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
               xs
             />
             <Button
-              text={
-                state.isExecuting ? l?.oking : l?.ok || 'Create'
-              }
+              text={state.isExecuting ? l?.oking : l?.ok || 'Create'}
               onClick={_onClickOk}
               disabled={state.isExecuting}
               primary
@@ -171,8 +163,8 @@ const PathSelector: FC<{
             renderItemArrow={treeRenderer.renderItemArrow}
             // renderItemTitle={treeRenderer.renderItemTitle}
             renderItem={treeRenderer.renderItem}
-          // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
-          // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
+            // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
+            // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
           >
             <Tree
               treeId="selector-save-item"

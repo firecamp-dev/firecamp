@@ -1,5 +1,10 @@
 import cx from 'classnames';
-import { FolderOpen, FolderClosed, ChevronRight, ChevronDown } from 'lucide-react';
+import {
+  FolderOpen,
+  FolderClosed,
+  ChevronRight,
+  ChevronDown,
+} from 'lucide-react';
 import CollectionMenu from './menus/CollectionMenu';
 import {
   FcIconGraphQL,
@@ -9,26 +14,62 @@ import {
 import { ERequestTypes } from '@firecamp/types';
 
 const CollectionCloseIcon = (props) => (
-  <div className='flex items-center' {...props} >
-    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
+  <div className="flex items-center" {...props}>
+    <ChevronRight
+      className="mr-1 flex-none"
+      size={18}
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      strokeWidth="1"
+    />
   </div>
 );
 const CollectionOpenIcon = (props) => (
-  <div className='flex items-center' {...props}>
-    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
+  <div className="flex items-center" {...props}>
+    <ChevronDown
+      className="mr-1 flex-none"
+      size={18}
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      strokeWidth="1"
+    />
   </div>
 );
 const FolderOpenIcon = (props) => (
-  <div className='flex items-center' {...props}>
-    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
-    <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
+  <div className="flex items-center" {...props}>
+    <ChevronDown
+      className="mr-1 flex-none"
+      size={18}
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      strokeWidth="1"
+    />
+    <FolderOpen
+      className="mr-1 flex-none"
+      size={16}
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      strokeWidth="1"
+    />
   </div>
 );
 const FolderCloseIcon = (props) => (
-  <div className='flex items-center' {...props}>
-    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
-    <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
-  </div >
+  <div className="flex items-center" {...props}>
+    <ChevronRight
+      className="mr-1 flex-none"
+      size={18}
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      strokeWidth="1"
+    />
+    <FolderClosed
+      className="mr-1 flex-none"
+      size={16}
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      strokeWidth="1"
+    />
+  </div>
 );
 
 export default {
@@ -41,25 +82,51 @@ export default {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type', 'm-r-4')} {...context.arrowProps}>{text}</div>
+            <div
+              className={cx(text, 'collection_leaf-node-type', 'm-r-4')}
+              {...context.arrowProps}
+            >
+              {text}
+            </div>
           );
         case ERequestTypes.GraphQL:
-          return <FcIconGraphQL className="text-graphql" size={24}  {...context.arrowProps} />;
+          return (
+            <FcIconGraphQL
+              className="text-graphql"
+              size={24}
+              {...context.arrowProps}
+            />
+          );
         case ERequestTypes.WebSocket:
-          return <FcIconWebSocket className="" size={24} {...context.arrowProps} />;
+          return (
+            <FcIconWebSocket className="" size={24} {...context.arrowProps} />
+          );
         case ERequestTypes.SocketIO:
-          return <FcIconSocketIoSquare className="" size={24} {...context.arrowProps} />;
+          return (
+            <FcIconSocketIoSquare
+              className=""
+              size={24}
+              {...context.arrowProps}
+            />
+          );
         default:
           return <></>;
       }
     } else if (item.data?.__ref?.isCollection) {
-      return context.isExpanded ? <CollectionOpenIcon {...context.arrowProps} /> : <CollectionCloseIcon {...context.arrowProps} />;
+      return context.isExpanded ? (
+        <CollectionOpenIcon {...context.arrowProps} />
+      ) : (
+        <CollectionCloseIcon {...context.arrowProps} />
+      );
     } else if (item.data?.__ref?.isFolder) {
-      return context.isExpanded ? <FolderOpenIcon {...context.arrowProps} /> : <FolderCloseIcon {...context.arrowProps} />
+      return context.isExpanded ? (
+        <FolderOpenIcon {...context.arrowProps} />
+      ) : (
+        <FolderCloseIcon {...context.arrowProps} />
+      );
     } else {
       return <></>;
     }
-
   },
 
   renderItemTitle: ({ title, context, info }) => {
@@ -124,8 +191,9 @@ export default {
         <div
           {...(context.itemContainerWithoutChildrenProps as any)}
           style={{
-            paddingLeft: `${(depth + 1) * renderDepthOffset + depth * renderDepthOffset
-              }px`,
+            paddingLeft: `${
+              (depth + 1) * renderDepthOffset + depth * renderDepthOffset
+            }px`,
           }}
           className={cx(
             'pr-2',
@@ -161,7 +229,7 @@ export default {
               'rct-tree-line horizontal absolute top-3 h-px bg-activityBar-foreground-inactive z-10 w-2 opacity-50',
               { '!top-auto': item.data?.__ref.isRequest }
             )}
-            style={{ left: `${20 + (depth-1) * 14}px` }}
+            style={{ left: `${20 + (depth - 1) * 14}px` }}
           ></span>
 
           <InteractiveComponent
@@ -214,8 +282,8 @@ export default {
               item.data?.__ref.isFolder
                 ? 'folder'
                 : item.data?.__ref.isCollection
-                  ? 'collection'
-                  : 'request'
+                ? 'collection'
+                : 'request'
             }
           />
         </div>

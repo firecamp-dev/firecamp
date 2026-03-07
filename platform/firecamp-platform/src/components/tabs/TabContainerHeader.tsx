@@ -71,7 +71,8 @@ const TabHeaderContainer = () => {
     if (!tab.__meta.hasChange) emitter.emit(EPlatformTabs.Close, tabId);
     else {
       platformContext.window.confirm({
-        message: 'Changes to this request are not saved; you may forcefully close it by ignoring the changes.',
+        message:
+          'Changes to this request are not saved; you may forcefully close it by ignoring the changes.',
         labels: {
           cancel: 'Cancel',
           confirm: 'Ignore Changes & Close Request',

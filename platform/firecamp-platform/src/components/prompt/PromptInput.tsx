@@ -91,23 +91,16 @@ export const PromptInput: FC<IPromptInput> = ({
             value={state.value}
             onChange={_onChangeValue}
             onKeyDown={_onKeyDown}
-            onBlur={() => { }}
+            onBlur={() => {}}
             error={state.error}
             data-autofocus
           />
         </div>
         <TabHeader className="!px-0">
           <TabHeader.Right>
+            <Button text={l?.cancel || `Cancel`} onClick={_close} ghost xs />
             <Button
-              text={l?.cancel || `Cancel`}
-              onClick={_close}
-              ghost
-              xs
-            />
-            <Button
-              text={
-                state.isExecuting ? l?.oking : l?.ok || 'Create'
-              }
+              text={state.isExecuting ? l?.oking : l?.ok || 'Create'}
               onClick={_onClickOk}
               disabled={state.isExecuting}
               primary

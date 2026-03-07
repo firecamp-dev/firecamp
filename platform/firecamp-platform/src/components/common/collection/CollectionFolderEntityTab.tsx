@@ -13,10 +13,7 @@ import {
 } from '@firecamp/ui';
 import { _array, _auth, _env, _object } from '@firecamp/utils';
 import { EAuthTypes, IAuth, ICollection, IFolder } from '@firecamp/types';
-import {
-  preScriptSnippets,
-  testScriptSnippets,
-} from '@firecamp/scripts';
+import { preScriptSnippets, testScriptSnippets } from '@firecamp/scripts';
 import { Rest } from '@firecamp/cloud-apis';
 import EditInfo from './tabs/EditInfo';
 import Scripts from './tabs/Scripts';

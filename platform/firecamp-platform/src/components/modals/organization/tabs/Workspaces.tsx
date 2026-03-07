@@ -1,9 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
-import {
-  Container,
-  PrimitiveTable,
-  TTableApi,
-} from '@firecamp/ui';
+import { Container, PrimitiveTable, TTableApi } from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
 import { getFormalDate } from '../OrgManagement';
 
@@ -32,7 +28,10 @@ const columns = [
   },
 ];
 
-const Workspaces: FC<{workspaces: Array<any>, isFetching: boolean}> = ({ workspaces = [], isFetching = false }) => {
+const Workspaces: FC<{ workspaces: Array<any>; isFetching: boolean }> = ({
+  workspaces = [],
+  isFetching = false,
+}) => {
   const tableApi = useRef<TTableApi>(null);
 
   useEffect(() => {
