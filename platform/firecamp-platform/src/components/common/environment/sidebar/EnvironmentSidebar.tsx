@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from 'react';
 import { shallow } from 'zustand/shallow';
 import { Braces, Plus } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
-import { Notes, Button } from '@firecamp/ui';
+import { Notes } from '@firecamp/ui';
 import { EEnvironmentScope } from '@firecamp/types';
 import { Container, ProgressBar, Pane, ToolBar } from '@firecamp/ui';
 import treeRenderer from './tree/itemRenderer';
@@ -30,7 +30,7 @@ export default EnvironmentSidebar;
 const ProgressBarContainer = () => {
   const { isProgressing } = useEnvStore(
     (s) => ({
-      isProgressing: s.isProgressing,
+      isProgressing: s.isProgressing
     }),
     shallow
   );
@@ -40,13 +40,11 @@ const ProgressBarContainer = () => {
 const EnvironmentCollection = () => {
   const treeRef = useRef();
   const { open: openTab } = useTabStore.getState();
-  const { envTdpInstance, registerTDP, unRegisterTDP } = useEnvStore(
-    (s: IEnvironmentStore) => ({
-      envTdpInstance: s.envTdpInstance,
-      registerTDP: s.registerTDP_,
-      unRegisterTDP: s.unRegisterTDP_,
-    })
-  );
+  const { envTdpInstance, registerTDP, unRegisterTDP } = useEnvStore((s: IEnvironmentStore) => ({
+    envTdpInstance: s.envTdpInstance,
+    registerTDP: s.registerTDP_,
+    unRegisterTDP: s.unRegisterTDP_
+  }));
   const { createEnvironmentPrompt } = platformContext.platform;
   useEffect(() => {
     registerTDP();
@@ -55,8 +53,8 @@ const EnvironmentCollection = () => {
   const openEnv = (env) => {
     openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
   };
-  const openCreateColEnv = () => { };
-  const deleteEnv = () => { };
+  const openCreateColEnv = () => {};
+  const deleteEnv = () => {};
 
   if (!envTdpInstance) return <></>;
   return (
@@ -94,16 +92,11 @@ const EnvironmentCollection = () => {
                   ...props,
                   openEnv: openEnv,
                   openCreateEnv: openCreateColEnv,
-                  deleteEnv,
+                  deleteEnv
                 })
               }
             >
-              <Tree
-                treeId="tree-1"
-                rootItem="root"
-                treeLabel="Tree Example"
-                ref={treeRef}
-              />
+              <Tree treeId="tree-1" rootItem="root" treeLabel="Tree Example" ref={treeRef} />
             </UncontrolledTreeEnvironment>
           </div>
         );
@@ -114,13 +107,14 @@ const EnvironmentCollection = () => {
 
 const CollectionScopedEnvCollection = () => {
   const treeRef = useRef();
-  const { envTdpInstance, registerTDP, unRegisterTDP, deleteEnvironment } =
-    useEnvStore((s: IEnvironmentStore) => ({
+  const { envTdpInstance, registerTDP, unRegisterTDP, deleteEnvironment } = useEnvStore(
+    (s: IEnvironmentStore) => ({
       envTdpInstance: s.colEnvTdpInstance,
       registerTDP: s.registerTDP,
       unRegisterTDP: s.unRegisterTDP,
-      deleteEnvironment: s.deleteEnvironment,
-    }));
+      deleteEnvironment: s.deleteEnvironment
+    })
+  );
   useEffect(() => {
     registerTDP();
     return () => unRegisterTDP();
@@ -130,17 +124,17 @@ const CollectionScopedEnvCollection = () => {
     platformContext.app.modals.openCloneEnvironment({
       scope: EEnvironmentScope.Collection,
       collectionId: colId,
-      envId,
+      envId
     });
   };
 
-  const openCreateColEnv = () => { };
+  const openCreateColEnv = () => {};
 
   const deleteEnv = (envId: string) => {
     platformContext.window
       .confirm({
         message: 'Are you sure to delete the environment?',
-        labels: { confirm: 'Yes, delete it.' },
+        labels: { confirm: 'Yes, delete it.' }
       })
       .then(() => {
         deleteEnvironment(envId)
@@ -148,9 +142,7 @@ const CollectionScopedEnvCollection = () => {
             return r;
           })
           .catch((e) => {
-            platformContext.app.notify.alert(
-              e.response?.data?.message || e.message
-            );
+            platformContext.app.notify.alert(e.response?.data?.message || e.message);
           });
       });
   };
@@ -195,16 +187,11 @@ const CollectionScopedEnvCollection = () => {
                   ...props,
                   openEnv: openColEnv,
                   openCreateEnv: openCreateColEnv,
-                  deleteEnv,
+                  deleteEnv
                 })
               }
             >
-              <Tree
-                treeId="tree-1"
-                rootItem="root"
-                treeLabel="Tree Example"
-                ref={treeRef}
-              />
+              <Tree treeId="tree-1" rootItem="root" treeLabel="Tree Example" ref={treeRef} />
             </UncontrolledTreeEnvironment>
           </>
         );
@@ -217,31 +204,19 @@ const Globals = () => {
   const globalEnv = useEnvStore((s) => s.globalEnv, shallow);
   const { open: openTab } = useTabStore.getState();
   const openEnv = (env) => {
-    openTab(
-      { ...env },
-      { id: env.__ref.id, type: ETabEntityTypes.Environment }
-    );
+    openTab({ ...env }, { id: env.__ref.id, type: ETabEntityTypes.Environment });
   };
 
   return (
     <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-app-border">
-      <div className="px-2 mt-5 mb-1 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100 cursor-pointer">
+      <div
+        className="px-2 mt-5 mb-1 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100 cursor-pointer"
+        onClick={() => openEnv(globalEnv)}
+      >
         <Braces className="flex-none my-0.5" size={18} opacity={1} />
         <span className="w-full overflow-hidden text-ellipsis items-center block pl-1 text-base">
           {globalEnv?.name}
         </span>
-        <div className="flex ml-auto rct-tree-item-li-action items-center">
-          <Button
-            text={'Open'}
-            onClick={() => openEnv(globalEnv)}
-            classNames={{
-              root: 'hover:!bg-focusColor !text-app-foreground-inactive'
-            }}
-            ghost
-            compact
-            xs
-          />
-        </div>
       </div>
     </div>
   );
